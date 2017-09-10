@@ -9,7 +9,7 @@
 
 ### Setup
 
-Before setting up it is recommended that you have a Python3 environment setup and have activated it. If you need help with this look at [this documentation][http://docs.python-guide.org/en/latest/dev/virtualenvs]
+Before setting up it is recommended that you have a Python3 environment setup and have activated it. If you need help with this look at [this documentation](http://docs.python-guide.org/en/latest/dev/virtualenvs)
 
 Next you will need to run:
 
@@ -68,9 +68,9 @@ def index():
     return render_template('index.html')
 ```
 
-Here we have a function that is attached to the route `/`. This should be changed to the path of your page, for example `/about` or `/graph`. Then in the function we return `render_template('template-name.html')`. In this function you should also pass in any variables that are required by the template, but [read this][http://flask.pocoo.org/docs/0.12/templating] documentation on templates to learn more about that.
+Here we have a function that is attached to the route `/`. This should be changed to the path of your page, for example `/about` or `/graph`. Then in the function we return `render_template('template-name.html')`. In this function you should also pass in any variables that are required by the template, but [read this](http://flask.pocoo.org/docs/0.12/templating) documentation on templates to learn more about that.
 
-Next we add any static assets you may need. In the `static` directory we have `scripts` which contains all our JS functions and `styles` which contains all our [SASS][http://sass-lang.com] style sheets.
+Next we add any static assets you may need. In the `static` directory we have `scripts` which contains all our JS functions and `styles` which contains all our [SASS](http://sass-lang.com) style sheets.
 
 Firstly with JS, to prevent namespace collisions, each page should have at most one javascript file of the same name. For example, the `index` page has a JS file `index.js`. This file will contain only functions used by the `index` page and they should all be named `indexSOMETHING`. You can then reference these functions in the `script` tags in your template.
 

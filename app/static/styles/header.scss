@@ -1,8 +1,10 @@
-.navbar {
-    border-radius: 0;
-    background-color: black;
+#header {
+    .navbar {
+        border-radius: 0;
+        background-color: black;
 
-    &-brand {
-        font-size: 24px;
+        &-brand {
+            font-size: 24px;
+        }
     }
 }

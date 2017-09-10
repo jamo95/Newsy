@@ -7,15 +7,15 @@ from flask_assets import Environment, Bundle
 def _get_js_files(root):
     files = []
     for f in os.listdir(root):
-        print(f)
         if os.path.isfile(os.path.join(root, f)) and f.endswith('.js'):
             files.append(f)
     return files
 
 
 app = Flask(__name__)
-env = Environment(app)
+app.config.from_object('config')
 
+env = Environment(app)
 env.load_path = [
     os.path.join(os.path.dirname(__file__), 'static', 'styles'),
     os.path.join(os.path.dirname(__file__), 'static', 'scripts'),
@@ -25,7 +25,6 @@ js_files = _get_js_files(
     os.path.join(os.path.dirname(__file__), 'static', 'scripts'))
 
 # Setup scripts bundle
-print(js_files)
 js_bundle = Bundle(
     *js_files, filters='jsmin', output='build/scripts.min.js')
 env.register('js', js_bundle)

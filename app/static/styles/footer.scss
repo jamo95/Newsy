@@ -1,0 +1,10 @@
+#footer {
+    border-top: 1px solid black;
+    height: 200px;
+
+    &-made-with {
+        font-size: 20px;
+        margin-top: 20px;
+        margin-bottom: 0;
+    }
+}

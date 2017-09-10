@@ -1,0 +1,32 @@
+<div id="footer" class="container-fluid">
+  <div class="container text-center">
+    <p id="footer-made-with">Made with <span id="footer-icon"></span> in Comp4920 by</p>
+    <p>Jamison Tsai | Josh Leeb-du Toit | Le Thanh Son | Pratoolya Kashyap | Richard Lies</p>
+
+    <hr />
+
+  </div>
+
+  <script type="text/javascript">
+    let footerIconIndex = 0;
+    let footerIcons = [
+      '&#x2764',   // heart
+      '&#x2615;',  // coffee
+      '&#x1f32f;', // burrito
+      '&#x1f4aa;', // muscles
+      '&#x1f354;', // burger
+      '&#x1f36a;', // cookie
+      '&#x1f377;', // wine
+      '&#x1f37a;', // beer
+      '&#x1f363;'  // nigiri
+    ];
+
+    function updateFooterIcon() {
+      $('#footer-icon').html(
+        footerIcons[footerIconIndex++ % footerIcons.length]);
+    }
+
+    updateFooterIcon();
+    window.setInterval(updateFooterIcon, 1000);
+  </script>
+</div>

@@ -1,7 +1,6 @@
 # COMP4920 Project: Summariser
 ## Important
 + pip3 install newspaper3k
-+ pip3 install python_wtf
 + Make sure you have nltk installed and downloaded. (nltk.download() and find punkt)
 
 ## Usage

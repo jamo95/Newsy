@@ -19,6 +19,12 @@ $ pip install -r requirements.txt
 
 This will install all the Python dependencies required to run the Flask server.
 
+Next we will need to install a Ruby dependency in order to build the SASS stylesheets into CSS. Make sure you have `ruby` installed, and `ruby-dev` if you're on linux, and then run:
+
+```bash
+$ sudo gen install sass
+```
+
 Finally you can run the Flask server by running:
 
 ```bash

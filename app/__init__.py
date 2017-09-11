@@ -13,7 +13,11 @@ def _get_js_files(root):
 
 
 app = Flask(__name__)
+
 app.config.from_object('config')
+app.config['TEMPLATES_AUTO_RELOAD'] = True
+
+app.jinja_env.auto_reload = True
 
 env = Environment(app)
 env.load_path = [

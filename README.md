@@ -1,4 +1,4 @@
-# COMP4920 Project
+# COMP4920 Project: Summariser
 
 ## Usage
 
@@ -25,7 +25,7 @@ Finally you can run the Flask server by running:
 $ python server.py
 ```
 
-Now if you navigate to `localhost:5000` in your browser you should be able to see the Twitter Trends site.
+Now if you navigate to `localhost:5000` in your browser you should be able to see the Summariser site.
 
 ## Development
 

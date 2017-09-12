@@ -2,8 +2,28 @@
 {% block content %}
 
 <div id="index" class="container">
-  <h1>Summariser</h1>
-  <p>Blah blah blah... add stuff here</p>
+  <h1 id="index-title">Summariser</h1>
+  <div id="index-search">
+      <form action="" method="get" name="article-entry">
+          <p>Please enter an article URL :D</p>
+          <input type="text" name="url" size="100">
+          <input type="submit" value="Submit Article">
+      </form>
+  </div>
+  <div id= "index-article">
+      <div id="index-article-content">
+          <h2> Summarised </h2>
+          <h2 id="index-article-title">{{article_title}}</h2>
+          <p>{{article_summary}}</p>
+      </div>
+      <div id="index-article-content">
+          <h2> Original Text</h2>
+          <h2 id="index-article-title">{{article_title}}</h2>
+          <p>{{article_original}}</p>
+      </div>
+  </div>
+
+
 </div>
 
 <script type="text/javascript">

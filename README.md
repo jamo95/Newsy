@@ -1,4 +1,7 @@
 # COMP4920 Project: Summariser
+## Important
++ pip3 install newspaper3k
++ Make sure you have nltk installed and downloaded. (nltk.download() and find punkt)
 
 ## Usage
 
@@ -18,6 +21,12 @@ $ pip install -r requirements.txt
 ```
 
 This will install all the Python dependencies required to run the Flask server.
+
+Next we will need to install a Ruby dependency in order to build the SASS stylesheets into CSS. Make sure you have `ruby` installed, and `ruby-dev` if you're on linux, and then run:
+
+```bash
+$ sudo gem install sass
+```
 
 Finally you can run the Flask server by running:
 

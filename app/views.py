@@ -21,7 +21,7 @@ def index():
         article.download()
         article.parse()
         article_title = article.title
-        article_text = article.text
+        article_original = article.text
         # Comment out if you have not installed nlpt
         article.nlp()
         article_summary = article.summary
@@ -34,6 +34,6 @@ def index():
                             title='Summariser',
                             article_title=article_title,
                             article_summary=article_summary,
-                            article_original=article_text)
+                            article_original=article_original)
 
     

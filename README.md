@@ -2,6 +2,12 @@
 ## Important
 + pip3 install newspaper3k
 + Make sure you have nltk installed and downloaded. (nltk.download() and find punkt)
+```python
+$ python
+>>> import nltk
+>>> nltk.download()
+>>> d
+>>> punkt
 
 ## Usage
 

@@ -17,7 +17,7 @@ Before setting up it is recommended that you have a Python3 environment setup an
 Next you will need to run:
 
 ```bash
-$ pip install -r requirements.txt
+$ pip3 install -r requirements.txt
 ```
 
 This will install all the Python dependencies required to run the Flask server.
@@ -25,13 +25,14 @@ This will install all the Python dependencies required to run the Flask server.
 Next we will need to install a Ruby dependency in order to build the SASS stylesheets into CSS. Make sure you have `ruby` installed, and `ruby-dev` if you're on linux, and then run:
 
 ```bash
+$ sudo apt install ruby-dev
 $ sudo gem install sass
 ```
 
 Finally you can run the Flask server by running:
 
 ```bash
-$ python server.py
+$ python3 server.py
 ```
 
 Now if you navigate to `localhost:5000` in your browser you should be able to see the Summariser site.

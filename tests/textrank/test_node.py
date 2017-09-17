@@ -1,6 +1,20 @@
 from app.textrank.node import Node
 
 
+def test_equality():
+    node_a = Node('a')
+    node_b = Node('a')
+
+    assert node_a == node_b
+
+
+def test_inequality():
+    node_a = Node('a')
+    node_b = Node('b')
+
+    assert node_a != node_b
+
+
 def test_add_variation():
     node = Node('a')
     node.add_variation('v')

@@ -13,6 +13,12 @@ class Node:
         # For a sentence this will likely be empty.
         self._variations = []
 
+    def __eq__(self, node):
+        return self.data == node.data
+
+    def __neq__(self, node):
+        return not self.__eq__(node)
+
     def add_variation(self, data):
         '''Add a variation to the node.'''
 

@@ -1,5 +1,6 @@
 # COMP4920 Project: Summariser
-## Important
+
+## Important - TODO: Move into Setup documentation
 + pip3 install newspaper3k
 + Make sure you have nltk installed and downloaded. (nltk.download() and find punkt)
 ```python
@@ -24,7 +25,7 @@ Before setting up it is recommended that you have a Python3 environment setup an
 Next you will need to run:
 
 ```bash
-$ pip3 install -r requirements.txt
+$ pip3 install -r requirements.txt -r requirements-testing.txt
 ```
 
 This will install all the Python dependencies required to run the Flask server.

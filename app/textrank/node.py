@@ -19,6 +19,9 @@ class Node:
     def __neq__(self, node):
         return not self.__eq__(node)
 
+    def __hash__(self):
+        return hash(self.data)
+
     def add_variation(self, data):
         '''Add a variation to the node.'''
 

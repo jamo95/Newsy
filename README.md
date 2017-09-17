@@ -45,6 +45,14 @@ $ python3 server.py
 
 Now if you navigate to `localhost:5000` in your browser you should be able to see the Summariser site.
 
+## Running Tests
+
+Before running the tests make sure you have run `pip install` with `-r requirements-testing.txt`.
+
+Then you should have `pytest` installed. So from the root directory you just need to run `pytest` and all the tests will be run.
+
+When writing tests, see other files in the `tests` directory and follow them as examples
+
 ## Development
 
 ### Project Structure

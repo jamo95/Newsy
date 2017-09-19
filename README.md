@@ -1,16 +1,5 @@
 # COMP4920 Project: Summariser
 
-## Important - TODO: Move into Setup documentation
-+ pip3 install newspaper3k
-+ Make sure you have nltk installed and downloaded. (nltk.download() and find punkt)
-```python
-$ python3
->>> import nltk
->>> nltk.download()
->>> d
->>> punkt
-```
-
 ## Usage
 
 ### Requirements
@@ -36,6 +25,18 @@ Next we will need to install a Ruby dependency in order to build the SASS styles
 $ sudo apt install ruby-dev
 $ sudo gem install sass
 ```
+
+Next you need to install `nltk` and `punk` for `newspaper3k`. With your virtual env activated:
+
+```bash
+$ python
+>>> import nltk
+>>> nltk.download()
+>>> d
+>>> punkt
+```
+
+Note that we may be removing `newspaper3k` as a dependency when we write our own summarisation algorithm. But for now we may as well install it. 
 
 Finally you can run the Flask server by running:
 

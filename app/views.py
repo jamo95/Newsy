@@ -11,6 +11,7 @@ import nltk
 @app.route('/', methods=['GET', 'POST'])
 def index():
     article_title = ""
+    article_keywords = ""
     article_summary = ""
     article_original = ""
 
@@ -24,6 +25,7 @@ def index():
         article_original = article.text
         # Comment out if you have not installed nlpt
         article.nlp()
+        article_keywords = article.keywords
         article_summary = article.summary
 
 
@@ -33,6 +35,7 @@ def index():
     return render_template('index.html',
                             title='Summariser',
                             article_title=article_title,
+                            article_keywords=article_keywords,
                             article_summary=article_summary,
                             article_original=article_original)
 

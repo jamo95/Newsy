@@ -1,7 +1,4 @@
 # COMP4920 Project: Summariser
-## Important
-+ pip3 install newspaper3k
-+ Make sure you have nltk installed and downloaded. (nltk.download() and find punkt)
 
 ## Usage
 
@@ -17,7 +14,7 @@ Before setting up it is recommended that you have a Python3 environment setup an
 Next you will need to run:
 
 ```bash
-$ pip install -r requirements.txt
+$ pip3 install -r requirements.txt -r requirements-testing.txt
 ```
 
 This will install all the Python dependencies required to run the Flask server.
@@ -25,16 +22,37 @@ This will install all the Python dependencies required to run the Flask server.
 Next we will need to install a Ruby dependency in order to build the SASS stylesheets into CSS. Make sure you have `ruby` installed, and `ruby-dev` if you're on linux, and then run:
 
 ```bash
+$ sudo apt install ruby-dev
 $ sudo gem install sass
 ```
+
+Next you need to install `nltk` and `punk` for `newspaper3k`. With your virtual env activated:
+
+```bash
+$ python
+>>> import nltk
+>>> nltk.download()
+>>> d
+>>> punkt
+```
+
+Note that we may be removing `newspaper3k` as a dependency when we write our own summarisation algorithm. But for now we may as well install it. 
 
 Finally you can run the Flask server by running:
 
 ```bash
-$ python server.py
+$ python3 server.py
 ```
 
 Now if you navigate to `localhost:5000` in your browser you should be able to see the Summariser site.
+
+## Running Tests
+
+Before running the tests make sure you have run `pip install` with `-r requirements-testing.txt`.
+
+Then you should have `pytest` installed. So from the root directory you just need to run `pytest` and all the tests will be run.
+
+When writing tests, see other files in the `tests` directory and follow them as examples
 
 ## Development
 

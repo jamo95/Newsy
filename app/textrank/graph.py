@@ -59,3 +59,24 @@ class Graph:
         '''Get all the nodes connected to initial node `node_i`.'''
 
         return self._adjacency_list[node_i]
+    def find(self, node_id=None, node_text=None, node_variation=None):
+        '''Finds the first node in the graph by `node_id`, `node_text`, or
+        `node_variations`.'''
+
+        if node_id:
+            # Search by Node ID.
+            found = list(filter(_filter_node_id(node_id), self.nodes))
+            if len(found) > 0:
+                return found[0]
+
+        if node_text:
+            # Search by Node Text.
+            found = list(filter(_filter_node_text(node_text), self.nodes))
+            if len(found) > 0:
+                return found[0]
+
+        if node_variation:
+            # Search by Node Variations.
+            found = list(filter(_filter_node_variation(node_variation), self.nodes))
+            if len(found) > 0:
+                return found[0]

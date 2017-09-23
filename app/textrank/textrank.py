@@ -16,7 +16,6 @@ def extract_keywords(text):
 
     for node in text_nodes:
         if node.data in [n.data for n in title_nodes]:
-            node.in_title = True
             node.score *= 1.1
 
     # Rank the keywords with TextRank word ranking
@@ -32,7 +31,7 @@ def coocurrence (common_entities):
     return com
 
 def pos_tag_text(text, clean=True):
-    '''POS tag a list of tokens.'''
+        '''POS tag a list of tokens.'''
 
     tokens = tokenizeWords(text)
     tagged = nltk.pos_tag(tokens)
@@ -64,21 +63,28 @@ def rankWords(text, text_nodes):
     graph = Graph(text_nodes)
     sentences = nltk.sent_tokenize(text)
     connectNodesWords(graph, sentences)
-    for node in graph.nodes:
+    for node in graph.get_nodes():
         scoreNode(graph, node)
-    return graph.nodes
+    return graph.get_nodes()
 
 def rankSentences(sentence_nodes):
     graph = Graph(sentence_nodes)
+    connectNodeSentences(graph)
 
+    for node in graph.get_nodes():
+        scoreSentenceNode(graph,node)
 
+    return graph.get_nodes()
+
+def scoreSentenceNode(graph, node):
+    
 def scoreNode(graph, node):
     totalVariationScore = node.get_averaged_score()
     node.score += totalVariationScore
     return node.score
 
 def connectNodeSentences(graph):
-    for a in graph.nodes:
+    for a in graph.get_nodes():
         for b in graph nodes:
             if a==b:
                 continue

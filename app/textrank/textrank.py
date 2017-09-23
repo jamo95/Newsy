@@ -3,13 +3,14 @@
 import sys
 from itertools import combinations
 from collections import defaultdict
-from app.textrank.graph import Graph
+from .app.textrank.graph import Graph
 from node import Node
 import nltk
 import math
 #from . import *
-def extract_sentences(text):
 
+def extract_sentences(text):
+    return
 def extract_keywords(text):
     tokens = list(tokenize(text))
     text_nodes = _consolidate_tokens(tokens)
@@ -31,13 +32,11 @@ def coocurrence (common_entities):
     return com
 
 def pos_tag_text(text, clean=True):
-        '''POS tag a list of tokens.'''
-
+    '''POS tag a list of tokens.'''
     tokens = tokenizeWords(text)
     tagged = nltk.pos_tag(tokens)
     unclean_words = nltk.corpus.stopwords.words('english')
     unclean_words += string.punctuation
-
     if clean:
         # Remove unclean words.
         tokens = list(
@@ -54,9 +53,7 @@ def tokenize(text):
         # Skip short tokens.
         if len(token) < 3:
             continue
-
         tokens[token] = Node(token, tag, score=1)
-
     return tokens.values()
 
 def rankWords(text, text_nodes):
@@ -76,8 +73,27 @@ def rankSentences(sentence_nodes):
 
     return graph.get_nodes()
 
-def scoreSentenceNode(graph, node):
-    
+def scoreSentenceNode(graph, node, iterations=2):
+    if iterations <= 0:
+        return 0
+
+    score = node.score
+    for nodesConnected in graph.get_connected_to(node):
+
+        outNodeWeight = 0
+
+        for outNodes in graph.get_connected_from(nodesConnected)
+            outNodeWeight += outnodes.score
+
+        successiveScore = scoreSentenceNode(graph,nodesConnected,iterations-1)
+
+        weightNodeB = nodesConnected.score * successiveScore
+        score += weightNodeB / outNodeWeight
+
+        df = 0.85
+        node.score = (1-df) + df * score
+    return node.score
+
 def scoreNode(graph, node):
     totalVariationScore = node.get_averaged_score()
     node.score += totalVariationScore
@@ -85,7 +101,7 @@ def scoreNode(graph, node):
 
 def connectNodeSentences(graph):
     for a in graph.get_nodes():
-        for b in graph nodes:
+        for b in graph.get_nodes():
             if a==b:
                 continue
             similaritySentences = sentSim(a,b)

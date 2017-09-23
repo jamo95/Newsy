@@ -10,26 +10,18 @@ import math
 #from . import *
 
 def extract_sentences(text):
-    return
+    tokens = tokenizeSentence(text)
+    sentenceNodes = _consolidate_tokens(tokens)
+    sentenceNodes = rankSentences(text, sentenceNodes)
+    return sorted(sentenceNodes, key=lambda n: n.score, reverse=True)
+
 def extract_keywords(text):
-    tokens = list(tokenize(text))
+    tokens = list(tokenizeKeywords(text))
     text_nodes = _consolidate_tokens(tokens)
-
-    for node in text_nodes:
-        if node.data in [n.data for n in title_nodes]:
-            node.score *= 1.1
-
     # Rank the keywords with TextRank word ranking
     text_nodes = rankWords(text, text_nodes)
     return sorted(text_nodes, key=lambda n: n.score, reverse=True)
 
-def coocurrence (common_entities):
-    com = defaultdict(lambda : defaultdict(lambda: {'weight':0}))
-    # Build co-occurrence matrix
-    for w1, w2 in combinations(sorted(common_entities), 2):
-        if w1 != w2:
-            com[w1][w2]['weight'] += 1
-    return com
 
 def pos_tag_text(text, clean=True):
     '''POS tag a list of tokens.'''
@@ -44,7 +36,7 @@ def pos_tag_text(text, clean=True):
         )
     return tagged
 
-def tokenize(text):
+def tokenizeKeywords(text):
     tokens = {}
     for token, tag in pos_tag_text(text):
         # Skip duplicate tokens.
@@ -55,6 +47,7 @@ def tokenize(text):
             continue
         tokens[token] = Node(token, tag, score=1)
     return tokens.values()
+
 
 def rankWords(text, text_nodes):
     graph = Graph(text_nodes)
@@ -72,6 +65,7 @@ def rankSentences(sentence_nodes):
         scoreSentenceNode(graph,node)
 
     return graph.get_nodes()
+
 
 def scoreSentenceNode(graph, node, iterations=2):
     if iterations <= 0:
@@ -99,6 +93,9 @@ def scoreNode(graph, node):
     node.score += totalVariationScore
     return node.score
 
+
+
+
 def connectNodeSentences(graph):
     for a in graph.get_nodes():
         for b in graph.get_nodes():
@@ -107,21 +104,6 @@ def connectNodeSentences(graph):
             similaritySentences = sentSim(a,b)
             if similaritySentences > 0.5:
                 graph.add_edge(a,b)
-
-
-def sentSim(s1,s2):
-    wordsS1 = s1.split()
-    wordss2 = s2.split()
-
-    common_word_count = len(set(wordsS1) & set(wordss2))
-
-
-    log_s1 = _log10(len(wordsS1))
-    log_s2 = _log10(len(wordss2))
-
-    if log_s1 + log_s2 == 0:
-        return 0
-    return common_word_count / (log_s1 + log_s2)
 
 def connectNodesWords(Graph, sentences):
     for s in sentences:
@@ -138,6 +120,8 @@ def connectNodesWords(Graph, sentences):
                         continue
                     graph.add_edge(word_a, word_b)
 
+
+
 def tokenizeWords(text):
     tokens = nltk.word_tokenize(text)
     return tokens
@@ -146,6 +130,21 @@ def tokenizeSentence(text):
     return tokens
 
 
+
+
+def sentSim(s1,s2):
+    wordsS1 = s1.split()
+    wordss2 = s2.split()
+
+    common_word_count = len(set(wordsS1) & set(wordss2))
+
+
+    log_s1 = _log10(len(wordsS1))
+    log_s2 = _log10(len(wordss2))
+
+    if log_s1 + log_s2 == 0:
+        return 0
+    return common_word_count / (log_s1 + log_s2)
 def dirtyWords():
     unclean_words = nltk.corpus.stopwords.words('english')
     unclean_words += string.punctuation
@@ -183,6 +182,16 @@ def _consolidate_tokens( tokens):
 
     return consolidated_nodes
 
+def get_variations(p, text):
+    '''Get the base words of every word in the given text.'''
+
+    stemmer = SnowballStemmer('english')
+    variations = {}
+    for token, tag in pos_tag_text(text, clean=False):
+        base = token
+        if token not in [wn.data for wn in variations[base]]:
+            variations[base].append(Node(token, pos=tag))
+    return variations
 file = sys.argv[1]
 with open(sys.argv[1]) as f:
     file = f.read()

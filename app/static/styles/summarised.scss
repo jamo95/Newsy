@@ -1,0 +1,19 @@
+#summarised {
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 80px;
+    &-article-title {
+	margin-top: 10px;
+        border-top: 1px solid black;
+	padding-top: 10px;
+        font-size: 24px;
+        text-align: center;
+    }
+    &-article-content {
+        text-align: left;
+        margin-top: 10px;
+        margin-bottom: 50px;
+    	margin-left: 13%;
+    	margin-right: 13%;
+    }
+}

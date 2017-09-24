@@ -2,32 +2,18 @@
 {% block content %}
 
 <div id="index" class="container">
-  <h1 id="index-title">Summariser</h1>
+  <div id="logo"> <a href="/">
+	<img src="/static/resource/logo.jpg" style="margin-bottom: 10px;"></a>
+  </div>
+  <h2>Slogan - e.g. You want to read the latest news but don't have time? We are here to help.</h2>
   <div id="index-search">
-      <form action="" method="get" name="article-entry">
-          <p>Please enter an article URL :D</p>
-          <input type="text" name="url" size="100">
-          <input type="submit" value="Submit Article">
+      <form action="{{ url_for('summarised') }}" method="get" name="article-entry">
+          <input type="url" name="url" id="url-input" size="100" 
+	  placeholder="Please enter an article URL ..." />
+
+          <input type="submit" id="submit-button" value="Newsy Summarize">
       </form>
   </div>
-  <div id= "index-article">
-      <div id="index-article-content">
-          <h2> Summarised </h2>
-          <h2 id="index-article-title">{{article_title}}</h2>
-          <p><b>Keywords: |
-              {% for word in article_keywords %}
-              {{ word }} | 
-              {% endfor %}
-          </b></p>
-          <p>{{article_summary}}</p>
-      </div>
-      <div id="index-article-content">
-          <h2> Original Text</h2>
-          <h2 id="index-article-title">{{article_title}}</h2>
-          <p>{{article_original}}</p>
-      </div>
-  </div>
-
 
 </div>
 

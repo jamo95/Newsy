@@ -7,9 +7,12 @@ from flask import request
 from newspaper import Article
 import nltk
 
-
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/')
 def index():
+    return render_template('index.html')
+
+@app.route('/summarised', methods=['GET', 'POST'])
+def summarised():
     article_title = ""
     article_keywords = ""
     article_summary = ""
@@ -32,7 +35,7 @@ def index():
 
 
 
-    return render_template('index.html',
+    return render_template('summarised.html',
                             title='Summariser',
                             article_title=article_title,
                             article_keywords=article_keywords,

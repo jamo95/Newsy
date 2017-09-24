@@ -1,0 +1,45 @@
+#header_summarised {
+    .navbar {
+        border-radius: 0;
+        background-color: black;
+	max-width: 1500px;
+	min-width: 1104px;
+	height: 84px;
+        &-brand {
+            font-size: 24px;
+        }
+    }
+    #nav-container {
+	width: 100%;
+    }
+    .navbar-header {
+	display: inline-block;
+    	float: left;
+	padding-left: 15px;
+	padding-right: 15px;
+	margin-top: 17px;
+	margin-bottom: 17px;
+    }
+    #summarised-search{
+    	display: inline-block;
+	margin-left: 72px;
+	margin-right: 72px;
+	margin-top: 22px;
+	margin-bottom: 22px;
+    }
+    #summarised-url-input {
+	height: 40px;
+    	width: 500px;
+    }
+    #summarised-submit-button{
+    	height: 40px;
+    	width: 100px;
+    }
+    #bs-example-navbar-collapse-1{
+	display: inline-block;
+	float: right;
+	width: 150px;
+	margin-top: 17px;
+	margin-bottom: 17px;
+    }
+}

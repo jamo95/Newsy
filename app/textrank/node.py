@@ -1,5 +1,5 @@
 class Node:
-    def __init__(self, data, score=None):
+    def __init__(self, data, score=1.0, multiplier=1.0):
         # Base data for the node. For a word this will be the stemmed version.
         # For a sentence it will just be the sentence.
         self.data = data
@@ -8,6 +8,10 @@ class Node:
         # the sum of all the variations. If the node has no variations then it
         # will be the score of the data.
         self.score = score
+
+        # Score multiplier for the node. May be useful when we want to boost
+        # the value of specific nodes without explicitely modifying the score.
+        self.multiplier = multiplier
 
         # Variations of the data. For a word this will be the stem of the word.
         # For a sentence this will likely be empty.

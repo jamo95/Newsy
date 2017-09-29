@@ -53,6 +53,10 @@ def _sentence_similarity(node_a, node_b):
         lambda w: w in node_b_words, node_a_words)))
 
     log_length = math.log(len(node_a_words)) + math.log(len(node_b_words))
+
+    if log_length == 0:
+        return 0.0
+
     return common_words / log_length
 
 

@@ -2,28 +2,70 @@
 {% block content %}
 
 <div id="summarised" class="container">
-  <div id= "summarised-article">
-    <div id="summarised-article-content">
-      <h2 id="summarised-article-title">{{title}}</h2>
+  <h1>Newsy Summarizer</h1>
 
-      <hr />
-    
-      {% if sentences %}
-        <h3>Summary</h3>
-        {% for sentence in sentences %}
+  <form action="" method="post" name="summarizer">
+    {{ form.hidden_tag() }}
+
+    <p id="text-input">
+      Enter title:<br />
+      {{ form.title(id='summarizer-title-input', size=80) }}<br />
+      Enter text:<br />
+      {{ form.text(id='summarizer-text-input', cols=90, rows=5) }}<br />
+    </p>
+
+    <p id="url-input">
+      Enter link:<br />
+      {{ form.url(id='summarizer-url-input', size=80) }}<br />
+    </p>
+
+    <p id="n-sentences-input">
+      Enter number of sentences:<br />
+      {{ form.count(id='summarizer-n-sentences-input') }}<br />
+    </p>
+
+    {% if form_error %}
+      <span style="color: red;">{{ form_error }}</span>
+    {% endif %}
+
+    <p id="btn-submit"><input type="submit" value="Summarize"></p>
+    <p><a id="switch-input-link"
+      onClick="switchSummarizerInput()">Enter text instead</a></p>
+  </form>
+
+  <hr />
+
+  <div id= "summarised-article">
+    <div id="summarised-article-title">
+      {% if article_title %}
+        <h2>{{ article_title }}</h2>
+      {% endif %}
+    </div>
+
+    <div id="summarised-article-content">
+      {% if article_sentences %}
+        {% for sentence in article_sentences %}
           <p>{{ sentence }}</p>
         {% endfor %}
       {% endif %}
-
-      {% if keywords %}
-        <h3>Keywords</h3>
-        {% for keyword in keywords %}
-          {{ keyword }}
-        {% endfor %}
-      {% endif %}
-
     </div>
   </div>
 </div>
+
+<script type="text/javascript">
+  let inputType = window.location.hash === '#text' ? 'text' : 'url';
+
+  window.onload = function() {
+    let url = getUrlParameter('url');
+
+    if (url) {
+      window.history.replaceState(
+        {}, '{{ title }}', '{{ url_for("summarised") }}');
+      $('#summarizer-url-input')[0].value = url;
+    }
+
+    setSummarizerInput(inputType);
+  }();
+</script>
 
 {% endblock %}

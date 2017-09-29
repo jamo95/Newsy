@@ -1,11 +1,10 @@
 #summarised {
-    text-align: center;
     padding-top: 20px;
     padding-bottom: 80px;
 
-    &-title {
-        margin-bottom: 0px;
-    }
+    &-title-input { margin-bottom: 1em; }
+
+    &-title { margin-bottom: 0px; }
 
     &-article-title {
         margin-top: 10px;
@@ -20,5 +19,9 @@
         margin-bottom: 50px;
     	margin-left: 13%;
     	margin-right: 13%;
+    }
+
+    #btn-submit {
+        margin-top: 16px;
     }
 }

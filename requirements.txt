@@ -10,3 +10,4 @@ newspaper3k==0.2.2
 nltk==3.2.4
 webassets==0.12.1
 Werkzeug==0.12.2
+Flask-WTF==0.14.2

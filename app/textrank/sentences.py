@@ -8,6 +8,11 @@ SCORE_ITERATIONS = 2
 MIN_SENTENCE_SIMILARITY = 0.5
 DEFAULT_NODE_SCORE = 0.5
 
+# TODO: Improvements.
+#   - Ignore really short sentences.
+#   - When calculating similarity ignore words with bad POS tags.
+#   - Use the multiplier on sentence nodes if they contain keywords.
+
 
 def rank(text_nodes):
     '''Rank sentences.'''

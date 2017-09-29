@@ -6,22 +6,13 @@
 
     &-title { margin-bottom: 0px; }
 
-    &-article-title {
-        margin-top: 10px;
-        padding-top: 10px;
-        font-size: 24px;
-        text-align: center;
+    &-article {
+        &-title { font-style: italic; }
+
+        &-content {
+            width: 550px;
+        }
     }
 
-    &-article-content {
-        text-align: left;
-        margin-top: 10px;
-        margin-bottom: 50px;
-    	margin-left: 13%;
-    	margin-right: 13%;
-    }
-
-    #btn-submit {
-        margin-top: 16px;
-    }
+    #btn-submit { margin-top: 16px; }
 }

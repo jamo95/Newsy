@@ -38,7 +38,6 @@ def _connect_nodes(graph):
                 continue
 
             similarity = _sentence_similarity(sentence_a, sentence_b)
-            print(similarity)
             if similarity > MIN_SENTENCE_SIMILARITY:
                 graph.add_edge(sentence_a, sentence_b)
 

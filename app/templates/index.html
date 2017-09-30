@@ -2,22 +2,8 @@
 {% block content %}
 
 <div id="index" class="container">
-  <div id="logo"> <a href="/">
-	<img src="/static/resource/logo.jpg" style="margin-bottom: 10px;"></a>
-  </div>
-  <h2>Slogan - e.g. You want to read the latest news but don't have time? We are here to help.</h2>
-  <div id="index-search">
-      <form action="{{ url_for('summarised') }}" method="get" name="article-entry">
-          <input type="url" name="url" id="url-input" size="100" 
-	  placeholder="Please enter an article URL ..." />
-
-          <input type="submit" id="submit-button" value="Newsy Summarize">
-      </form>
-  </div>
-
+  <h2>Don't have time?</h2>
+  <h2>You have Newsy!</h2>
 </div>
-
-<script type="text/javascript">
-</script>
 
 {% endblock %}

@@ -7,6 +7,7 @@ from app import app
 from app.textrank.sentences import rank as rank_sentences
 from app.textrank.node import Node
 from app.textrank.helpers import tokenize_sentences
+from app.loaders import techcrunch
 
 DEFAULT_SENTENCE_COUNT = 4
 
@@ -55,8 +56,13 @@ def _summarize(text='', title='', url='', count=DEFAULT_SENTENCE_COUNT):
 
     if url:
         article = _get_article_from_url(url)
-        article_data['title'] = article.title
         article_data['text'] = article.text
+
+        if 'techcrunch' in url:
+            tc_article = techcrunch.ArticleLoader.load(url)
+            article_data['title'] = tc_article['title']
+        else:
+            article_data['title'] = article.title
 
     sentences = tokenize_sentences(article_data['text'])
     ranked_sentences = sorted(

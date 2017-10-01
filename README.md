@@ -31,13 +31,9 @@ Next you need to install `nltk` and `punk` for `newspaper3k`. With your virtual 
 ```bash
 $ python
 >>> import nltk
->>> nltk.download()
->>> d
->>> punkt
->>> d
->>> stopwords
->>> d
->>> averaged_perceptron_tagger
+>>> nltk.download('punkt')
+>>> nltk.download('stopwords')
+>>> nltk.download('averaged_perceptron_tagger')
 ```
 
 Note that we may be removing `newspaper3k` as a dependency when we write our own summarisation algorithm. But for now we may as well install it.

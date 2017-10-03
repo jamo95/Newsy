@@ -1,5 +1,5 @@
 class Node:
-    def __init__(self, data, score=1.0, multiplier=1.0):
+    def __init__(self, data, score=1.0, multiplier=1.0, index=None):
         # Base data for the node. For a word this will be the stemmed version.
         # For a sentence it will just be the sentence.
         self.data = data
@@ -16,6 +16,9 @@ class Node:
         # Variations of the data. For a word this will be the stem of the word.
         # For a sentence this will likely be empty.
         self._variations = []
+
+        # Index of the node.
+        self.index = index
 
     def __eq__(self, node):
         return self.data == node.data

@@ -5,7 +5,7 @@ import re
 from bs4 import BeautifulSoup
 from datetime import datetime
 
-from helpers import clean_html
+from app.loaders.helpers import clean_html
 
 BASE_URL = 'www.cricket.com.au'
 
@@ -56,16 +56,18 @@ class ArticleLoader:
 def _get_title(html):
     title = str(html.select('title')[0].contents[0])
     title = re.sub(r'\|.*$','',title)
-<<<<<<< HEAD
-
-=======
->>>>>>> cricketau
     return title
 
 
 def _get_content(html):
-    string = html.findAll("div", { "class" : "article-text-update" })
-    raw_content_str = map(str,string)
+    articleText = html.findAll("div", { "class" : "article-text-update" })
+    articleText = str(articleText)
+
+    articleSoup = BeautifulSoup(articleText,"lxml")
+    articleSoup = articleSoup.findAll("p")
+
+    raw_content_str = map(str,articleSoup)
+
     return clean_html(' '.join(raw_content_str))
 
 

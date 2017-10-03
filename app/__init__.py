@@ -4,6 +4,8 @@ from flask import Flask
 from flask_assets import Environment, Bundle
 from flask_sqlalchemy import SQLAlchemy
 
+from app import dao
+
 
 # Returns all .js files in root dir
 def _get_js_files(root):
@@ -38,6 +40,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://{}:{}@{}/{}'.format(
     db_user, db_password, db_host, db_name)
 
 db = SQLAlchemy(app)
+dao.Base.metadata.create_all(db.engine)
 
 app.jinja_env.auto_reload = True
 

@@ -8,7 +8,7 @@ class Keyword(Base):
     __tablename__ = 'keywords'
 
     id = Column(Integer, primary_key=True)
-    word = Column(String(), index=True)
+    data = Column(String(), index=True)
     score = Column(Float)
     article_hash = Column(
         String(64), ForeignKey('articles.hash', ondelete='CASCADE'))

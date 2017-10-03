@@ -7,7 +7,7 @@ class Sentence(Base):
     __tablename__ = 'sentences'
 
     id = Column(Integer, primary_key=True)
-    sentence = Column(Text, index=True)
+    data = Column(Text, index=True)
     score = Column(Float)
     index = Column(Integer)
     article_hash = Column(

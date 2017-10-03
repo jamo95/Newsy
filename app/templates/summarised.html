@@ -49,6 +49,19 @@
         {% endfor %}
       {% endif %}
     </div>
+
+    {% if article_sentences %}
+      <div id="summarised-review">
+        <h3 id="summarised-review-question">Was this a good summary?
+          <a onClick="summarisedReview(true)">Yes</a> or
+          <a onClick="summarisedReview(false)">No</a>
+        </h3>
+        <p id="summarised-positive-response" style="display: none;">Thanks for the
+        positive review!</p><p id="summarised-negative-response" style="display:
+        none;">Sorry to hear that. We have been notified and promise to make
+        Newsy better for you.</p>
+      </div>
+    {% endif %}
   </div>
 </div>
 
@@ -66,6 +79,31 @@
 
     setSummarizerInput(inputType);
   }();
+
+  let summarisedReview = function(isPositive) {
+    $('#summarised-review-question').hide();
+
+    if (isPositive) {
+      $('#summarised-negative-response').hide();
+      $('#summarised-positive-response').show();
+    } else {
+      $('#summarised-negative-response').show();
+      $('#summarised-positive-response').hide();
+    }
+
+    $.ajax({
+      type: "POST", dataType: 'json',
+      url: '/review',
+      contentType: "application/json; charset=utf-8",
+      data: JSON.stringify({
+        review: isPositive ? 'positive' : 'negative',
+        title: $('#summarizer-title-input')[0].value,
+        text: $('#summarizer-text-input')[0].value,
+        url: $('#summarizer-url-input')[0].value,
+        sentences: $('#summarizer-n-sentences-input')[0].value,
+      }),
+    });
+  }
 </script>
 
 {% endblock %}

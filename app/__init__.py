@@ -2,6 +2,7 @@ import os
 
 from flask import Flask
 from flask_assets import Environment, Bundle
+from flask_sqlalchemy import SQLAlchemy
 
 
 # Returns all .js files in root dir
@@ -11,6 +12,7 @@ def _get_js_files(root):
         if os.path.isfile(os.path.join(root, f)) and f.endswith('.js'):
             files.append(f)
     return files
+
 
 # Returns all .scss files in root dir
 def _get_css_files(root):
@@ -25,6 +27,17 @@ app = Flask(__name__)
 
 app.config.from_object('config')
 app.config['TEMPLATES_AUTO_RELOAD'] = True
+
+db_host = 'ec2-13-55-222-175.ap-southeast-2.compute.amazonaws.com'
+db_name = 'newsydb'
+db_user = 'postgres'
+db_password = 'password'
+
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgres://{}:{}@{}/{}'.format(
+    db_user, db_password, db_host, db_name)
+
+db = SQLAlchemy(app)
 
 app.jinja_env.auto_reload = True
 

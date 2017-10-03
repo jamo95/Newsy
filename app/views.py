@@ -3,7 +3,7 @@ from flask import render_template, request
 
 from .forms import SummaryForm
 
-from app import app
+from app import app, db, dao
 from app.textrank.sentences import rank as rank_sentences
 from app.textrank.node import Node
 from app.textrank.helpers import tokenize_sentences
@@ -52,9 +52,19 @@ def _get_article_from_url(url):
 
 
 def _summarize(text='', title='', url='', count=DEFAULT_SENTENCE_COUNT):
+    url = url.rstrip('/')
     article_data = {'title': title, 'text': text, 'url': url}
 
     if url:
+        article = _get_summary(url)
+        print('ARTICLE -> {}'.format(article))
+        if article:
+            return {
+                'title': article.title,
+                'text': article.text,
+                'sentences': [s.data for s in article.sentences][:count],
+            }
+
         article = _get_article_from_url(url)
         article_data['text'] = article.text
 
@@ -65,13 +75,33 @@ def _summarize(text='', title='', url='', count=DEFAULT_SENTENCE_COUNT):
             article_data['title'] = article.title
 
     sentences = tokenize_sentences(article_data['text'])
+    sentence_nodes = []
+    for i, data in enumerate(sentences):
+        sentence_nodes.append(Node(data, index=i))
+
     ranked_sentences = sorted(
-        rank_sentences([Node(s) for s in sentences]),
-        key=lambda n: n.score, reverse=True
-    )
+        rank_sentences(sentence_nodes), key=lambda n: n.score, reverse=True)
+
+    if url:
+        _insert_summary(
+            title=article_data['title'],
+            text=article_data['text'],
+            url=url,
+            keywords=[],
+            sentences=ranked_sentences
+        )
 
     return {
         'title': article_data['title'],
         'text': article_data['text'],
         'sentences': [node.data for node in ranked_sentences][:count]
     }
+
+
+def _get_summary(url):
+    return db.session.query(dao.article.Article).filter(
+        dao.article.Article.url == url).first()
+
+
+def _insert_summary(title, url, text, sentences, keywords):
+    dao.article.insert(db.session, text, title, url, keywords, sentences)

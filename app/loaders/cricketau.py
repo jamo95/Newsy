@@ -1,16 +1,15 @@
 import dateutil.parser
 import requests
+import re
 
 from bs4 import BeautifulSoup
 from datetime import datetime
 
 from helpers import clean_html
 
+BASE_URL = 'www.cricket.com.au'
 
-BASE_URL = 'https://techcrunch.com/'
-
-
-class ArchiveLoader():
+class ArchiveLoader:
     @staticmethod
     def load(year, month, day):
         date_path = '{}/{:02d}/{:02d}'.format(year, month, day)
@@ -20,7 +19,6 @@ class ArchiveLoader():
             'timestamp': datetime.strptime(date_path, '%Y/%m/%d'),
             'articles': _get_articles(archive_url)
         }
-
 
 def _get_articles(url):
         response = requests.get(url)
@@ -39,37 +37,47 @@ def _get_articles(url):
         return article_links
 
 
-class ArticleLoader():
+class ArticleLoader:
     @staticmethod
     def load(url):
         response = requests.get(url)
-        html = BeautifulSoup(response.text, 'html.parser')
+
+
+        html = BeautifulSoup(response.text, 'lxml')
 
         return {
             'content': _get_content(html),
             'title': _get_title(html),
-            'timestamp': _get_timestamp(html),
-            'tags': _get_tags(html),
+            'date': _get_date(html),
+            #'tags': _get_tags(html),
             'url': url,
         }
 
-
 def _get_title(html):
-    return html.select('.tweet-title')[0].contents[0]
+    title = str(html.select('title')[0].contents[0])
+    title = re.sub(r'\|.*$','',title)
+    return title
 
 
 def _get_content(html):
-    raw_content_str = map(str, html.select('.text')[0].contents)
+    string = html.findAll("div", { "class" : "article-text-update" })
+    raw_content_str = map(str,string)
     return clean_html(' '.join(raw_content_str))
 
 
-def _get_timestamp(html):
-    title_left = html.select('div.title-left')
-    if title_left:
-        dates = title_left[0].select('time.timestamp')
-        if dates:
-            date = dates[0].attrs['datetime']
-            return dateutil.parser.parse(date)
+def _get_date(html):
+    #finds the author and posted date class
+    authorName = html.findAll("p", { "class" : "author-name" })
+    timestamp_resultset = str(authorName)
+    #converts to BS object to find span class where posted
+    #date is present
+    tS = BeautifulSoup(timestamp_resultset, "lxml")
+    tS = tS.find_all("span")
+    #maps and converts to raw string data
+    raw_content_str = map(str,tS)
+    date = clean_html(' '.join(raw_content_str))
+
+    return date
 
 
 def _get_tags(html):

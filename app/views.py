@@ -1,5 +1,5 @@
 from newspaper import Article
-from flask import render_template, request
+from flask import render_template, request, jsonify
 
 from .forms import SummaryForm
 
@@ -15,6 +15,31 @@ DEFAULT_SENTENCE_COUNT = 4
 @app.route('/')
 def index():
     return render_template('index.html')
+
+
+@app.route('/review', methods=['POST'])
+def review():
+    review = request.get_json()
+
+    if not review:
+        return jsonify({
+            'success': False, 'error': 'Missing json structure'
+        }), 400
+
+    if not ('url' in review and 'text' in review and 'review' in review):
+        return jsonify({
+            'success': False, 'error': 'Missing URL or TEXT or REVIEW'
+        }), 400
+
+    dao.review.insert(db.session, dao.review.Review(
+        review['review'] == 'positive',
+        review['text'],
+        review['title'],
+        review['url'],
+        review['sentences']
+    ))
+
+    return jsonify({'success': True})
 
 
 @app.route('/summarised', methods=['GET', 'POST'])

@@ -56,7 +56,10 @@ class ArticleLoader:
 def _get_title(html):
     title = str(html.select('title')[0].contents[0])
     title = re.sub(r'\|.*$','',title)
+<<<<<<< HEAD
 
+=======
+>>>>>>> cricketau
     return title
 
 

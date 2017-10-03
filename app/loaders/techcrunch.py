@@ -4,7 +4,7 @@ import requests
 from bs4 import BeautifulSoup
 from datetime import datetime
 
-from .helpers import clean_html
+from helpers import clean_html
 
 
 BASE_URL = 'https://techcrunch.com/'

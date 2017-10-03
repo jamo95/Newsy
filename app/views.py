@@ -8,6 +8,8 @@ from app.textrank.sentences import rank as rank_sentences
 from app.textrank.node import Node
 from app.textrank.helpers import tokenize_sentences
 from app.loaders import techcrunch
+from app.loaders import cricketau
+
 
 DEFAULT_SENTENCE_COUNT = 4
 
@@ -95,6 +97,10 @@ def _summarize(text='', title='', url='', count=DEFAULT_SENTENCE_COUNT):
         if 'techcrunch' in url:
             tc_article = techcrunch.ArticleLoader.load(url)
             article_data['title'] = tc_article['title']
+        elif 'cricket' in url:
+            ca_article = cricketau.ArticleLoader.load(url)
+            article_data['title'] = ca_article['title']
+            article_data['text'] = ca_article['content']
         else:
             article_data['title'] = article.title
 

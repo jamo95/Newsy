@@ -15,7 +15,7 @@ class Node:
 
         # Variations of the data. For a word this will be the stem of the word.
         # For a sentence this will likely be empty.
-        self._variations = []
+        self.variations = []
 
         # Index of the node.
         self.index = index
@@ -33,27 +33,27 @@ class Node:
         '''Add a variation to the node.'''
 
         if not self.has_variation(data):
-            self._variations.append(data)
+            self.variations.append(data)
 
     def remove_variation(self, data):
         '''Remove a variation from the node.'''
 
         if self.has_variation(data):
-            self._variations.remove(data)
+            self.variations.remove(data)
 
     def has_variation(self, data):
         '''Return true if node has the provided variation.'''
 
-        return data in self._variations
+        return data in self.variations
 
     def get_variations(self):
         '''Return all variations.'''
 
-        return self._variations
+        return self.variations
 
     def get_averaged_score(self):
         '''Get the score of the node averaged over all variations.'''
 
-        if len(self._variations) == 0:
+        if len(self.variations) == 0:
             return float(self.score)
-        return float(self.score) / float(len(self._variations))
+        return float(self.score) / float(len(self.variations))

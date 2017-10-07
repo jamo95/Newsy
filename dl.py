@@ -18,7 +18,7 @@ from sqlalchemy.orm import sessionmaker
 
 from app import dao
 from app.textrank.node import Node
-from app.textrank.helpers import tokenize_sentences
+from app.textrank.helpers import tokenize_sentences, normalize_url
 
 config = {
     'db': {
@@ -58,15 +58,15 @@ def dl_techcrunch(session, stemmer, year, month, day):
 
     article_urls = []
     for post_title in post_titles:
-        link = post_title.select('a')[0].attrs['href']
-        if link.replace('www.', '').startswith(base_url):
-            article_urls.append(link)
+        url = post_title.select('a')[0].attrs['href']
+        if url.replace('www.', '').startswith(base_url):
+            article_urls.append(url)
 
     # Download, summarise and store articles.
     for url in article_urls:
         # Check if we already have the article in the DB.
-        if _get_article(session, url):
-            print('~ {}'.format(url))
+        if _get_article(session, normalize_url(url)):
+            print('~ {}'.format(normalize_url(url)))
             continue
 
         # Download the article content.
@@ -88,8 +88,13 @@ def dl_techcrunch(session, stemmer, year, month, day):
 
         # Insert article and summary into DB.
         dao.article.insert(
-            session=session, text=article.text, url=url, title=article.title,
-            keywords=keywords, sentences=summary_sentences)
+            session=session,
+            text=article.text,
+            url=normalize_url(url),
+            title=article.title,
+            keywords=keywords,
+            sentences=summary_sentences
+        )
         print('+ {}'.format(url))
     return True
 

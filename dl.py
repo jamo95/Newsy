@@ -3,6 +3,7 @@
 # Downloads files from the archive pages of supported sites.
 
 import hashlib
+import newspaper
 import re
 import requests
 import sys
@@ -70,8 +71,13 @@ def dl_techcrunch(session, stemmer, year, month, day):
             continue
 
         # Download the article content.
-        article = _download_article(url)
-        article.nlp()   # Use for now until summaries and loaders are better.
+        try:
+            article = _download_article(url)
+
+            # Use for now until summaries and loaders are better.
+            article.nlp()
+        except newspaper.article.ArticleException:
+            print('- {}'.format(normalize_url(url)))
 
         # Normalise and hash all the sentences to make finding the index more
         # accurate.
@@ -127,8 +133,13 @@ def dl_venturebeat(session, stemmer, year, month, day):
             continue
 
         # Download the article content.
-        article = _download_article(url)
-        article.nlp()   # Use for now until summaries and loaders are better.
+        try:
+            article = _download_article(url)
+
+            # Use for now until summaries and loaders are better.
+            article.nlp()
+        except newspaper.article.ArticleException:
+            print('- {}'.format(normalize_url(url)))
 
         # Normalise and hash all the sentences to make finding the index more
         # accurate.
@@ -185,8 +196,13 @@ def dl_wired(session, stemmer, year, month, day):
             continue
 
         # Download the article content.
-        article = _download_article(url)
-        article.nlp()   # Use for now until summaries and loaders are better.
+        try:
+            article = _download_article(url)
+
+            # Use for now until summaries and loaders are better.
+            article.nlp()
+        except newspaper.article.ArticleException:
+            print('- {}'.format(normalize_url(url)))
 
         # Normalise and hash all the sentences to make finding the index more
         # accurate.
@@ -244,8 +260,13 @@ def dl_newscomau(session, stemmer, year, month, day):
             continue
 
         # Download the article content.
-        article = _download_article(url)
-        article.nlp()   # Use for now until summaries and loaders are better.
+        try:
+            article = _download_article(url)
+
+            # Use for now until summaries and loaders are better.
+            article.nlp()
+        except newspaper.article.ArticleException:
+            print('- {}'.format(normalize_url(url)))
 
         # Normalise and hash all the sentences to make finding the index more
         # accurate.

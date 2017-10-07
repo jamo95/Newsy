@@ -38,7 +38,11 @@
   <div id= "summarised-article">
     <div id="summarised-article-title">
       {% if article_title %}
-        <h2>{{ article_title }}</h2>
+        {% if article_url %}
+          <h2><a href={{ article_url }}>{{ article_title }}</a></h2>
+        {% else %}
+          <h2>{{ article_title }}</h2>
+        {% endif %}
       {% endif %}
     </div>
 

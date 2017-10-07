@@ -7,8 +7,7 @@ from app import app, db, dao
 from app.textrank.sentences import rank as rank_sentences
 from app.textrank.node import Node
 from app.textrank.helpers import tokenize_sentences
-from app.loaders import techcrunch
-from app.loaders import cricketau
+from app.loaders import techcrunch, cricketau
 
 
 DEFAULT_SENTENCE_COUNT = 4
@@ -59,6 +58,7 @@ def summarised():
 
         ctx['article_title'] = summary.get('title')
         ctx['article_sentences'] = summary.get('sentences')
+        ctx['article_url'] = form.url.data
 
     if request.method == 'POST':
         if form.errors:

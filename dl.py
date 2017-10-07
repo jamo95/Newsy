@@ -214,6 +214,65 @@ def dl_wired(session, stemmer, year, month, day):
     return True
 
 
+def dl_newscomau(session, stemmer, year, month, day):
+    base_url = 'http://www.news.com.au/'
+    archive_url = '{}{}/{}/{}'.format(base_url, year, month, day)
+
+    # Download links for the articles.
+    response = requests.get(archive_url)
+    if not 200 <= response.status_code < 300:
+        print('news.com.au failed to download archive page: status {}'.format(
+            response.status_code))
+        return False
+
+    html = BeautifulSoup(response.text, 'html.parser')
+    post_title_list = html.select('div.module-content')
+
+    article_urls = []
+    if post_title_list:
+        for post_title in post_title_list:
+            for heading in post_title.select('h4.heading'):
+                url = heading.select('a')[0].attrs['href']
+                if url.startswith(base_url):
+                    article_urls.append(url)
+
+    # Download, summarise and store articles.
+    for url in article_urls:
+        # Check if we already have the article in the DB.
+        if _get_article(session, normalize_url(url)):
+            print('~ {}'.format(normalize_url(url)))
+            continue
+
+        # Download the article content.
+        article = _download_article(url)
+        article.nlp()   # Use for now until summaries and loaders are better.
+
+        # Normalise and hash all the sentences to make finding the index more
+        # accurate.
+        text_sentences = [
+            _hash_text(s) for s in tokenize_sentences(article.text)]
+
+        # Conform data for entry into DB.
+        summary_sentences = []
+        keywords = [Node(w) for w in article.keywords]
+
+        for sentence in article.summary.split('\n'):
+            index = text_sentences.index(_hash_text(sentence))
+            summary_sentences.append(Node(sentence, index=index))
+
+        # Insert article and summary into DB.
+        dao.article.insert(
+            session=session,
+            text=article.text,
+            url=normalize_url(url),
+            title=article.title,
+            keywords=keywords,
+            sentences=summary_sentences
+        )
+        print('+ {}'.format(url))
+    return True
+
+
 def _hash_text(text):
     text = re.sub(r'\W+', '', text)
     text = text.lower()
@@ -245,9 +304,10 @@ if __name__ == '__main__':
 
     year, month, day = sys.argv[1:]
     archives = {
-        'techcrunch': dl_techcrunch,
-        'venturebeat': dl_venturebeat,
-        'wired': dl_wired,
+        # 'techcrunch': dl_techcrunch,
+        # 'venturebeat': dl_venturebeat,
+        # 'wired': dl_wired,
+        'news.com.au': dl_newscomau,
     }
 
     stemmer = SnowballStemmer('english')

@@ -73,7 +73,13 @@ def summarised():
         'article_sentences': '', 'article_keywords': '', 'article_title': '',
     }
 
-    if form.validate_on_submit() and form.is_text():
+    url = request.args.get('url')
+    if form.validate_on_submit() and form.is_text() or url:
+        if url:
+            if not url.startswith('http'):
+                url = 'http://' + url
+            form.url.data = url
+
         summary = _summarize(
             form.text.data, form.title.data, form.url.data, form.count.data)
 

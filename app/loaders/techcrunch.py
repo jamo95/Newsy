@@ -34,12 +34,10 @@ def _get_content(html):
 
 
 def _get_timestamp(html):
-    title_left = html.select('div.title-left')
-    if title_left:
-        dates = title_left[0].select('time.timestamp')
-        if dates:
-            date = dates[0].attrs['datetime']
-            return dateutil.parser.parse(date)
+    dates = html.select('time.timestamp')
+    if dates:
+        date = dates[0].attrs['datetime']
+        return dateutil.parser.parse(date)
 
 
 def _get_tags(html):

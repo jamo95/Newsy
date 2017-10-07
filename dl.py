@@ -325,9 +325,9 @@ if __name__ == '__main__':
 
     year, month, day = sys.argv[1:]
     archives = {
-        # 'techcrunch': dl_techcrunch,
-        # 'venturebeat': dl_venturebeat,
-        # 'wired': dl_wired,
+        'techcrunch': dl_techcrunch,
+        'venturebeat': dl_venturebeat,
+        'wired': dl_wired,
         'news.com.au': dl_newscomau,
     }
 

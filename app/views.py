@@ -6,7 +6,7 @@ from .forms import SummaryForm
 from app import app, db, dao
 from app.textrank.sentences import rank as rank_sentences
 from app.textrank.node import Node
-from app.textrank.helpers import tokenize_sentences
+from app.textrank.helpers import tokenize_sentences, normalize_url
 from app.loaders import techcrunch, cricketau
 
 
@@ -58,6 +58,7 @@ def summarised():
 
         ctx['article_title'] = summary.get('title')
         ctx['article_sentences'] = summary.get('sentences')
+        ctx['article_keywords'] = summary.get('keywords')
         ctx['article_url'] = form.url.data
 
     if request.method == 'POST':
@@ -74,21 +75,24 @@ def _get_article_from_url(url):
 
     article.download()
     article.parse()
+    article.nlp()
 
     return article
 
 
 def _summarize(text='', title='', url='', count=DEFAULT_SENTENCE_COUNT):
-    url = url.rstrip('/')
     article_data = {'title': title, 'text': text, 'url': url}
 
     if url:
-        article = _get_summary(url)
+        article = _get_summary(normalize_url(url))
+        print(article)
         if article:
+            print(article.keywords)
             return {
                 'title': article.title,
                 'text': article.text,
                 'sentences': [s.data for s in article.sentences][:count],
+                'keywords': [w.data for w in article.keywords],
             }
 
         article = _get_article_from_url(url)
@@ -109,6 +113,7 @@ def _summarize(text='', title='', url='', count=DEFAULT_SENTENCE_COUNT):
     for i, data in enumerate(sentences):
         sentence_nodes.append(Node(data, index=i))
 
+    keywords = [Node(w) for w in article.keywords]
     ranked_sentences = sorted(
         rank_sentences(sentence_nodes), key=lambda n: n.score, reverse=True)
 
@@ -116,15 +121,16 @@ def _summarize(text='', title='', url='', count=DEFAULT_SENTENCE_COUNT):
         _insert_summary(
             title=article_data['title'],
             text=article_data['text'],
-            url=url,
-            keywords=[],
+            url=normalize_url(url),
+            keywords=keywords,
             sentences=ranked_sentences
         )
 
     return {
         'title': article_data['title'],
         'text': article_data['text'],
-        'sentences': [node.data for node in ranked_sentences][:count]
+        'sentences': [node.data for node in ranked_sentences][:count],
+        'keywords': [node.data for node in keywords]
     }
 
 

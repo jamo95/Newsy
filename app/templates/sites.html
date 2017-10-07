@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div id="sites" class="container">
+  {% if site %}
+    <h1>{{ site }}</h1>
+
+    <ul>
+      {% for article in articles %}
+        <li><a href="#">{{ article.title }}</a></li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <h1>Sites</h1>
+
+    <ul>
+      {% for site in sites %}
+        <li><a href="/sites/{{ site }}">{{ site }}</a></li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+</div>
+
+{% endblock %}

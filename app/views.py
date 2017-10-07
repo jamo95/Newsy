@@ -1,5 +1,6 @@
 from newspaper import Article
 from flask import render_template, request, jsonify
+from sqlalchemy import desc
 
 from .forms import SummaryForm
 
@@ -41,6 +42,18 @@ def review():
     ))
 
     return jsonify({'success': True})
+
+
+@app.route('/sites', methods=['GET'])
+@app.route('/sites/<string:site>', methods=['GET'])
+def sites(site=None):
+    ctx = {'title': 'Sites', 'site': None, 'sites': _get_urls()}
+
+    if site and site in ctx['sites']:
+        ctx['site'] = site
+        ctx['articles'] = _get_articles(site)
+
+    return render_template('sites.html', **ctx)
 
 
 @app.route('/summarised', methods=['GET', 'POST'])
@@ -85,7 +98,6 @@ def _summarize(text='', title='', url='', count=DEFAULT_SENTENCE_COUNT):
 
     if url:
         article = _get_summary(normalize_url(url))
-        print(article)
         if article:
             print(article.keywords)
             return {
@@ -101,6 +113,7 @@ def _summarize(text='', title='', url='', count=DEFAULT_SENTENCE_COUNT):
         if 'techcrunch' in url:
             tc_article = techcrunch.ArticleLoader.load(url)
             article_data['title'] = tc_article['title']
+            article_data['published_at'] = tc_article['timestamp']
         elif 'cricket' in url:
             ca_article = cricketau.ArticleLoader.load(url)
             article_data['title'] = ca_article['title']
@@ -123,7 +136,8 @@ def _summarize(text='', title='', url='', count=DEFAULT_SENTENCE_COUNT):
             text=article_data['text'],
             url=normalize_url(url),
             keywords=keywords,
-            sentences=ranked_sentences
+            sentences=ranked_sentences,
+            published_at=article_data.get('published_at')
         )
 
     return {
@@ -139,5 +153,27 @@ def _get_summary(url):
         dao.article.Article.url == url).first()
 
 
-def _insert_summary(title, url, text, sentences, keywords):
-    dao.article.insert(db.session, text, title, url, keywords, sentences)
+def _get_urls():
+    all_urls = db.session.query(dao.article.Article).with_entities(
+        dao.article.Article.url).distinct().all()
+
+    distinct_urls = []
+    for url in all_urls:
+        base_url = url[0].split('/')[0]
+        if base_url not in distinct_urls:
+            distinct_urls.append(base_url)
+
+    return distinct_urls
+
+
+def _get_articles(url_prefix):
+    return db.session.query(dao.article.Article).filter(
+        dao.article.Article.url.like('{}%'.format(url_prefix))
+    ).order_by(
+        desc(dao.article.Article.published_at)
+    ).all()
+
+
+def _insert_summary(title, url, text, sentences, keywords, published_at=None):
+    dao.article.insert(
+        db.session, text, title, url, keywords, sentences, published_at)

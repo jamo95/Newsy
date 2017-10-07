@@ -2,6 +2,7 @@
 
 # Downloads files from the archive pages of supported sites.
 
+import datetime
 import hashlib
 import newspaper
 import re
@@ -99,7 +100,8 @@ def dl_techcrunch(session, stemmer, year, month, day):
             url=normalize_url(url),
             title=article.title,
             keywords=keywords,
-            sentences=summary_sentences
+            sentences=summary_sentences,
+            published_at=_format_timestamp(year, month, day),
         )
         print('+ {}'.format(url))
     return True
@@ -161,7 +163,8 @@ def dl_venturebeat(session, stemmer, year, month, day):
             url=normalize_url(url),
             title=article.title,
             keywords=keywords,
-            sentences=summary_sentences
+            sentences=summary_sentences,
+            published_at=_format_timestamp(year, month, day),
         )
         print('+ {}'.format(url))
     return True
@@ -224,7 +227,8 @@ def dl_wired(session, stemmer, year, month, day):
             url=normalize_url(url),
             title=article.title,
             keywords=keywords,
-            sentences=summary_sentences
+            sentences=summary_sentences,
+            published_at=_format_timestamp(year, month, day),
         )
         print('+ {}'.format(url))
     return True
@@ -288,7 +292,8 @@ def dl_newscomau(session, stemmer, year, month, day):
             url=normalize_url(url),
             title=article.title,
             keywords=keywords,
-            sentences=summary_sentences
+            sentences=summary_sentences,
+            published_at=_format_timestamp(year, month, day),
         )
         print('+ {}'.format(url))
     return True
@@ -309,6 +314,11 @@ def _download_article(url):
     article.parse()
 
     return article
+
+
+def _format_timestamp(year, month, day):
+    return datetime.datetime.strptime(
+        '{} {} {}'.format(year, month, day), '%Y %m %d')
 
 
 def _get_article(session, url):

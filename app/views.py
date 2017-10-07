@@ -113,7 +113,6 @@ def _summarize(text='', title='', url='', count=DEFAULT_SENTENCE_COUNT):
     if url:
         article = _get_summary(normalize_url(url))
         if article:
-            print(article.keywords)
             return {
                 'title': article.title,
                 'text': article.text,

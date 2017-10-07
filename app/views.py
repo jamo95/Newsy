@@ -50,8 +50,16 @@ def sites(site=None):
     ctx = {'title': 'Sites', 'site': None, 'sites': _get_urls()}
 
     if site and site in ctx['sites']:
+        dl_articles = _get_articles(site)
+
+        articles = {}   # Key = Published date.
+        for article in dl_articles:
+            if article.published_at not in articles:
+                articles[article.published_at] = []
+            articles[article.published_at].append(article)
+
         ctx['site'] = site
-        ctx['articles'] = _get_articles(site)
+        ctx['articles'] = articles
 
     return render_template('sites.html', **ctx)
 

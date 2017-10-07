@@ -2,40 +2,10 @@ import requests
 import re
 
 from bs4 import BeautifulSoup
-from datetime import datetime
 
 from app.loaders.helpers import clean_html
 
-BASE_URL = 'www.cricket.com.au'
-
-
-class ArchiveLoader:
-    @staticmethod
-    def load(year, month, day):
-        date_path = '{}/{:02d}/{:02d}'.format(year, month, day)
-        archive_url = BASE_URL + date_path
-
-        return {
-            'timestamp': datetime.strptime(date_path, '%Y/%m/%d'),
-            'articles': _get_articles(archive_url)
-        }
-
-
-def _get_articles(url):
-        response = requests.get(url)
-        if not 200 <= response.status_code < 300:
-            return []
-
-        html = BeautifulSoup(response.text, 'html.parser')
-        post_titles = html.select('.post-title')
-
-        article_links = []
-        for post_title in post_titles:
-            link = post_title.select('a')[0].attrs['href']
-            if link.replace('www.', '').startswith(BASE_URL):
-                article_links.append(link)
-
-        return article_links
+BASE_URL = 'http://www.cricket.com.au'
 
 
 class ArticleLoader:

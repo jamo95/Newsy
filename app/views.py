@@ -54,6 +54,8 @@ def sites(site=None):
 
         articles = {}   # Key = Published date.
         for article in dl_articles:
+            if not article.published_at:
+                continue
             if article.published_at not in articles:
                 articles[article.published_at] = []
             articles[article.published_at].append(article)

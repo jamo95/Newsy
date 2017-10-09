@@ -139,6 +139,10 @@ def _summarize(text='', title='', url='', count=DEFAULT_SENTENCE_COUNT):
     for i, data in enumerate(sentences):
         sentence_nodes.append(Node(data, index=i))
 
+    #TODO Richard
+    """
+    Add own function for keyword extraction
+    """
     keywords = [Node(w) for w in article.keywords]
     ranked_sentences = sorted(
         rank_sentences(sentence_nodes), key=lambda n: n.score, reverse=True)

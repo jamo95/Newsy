@@ -1,3 +1,5 @@
+import math
+
 from newspaper import Article
 from flask import render_template, request, jsonify
 from sqlalchemy import desc
@@ -46,11 +48,17 @@ def review():
 
 @app.route('/sites', methods=['GET'])
 @app.route('/sites/<string:site>', methods=['GET'])
-def sites(site=None):
-    ctx = {'title': 'Sites', 'site': None, 'sites': _get_urls()}
+@app.route('/sites/<string:site>/<int:page>', methods=['GET'])
+def sites(site=None, page=1):
+    page_size = 20
+    ctx = {
+        'title': 'Sites', 'site': None, 'sites': _get_urls(), 'page': page
+    }
 
     if site and site in ctx['sites']:
-        dl_articles = _get_articles(site)
+        dl_articles, dl_articles_count = _get_articles(
+            url_prefix=site, offset=page * page_size, limit=page_size)
+        ctx['max_page'] = math.ceil(dl_articles_count / page_size)
 
         articles = {}   # Key = Published date.
         for article in dl_articles:
@@ -213,12 +221,17 @@ def _get_urls():
     return distinct_urls
 
 
-def _get_articles(url_prefix):
-    return db.session.query(dao.article.Article).filter(
+def _get_articles(url_prefix, offset=0, limit=20):
+    articles = db.session.query(dao.article.Article).filter(
         dao.article.Article.url.like('{}%'.format(url_prefix))
     ).order_by(
         desc(dao.article.Article.published_at)
-    ).all()
+    ).offset(offset).limit(limit).all()
+
+    articles_count = db.session.query(dao.article.Article).filter(
+        dao.article.Article.url.like('{}%'.format(url_prefix))).count()
+
+    return articles, articles_count
 
 def _get_all_articles():
     return db.session.query(dao.article.Article).filter(

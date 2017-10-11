@@ -1,12 +1,12 @@
 import math
 
 from .graph import Graph
-from .helpers import tokenize_words
+from .helpers import tokenize_words,pos_tag_tokens
 from .node import Node
 
 #BRIN AND PAGE
 D_FACTOR = 0.85
-WINDOW = 5
+WINDOW = 15
 SCORE_ITERATIONS = 20
 DEFAULT_NODE_SCORE = 1
 
@@ -23,33 +23,17 @@ weighted or unweighted.
 attached to each vertex for ranking/selection decisions
 """
 
-def _get_cooccurrence(words):
-    adjacent = {}
-    for i in range(len(words)):
-        for j in range(WINDOW):
-            target = words[i]
-            ctx_word = words[i+j]
-            print(i+j, len(words))
-
-            if target == ctx_word:
-                continue
-
-            if target not in adjacent:
-                adjacent[target] = set()
-
-            adjacent[target].add(target)
-
-            # If at the end
-            if i+j >= len(words)-1:
-                return adjacent
-
-    return adjacent
             
 #TODO
 # - Add preprocessing (POS tagging)
 def rank_words(words):
-# I hope nltk.word_tokenize keeps order
-# Uses coocurrence to connect nodes/words
+    # I hope nltk.word_tokenize keeps order
+    # Uses coocurrence to connect nodes/words
+    # POS TAG DAT BISH!
+    tags = ['NN', 'JJ', 'NNP']
+    tagged = pos_tag_tokens(words)
+    words = [t[0] for t in tagged if t[1] in tags]
+
     graph = Graph()
     cooccurrence = _get_cooccurrence(words)
     for word in cooccurrence:
@@ -63,27 +47,47 @@ def rank_words(words):
     return list(graph.get_nodes())
     
 
+def _get_cooccurrence(words):
+    adjacent = {}
+    for i in range(len(words)):
+        for j in range(WINDOW):
+            # If at the end
+            if i+j >= len(words):
+                return adjacent
+
+            target = words[i]
+            ctx_word = words[i+j]
+
+            if target == ctx_word:
+                continue
+
+            if target not in adjacent:
+                adjacent[target] = set()
+
+            adjacent[target].add(target)
+    return adjacent
+
 def _connect_nodes(graph, cooccurrence):
     nodes = graph.get_nodes()
-    for word1 in nodes:
-        for word2 in nodes:
-            if word1 == word2:
+    for target_node in nodes:
+        for ctx_node in nodes:
+            if target_node.data == ctx_node.data:
                 continue
-            for word in cooccurrence[word1]:
-                if word == word2:
-                    graph.add_edge(word1, word2)
+            for word in cooccurrence[target_node.data]:
+                if word == ctx_node.data:
+                    graph.add_edge(target_node, ctx_node)
 
     
 def _score_node(graph, node, iterations=SCORE_ITERATIONS):
 
-    if iterations <= 0:
+    if iterations == 0:
         return 0
 
     score = node.score
 
-    connectedIn = graph.get_connected_from(node)
+    connected_nodes = graph.get_connected_from(node)
 
-    if len(connectedIn) == 0:
+    if len(connected_nodes) == 0:
         return 0
 
     for connected_node in connectedIn:

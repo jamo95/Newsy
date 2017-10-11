@@ -1,10 +1,13 @@
 {% extends "base.html" %}
 {% block content %}
+<div id="feed" class="container">
 
-<div id="sites" class="container">
-  {% if site %}
-    <h1>{{ site }}</h1>
+    <h2>Categories</h2>
+    {% for category in categories %}
+	<a id="category" href="/feed/{{ category }}">#{{ category }}</a>
+    {% endfor %}
 
+    <h1>Newsfeed</h1>
     {% for article_date in articles.keys() | sort(reverse=True) %}
       <h4>{{ article_date }}</h4>
       <ul>
@@ -23,21 +26,13 @@
     {% endfor %}
 
     {% if page >= 2 %}
-      <p><a href="{{ url_for('sites', site=site, page=page-1) }}">Previous</a></p>
+        <p><a href="{{ url_for('feed', category=category, page=page-1) }}">Previous</a></p>
     {% endif %}
 
     {% if page < max_page %}
-      <p><a href="{{ url_for('sites', site=site, page=page+1) }}">Next</a></p>
+      <p><a href="{{ url_for('feed', category=category, page=page+1) }}">Next</a></p>
     {% endif %}
-  {% else %}
-    <h1>Sites</h1>
 
-    <ul>
-      {% for site in sites %}
-        <li><a href="/sites/{{ site }}">{{ site }}</a></li>
-      {% endfor %}
-    </ul>
-  {% endif %}
 </div>
 
 {% endblock %}

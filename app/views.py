@@ -58,7 +58,7 @@ def sites(site=None, page=1):
     if site and site in ctx['sites']:
         dl_articles, dl_articles_count = _get_articles(
             url_prefix=site, offset=page * page_size, limit=page_size)
-        ctx['max_page'] = math.ceil(dl_articles_count / page_size)
+        ctx['max_page'] = math.ceil(dl_articles_count / page_size) - 1
 
         articles = {}   # Key = Published date.
         for article in dl_articles:

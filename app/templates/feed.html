@@ -3,8 +3,8 @@
 <div id="feed" class="container">
 
     <h2>Categories</h2>
-    {% for key_word in keywords %}
-	<a id="category" href="/{{ key_word }}">#{{ key_word }}</a>
+    {% for category in categories %}
+	<a id="category" href="/feed/{{ category }}">#{{ category }}</a>
     {% endfor %}
 
     <h1>Newsfeed</h1>
@@ -24,6 +24,15 @@
           {% endfor %}
       </ul>
     {% endfor %}
+
+    {% if page >= 2 %}
+        <p><a href="{{ url_for('feed', category=category, page=page-1) }}">Previous</a></p>
+    {% endif %}
+
+    {% if page < max_page %}
+      <p><a href="{{ url_for('feed', category=category, page=page+1) }}">Next</a></p>
+    {% endif %}
+
 </div>
 
 {% endblock %}

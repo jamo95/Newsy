@@ -9,7 +9,7 @@ from app.textrank.sentences import rank as rank_sentences
 from app.textrank.node import Node
 from app.textrank.helpers import tokenize_sentences, normalize_url
 from app.loaders import techcrunch, cricketau
-
+import operator
 
 DEFAULT_SENTENCE_COUNT = 4
 
@@ -63,6 +63,34 @@ def sites(site=None):
 
     return render_template('sites.html', **ctx)
 
+@app.route('/feed', methods=['GET'])
+@app.route('/feed/<string:category>', methods=['GET'])
+def feed(category=None):
+    ctx={'category':None}
+    if category:
+        feed_articles = _get_articles_category(category)
+    else:
+        feed_articles = _get_all_articles()
+    articles = {}
+    keywords_dict = {}	#keywords -> repetition count
+    for article in feed_articles:
+        if article.published_at not in articles:
+            articles[article.published_at] = []
+        articles[article.published_at].append(article)
+        #repetition count
+        for keyword in article.keywords:
+            kw = keyword.data
+            if kw in keywords_dict:
+                keywords_dict[kw] += 1
+            else:
+                keywords_dict[kw] = 1
+    #get top 10 keywords
+    keywords = sorted(keywords_dict, key=keywords_dict.__getitem__, reverse=True)
+    keywords = keywords[0:9]
+    ctx['articles'] = articles
+    ctx['keywords'] = keywords
+
+    return render_template('feed.html', **ctx)
 
 @app.route('/summarised', methods=['GET', 'POST'])
 def summarised():
@@ -190,6 +218,28 @@ def _get_articles(url_prefix):
         desc(dao.article.Article.published_at)
     ).all()
 
+def _get_all_articles():
+    return db.session.query(dao.article.Article).filter(
+        dao.article.Article.url.like('{}%'.format("venturebeat.com"))
+    ).order_by(
+        desc(dao.article.Article.published_at)
+    ).all()
+
+def _get_articles_category(category):
+    all_articles = db.session.query(dao.article.Article).filter(
+        dao.article.Article.url.like('{}%'.format("venturebeat.com"))
+    ).order_by(
+        desc(dao.article.Article.published_at)
+    ).all()
+
+    categorized_articles = []    
+    for article in all_articles:
+        for keyword in article.keywords:
+            if keyword.data == category:
+                categorized_articles.append(article)
+                break
+
+    return categorized_articles
 
 def _insert_summary(title, url, text, sentences, keywords, published_at=None):
     dao.article.insert(

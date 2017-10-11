@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block content %}
+<div id="feed" class="container">
+
+    <h2>Categories</h2>
+    {% for key_word in keywords %}
+	<a id="category" href="/{{ key_word }}">#{{ key_word }}</a>
+    {% endfor %}
+
+    <h1>Newsfeed</h1>
+    {% for article_date in articles.keys() | sort(reverse=True) %}
+      <h4>{{ article_date }}</h4>
+      <ul>
+          {% for article in articles.get(article_date) %}
+            <li>
+              <h3><a href="{{ url_for('summarised') + '?url=' + article.url }}">
+                  {{ article.title }}
+              </a></h3>
+
+              {% for sentence in article.sentences[:2] | sort(attribute='index') %}
+                <p>{{ sentence['data'] }}</p>
+              {% endfor %}
+            </li>
+          {% endfor %}
+      </ul>
+    {% endfor %}
+</div>
+
+{% endblock %}

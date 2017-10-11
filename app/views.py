@@ -10,7 +10,7 @@ from app import app, db, dao
 from app.textrank.sentences import rank as rank_sentences
 from app.textrank.keywords import rank_words
 from app.textrank.node import Node
-from app.textrank.helpers import tokenize_sentences,tokenize_words, normalize_url
+from app.textrank.helpers import tokenize_sentences, tokenize_words, normalize_url
 from app.loaders import techcrunch, cricketau
 import operator
 

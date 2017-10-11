@@ -68,7 +68,7 @@ def sites(site=None):
 @app.route('/feed', methods=['GET'])
 @app.route('/feed/<string:category>', methods=['GET'])
 def feed(category=None):
-    ctx={'category':None}
+    ctx={'title': 'Categorized Feed','category':None}
     if category:
         feed_articles = _get_articles_category(category)
     else:
@@ -222,14 +222,14 @@ def _get_articles(url_prefix):
 
 def _get_all_articles():
     return db.session.query(dao.article.Article).filter(
-        dao.article.Article.url.like('{}%'.format("venturebeat.com"))
+        dao.article.Article.url.like('{}%'.format("news.com.au"))
     ).order_by(
         desc(dao.article.Article.published_at)
     ).all()
 
 def _get_articles_category(category):
     all_articles = db.session.query(dao.article.Article).filter(
-        dao.article.Article.url.like('{}%'.format("venturebeat.com"))
+        dao.article.Article.url.like('{}%'.format("news.com.au"))
     ).order_by(
         desc(dao.article.Article.published_at)
     ).all()

@@ -207,6 +207,8 @@ def _summarize(text='', title='', url='',
 
     keywords = sorted(
             rank_words(words), key=lambda n: n.score, reverse=True)
+    print("keywords!!")
+    print(article.keywords)
 
 
     if url:

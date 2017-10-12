@@ -2,11 +2,6 @@
 {% block content %}
 <div id="feed" class="container">
 
-    <h2>Categories</h2>
-    {% for category in categories %}
-	<a id="category" href="/feed/{{ category }}">#{{ category }}</a>
-    {% endfor %}
-
     <h1>Newsfeed</h1>
     {% for article_date in articles.keys() | sort(reverse=True) %}
       <h4>{{ article_date }}</h4>

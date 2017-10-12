@@ -75,29 +75,30 @@ def sites(site=None, page=1):
 
     return render_template('sites.html', **ctx)
 
-@app.route('/feed', methods=['GET'])
+@app.route('/feed', methods=['GET' , 'POST'])
 @app.route('/feed/<string:category>', methods=['GET'])
 @app.route('/feed/<string:category>/<int:page>', methods=['GET'])
 def feed(category=None,page=1):
     page_size = 20
     ctx={'title': 'Categorized Feed','category':None,'page':page}
 
+    if not category:
+        category = request.values.get('category')
+        if category:
+            feed(category=category,page=1)
+
     if category:
+        ctx['category'] = category
         feed_articles, feed_articles_count = _get_articles_category(category = category, offset=page * page_size, limit=page_size)
-    else:
-        feed_articles, feed_articles_count = _get_articles_category(category = 'company', offset=page * page_size, limit=page_size)
-
-    ctx['max_page'] = math.ceil(feed_articles_count / page_size) - 1
-    articles = {}
-
-    for article in feed_articles:
-        if not article.published_at:
-            continue
-        if article.published_at not in articles:
-            articles[article.published_at] = []
-        articles[article.published_at].append(article)
-
-    ctx['articles'] = articles
+        ctx['max_page'] = math.ceil(feed_articles_count / page_size) - 1
+        articles = {}
+        for article in feed_articles:
+            if not article.published_at:
+                continue
+            if article.published_at not in articles:
+                articles[article.published_at] = []
+            articles[article.published_at].append(article)
+        ctx['articles'] = articles
 
     return render_template('feed.html', **ctx)
 

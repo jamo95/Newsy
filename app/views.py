@@ -156,14 +156,13 @@ def _summarize(text='', title='', url='',
     if url:
         # Check if article is cached
         article = _get_summary(normalize_url(url))
-        #FIXME uncomment afted dev
-        #if article:
-        #    return {
-        #        'title': article.title,
-        #        'text': article.text,
-        #        'sentences': [s.data for s in article.sentences][:sentence_count],
-        #        'keywords': [w.data for w in article.keywords][:keyword_count],
-        #    }
+        if article:
+            return {
+                'title': article.title,
+                'text': article.text,
+                'sentences': [s.data for s in article.sentences][:sentence_count],
+                'keywords': [w.data for w in article.keywords][:keyword_count],
+            }
 
         article = _get_article_from_url(url)
         article_data['text'] = article.text

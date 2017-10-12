@@ -1,12 +1,14 @@
 import math
+import collections
 
 from .graph import Graph
 from .helpers import tokenize_words,pos_tag_tokens
 from .node import Node
 
 D_FACTOR = 0.85
-WINDOW = 15
-SCORE_ITERATIONS = 3
+#Must be odd
+WINDOW_SIZE = 15
+SCORE_ITERATIONS = 2
 DEFAULT_NODE_SCORE = 1
 
 """
@@ -54,38 +56,82 @@ def rank_words(words):
 def _connect_nodes(graph, cooccurrence):
     nodes = graph.get_nodes()
     for target_node in nodes:
+        print(target_node.data, end='')
+        print(" >>> ")
         for ctx_node in nodes:
             if target_node.data == ctx_node.data:
                 continue
             for word in cooccurrence[target_node.data]:
                 if word == ctx_node.data:
+                    print(ctx_node.data, end='')
+                    print("|", end='')
                     graph.add_edge(target_node, ctx_node)
+        print("\n")
 
 def _get_cooccurrence(words):
     """
     :param words (list)
     Returns dictionary with key,value pair as:
-    target_word(str), adjacent_words(set)
+    target_node(Node), adjacent_words(Nodes)
     """
     #FIXME Only does 10 to the right -->
     # Make it take the centre word and slide window across
     adjacent = {}
+    data_index = 0
+    # So we can do some fancy optimisations later
+    buffer = collections.deque(maxlen=WINDOW_SIZE)
+
+    # First window
+    for i in range(WINDOW_SIZE):
+        buffer.append(words[i])
+        data_index = (data_index + 1) % len(words)
+    
     for i in range(len(words)):
-        for j in range(WINDOW):
-            # If at the end
-            if i+j >= len(words):
-                return adjacent
+        sliding_index = 0
+        target_index = WINDOW_SIZE//2 + 1
+        target = buffer[target_index]
 
-            target = words[i]
-            ctx_word = words[i+j]
-
-            if target == ctx_word:
+        for j in range(WINDOW_SIZE):
+            # Don't want to add self
+            if j == target_index:
                 continue
 
             if target not in adjacent:
                 adjacent[target] = set()
 
-            adjacent[target].add(ctx_word)
+            adjacent[target].add(words[j])
+            print(adjacent[target])
+            sliding_index += 1
+
+        # Slide window one word over
+        buffer.append(words[data_index])
+        print("BUFFER!")
+        print(buffer)
+        data_index = (data_index + 1) % len(words)
+
+
+     #   #if target not in adjacent:
+     #   #    target_node = (Node(word))
+     #   #    graph.add_node(target_node)
+     #   #    adjacent[target_node] = set()
+
+     #   for j in range(WINDOW):
+     #       if i+j == WINDOW_SIZE//2:
+     #           continue
+
+     #       # If at the end
+     #       #if i+j >= len(words):
+     #       #    return adjacent
+
+     #       #ctx_word = words[i+j % len(words)]
+
+     #       #if target == ctx_word:
+     #       #    continue
+
+     #       #if target not in adjacent:
+     #       #    adjacent[target] = set()
+
+     #       adjacent[target].add(ctx_word)
     return adjacent
 
     

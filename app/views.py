@@ -11,7 +11,7 @@ from app.textrank.sentences import rank as rank_sentences
 from app.textrank.keywords import rank_words
 from app.textrank.node import Node
 from app.textrank.helpers import tokenize_sentences, tokenize_words, normalize_url
-from app.loaders import techcrunch, cricketau
+from app.loaders import techcrunch, cricketau, wired
 
 from app.dao.keyword import Keyword
 
@@ -176,6 +176,11 @@ def _summarize(text='', title='', url='',
             ca_article = cricketau.ArticleLoader.load(url)
             article_data['title'] = ca_article['title']
             article_data['text'] = ca_article['content']
+        elif 'wired' in url:
+            wired_article = wired.ArticleLoader.load(url)
+            article_data['title'] = wired_article['title']
+            article_data['text'] = wired_article['content']
+            article_data['published_at'] = wired_article['date']
         else:
             article_data['title'] = article.title
 

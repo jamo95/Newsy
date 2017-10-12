@@ -84,6 +84,8 @@ def feed(category=None,page=1):
 
     if category:
         feed_articles, feed_articles_count = _get_articles_category(category = category, offset=page * page_size, limit=page_size)
+    else:
+        feed_articles, feed_articles_count = _get_articles_category(category = 'company', offset=page * page_size, limit=page_size)
 
     ctx['max_page'] = math.ceil(feed_articles_count / page_size) - 1
     articles = {}
@@ -244,24 +246,15 @@ def _get_articles(url_prefix, offset=0, limit=20):
 
     return articles, articles_count
 
-def _get_all_articles():
-    articles = db.session.query(dao.article.Article).filter(
-        dao.article.Article.published_at.isnot(None)
-    ).order_by(
-        desc(dao.article.Article.published_at)
-    ).all()
-
-    return articles
-
 def _get_articles_category(category, offset=0, limit=20):
     categorized_articles = db.session.query(dao.article.Article).filter(
-        dao.article.Article.keywords.any(Keyword.data.contains(category))
+        dao.article.Article.keywords.any(Keyword.data.like(category))
     ).order_by(
         desc(dao.article.Article.published_at)
     ).offset(offset).limit(limit).all()
 
     categorized_articles_count = db.session.query(dao.article.Article).filter(
-        dao.article.Article.keywords.any(Keyword.data.contains(category))
+        dao.article.Article.keywords.any(Keyword.data.like(category))
     ).order_by(
         desc(dao.article.Article.published_at)
     ).count() 

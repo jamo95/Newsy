@@ -33,7 +33,6 @@ def normalize_url(url):
 def pos_tag_tokens(tokens, clean=True):
     '''POS tag a list of tokens.'''
 
-    #tokens = tokenize_words(text, clean=clean)
     return nltk.pos_tag(tokens)
 
 
@@ -42,5 +41,6 @@ def _unclean_words():
 
     unclean_words = nltk.corpus.stopwords.words('english')
     unclean_words += string.punctuation
+
 
     return unclean_words

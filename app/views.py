@@ -188,14 +188,9 @@ def _summarize(text='', title='', url='',
     ranked_sentences = sorted(
         rank_sentences(sentence_nodes), key=lambda n: n.score, reverse=True)
 
-
     words = tokenize_words(article_data['text'])
-
     keywords = sorted(
             rank_words(words), key=lambda n: n.score, reverse=True)
-    #print("keywords!!")
-    #print(article.keywords)
-
 
     if url:
         _insert_summary(
@@ -212,7 +207,6 @@ def _summarize(text='', title='', url='',
         'text': article_data['text'],
         'sentences': [node.data for node in ranked_sentences][:sentence_count],
         'keywords': [node.data for node in keywords][:keyword_count]
-        #'keywords': [node.data for node in keywords]
     }
 
 

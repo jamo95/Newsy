@@ -20,11 +20,8 @@ attached to each vertex for ranking/selection decisions
 
 D_FACTOR = 0.85
 # WINDOW_SIZE Must be odd and include the target word
-WINDOW_SIZE = 9
-SCORE_ITERATIONS = 3
-DEFAULT_NODE_SCORE = 1
-
-
+WINDOW_SIZE = 5
+SCORE_ITERATIONS = 2
             
 # TODO 
 # - Do the post processing
@@ -32,17 +29,16 @@ DEFAULT_NODE_SCORE = 1
 
 
 def rank_words(words):
-    # I hope nltk.word_tokenize keeps order
     # POS TAG DAT BISH!
-    # NN = Noun JJ = Verb NNP = Pronoun
-    tags = ['NN', 'JJ', 'NNP']
+    # Using NN and JJ as per paper
+    # NN = Noun JJ = Adjective NNP = Pronoun
+    tags = ['NN', 'JJ']
     tagged = pos_tag_tokens(words)
     words = [t[0] for t in tagged if t[1] in tags]
+    #print([t for t in tagged if t[1] in tags])
 
     graph = Graph()
     cooccurrence = _connect_nodes(graph, words)
-
-    #print([n.data for n in graph.get_nodes()], end='')
 
     for node in graph.get_nodes():
         _score_node(graph, node)
@@ -84,8 +80,8 @@ def _connect_nodes(graph, words):
             if context_node not in seen_nodes:
                 seen_nodes.append(context_node)
 
-            #FIXME undirected right...?
-            graph.add_edge(target_node, context_node) == True 
+            graph.add_edge(target_node, context_node)
+            graph.add_edge(context_node,target_node)
 
         # Slide window one word over
         buffer.append(words[data_index])

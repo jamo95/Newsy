@@ -12,7 +12,8 @@ from app.textrank.keywords import rank_words
 from app.textrank.node import Node
 from app.textrank.helpers import tokenize_sentences, tokenize_words, normalize_url
 from app.loaders import techcrunch, cricketau
-import operator
+
+from app.dao.keyword import Keyword
 
 DEFAULT_SENTENCE_COUNT = 4
 DEFAULT_KEYWORD_COUNT = 10
@@ -74,44 +75,30 @@ def sites(site=None, page=1):
 
     return render_template('sites.html', **ctx)
 
-@app.route('/feed', methods=['GET'])
-@app.route('/feed/<int:page>', methods=['GET'])
+@app.route('/feed', methods=['GET' , 'POST'])
 @app.route('/feed/<string:category>', methods=['GET'])
 @app.route('/feed/<string:category>/<int:page>', methods=['GET'])
 def feed(category=None,page=1):
     page_size = 20
     ctx={'title': 'Categorized Feed','category':None,'page':page}
-    all_articles = _get_all_articles()
+
+    if not category:
+        category = request.values.get('category')
+        if category:
+            feed(category=category,page=1)
 
     if category:
+        ctx['category'] = category
         feed_articles, feed_articles_count = _get_articles_category(category = category, offset=page * page_size, limit=page_size)
-    else:
-        feed_articles, feed_articles_count = _get_all_articles_pagination(offset = page * page_size, limit=page_size)
-
-    ctx['max_page'] = math.ceil(feed_articles_count / page_size) - 1
-    articles = {}
-    keywords_dict = {}	#keywords -> repetition count
-    for article in all_articles:
-        #repetition count
-        for keyword in article.keywords:
-            kw = keyword.data
-            if kw in keywords_dict:
-                keywords_dict[kw] += 1
-            else:
-                keywords_dict[kw] = 1
-    #get top 10 keywords
-    keywords = sorted(keywords_dict, key=keywords_dict.__getitem__, reverse=True)
-    ctx['categories'] = keywords[0:9]
-
-    for article in feed_articles:
-        if not article.published_at:
-            continue
-        if article.published_at not in articles:
-            articles[article.published_at] = []
-        articles[article.published_at].append(article)
-
-    ctx['articles'] = articles
-    ctx['keywords'] = keywords
+        ctx['max_page'] = math.ceil(feed_articles_count / page_size) - 1
+        articles = {}
+        for article in feed_articles:
+            if not article.published_at:
+                continue
+            if article.published_at not in articles:
+                articles[article.published_at] = []
+            articles[article.published_at].append(article)
+        ctx['articles'] = articles
 
     return render_template('feed.html', **ctx)
 
@@ -259,42 +246,20 @@ def _get_articles(url_prefix, offset=0, limit=20):
 
     return articles, articles_count
 
-def _get_all_articles():
-    articles = db.session.query(dao.article.Article).filter(
-        dao.article.Article.published_at.isnot(None)
-    ).order_by(
-        desc(dao.article.Article.published_at)
-    ).all()
-
-    return articles
-
-def _get_all_articles_pagination(offset=0, limit=20):
-    articles = db.session.query(dao.article.Article).filter(
-        dao.article.Article.published_at.isnot(None)
+def _get_articles_category(category, offset=0, limit=20):
+    categorized_articles = db.session.query(dao.article.Article).filter(
+        dao.article.Article.keywords.any(Keyword.data.like(category))
     ).order_by(
         desc(dao.article.Article.published_at)
     ).offset(offset).limit(limit).all()
 
-    articles_count = db.session.query(dao.article.Article).filter(
-        dao.article.Article.published_at.isnot(None)
-    ).count()
-
-    return articles, articles_count
-
-def _get_articles_category(category, offset=0, limit=20):
-    all_articles = db.session.query(dao.article.Article).order_by(
+    categorized_articles_count = db.session.query(dao.article.Article).filter(
+        dao.article.Article.keywords.any(Keyword.data.like(category))
+    ).order_by(
         desc(dao.article.Article.published_at)
-    ).all()
+    ).count() 
 
-    categorized_articles = []    
-    for article in all_articles:
-        for keyword in article.keywords:
-            if keyword.data == category:
-                categorized_articles.append(article)
-                break
-    articles_count = len(categorized_articles)
-
-    return categorized_articles[offset:(offset+limit)], articles_count
+    return categorized_articles, categorized_articles_count
 
 def _insert_summary(title, url, text, sentences, keywords, published_at=None):
     dao.article.insert(

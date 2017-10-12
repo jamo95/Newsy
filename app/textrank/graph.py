@@ -24,6 +24,7 @@ class Graph:
 
         if node_f not in self._adjacency_list[node_i]:
             self._adjacency_list[node_i].append(node_f)
+            
 
     def get_nodes_count(self):
         '''Return the number of nodes in the graph.'''

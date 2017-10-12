@@ -57,8 +57,8 @@ class Graph:
 
     def get_connected_from(self, node_i):
         '''Get all the nodes connected to initial node `node_i`.'''
-
         return self._adjacency_list[node_i]
+
     def find(self, node_id=None, node_text=None, node_variation=None):
         '''Finds the first node in the graph by `node_id`, `node_text`, or
         `node_variations`.'''

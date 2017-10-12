@@ -29,10 +29,10 @@ def normalize_url(url):
     return clean_url
 
 
-def pos_tag_text(text, clean=True):
+def pos_tag_tokens(tokens, clean=True):
     '''POS tag a list of tokens.'''
 
-    tokens = tokenize_words(text, clean=clean)
+    #tokens = tokenize_words(text, clean=clean)
     return nltk.pos_tag(tokens)
 
 

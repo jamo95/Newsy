@@ -8,13 +8,15 @@ from .forms import SummaryForm
 
 from app import app, db, dao
 from app.textrank.sentences import rank as rank_sentences
+from app.textrank.keywords import rank_words
 from app.textrank.node import Node
-from app.textrank.helpers import tokenize_sentences, normalize_url
+from app.textrank.helpers import tokenize_sentences, tokenize_words, normalize_url
 from app.loaders import techcrunch, cricketau
 
 from app.dao.keyword import Keyword
 
 DEFAULT_SENTENCE_COUNT = 4
+DEFAULT_KEYWORD_COUNT = 10
 
 @app.route('/')
 def index():
@@ -133,6 +135,8 @@ def summarised():
 def _get_article_from_url(url):
     article = Article(url)
 
+    # TODO Need to throw exception in case article is not downloadable
+    # Otherwise user is returned the exception page
     article.download()
     article.parse()
     article.nlp()
@@ -140,18 +144,23 @@ def _get_article_from_url(url):
     return article
 
 
-def _summarize(text='', title='', url='', count=DEFAULT_SENTENCE_COUNT):
+def _summarize(text='', title='', url='',
+        sentence_count=DEFAULT_SENTENCE_COUNT,
+        keyword_count=DEFAULT_KEYWORD_COUNT):
+
     article_data = {'title': title, 'text': text, 'url': url}
 
     if url:
+        # Check if article is cached
         article = _get_summary(normalize_url(url))
-        if article:
-            return {
-                'title': article.title,
-                'text': article.text,
-                'sentences': [s.data for s in article.sentences][:count],
-                'keywords': [w.data for w in article.keywords],
-            }
+        #FIXME uncomment afted dev
+        #if article:
+        #    return {
+        #        'title': article.title,
+        #        'text': article.text,
+        #        'sentences': [s.data for s in article.sentences][:sentence_count],
+        #        'keywords': [w.data for w in article.keywords][:keyword_count],
+        #    }
 
         article = _get_article_from_url(url)
         article_data['text'] = article.text
@@ -167,18 +176,24 @@ def _summarize(text='', title='', url='', count=DEFAULT_SENTENCE_COUNT):
         else:
             article_data['title'] = article.title
 
-    sentences = tokenize_sentences(article_data['text'])
+
     sentence_nodes = []
+    sentences = tokenize_sentences(article_data['text'])
+    print(sentences)
     for i, data in enumerate(sentences):
         sentence_nodes.append(Node(data, index=i))
 
-    #TODO Richard
-    """
-    Add own function for keyword extraction
-    """
-    keywords = [Node(w) for w in article.keywords]
     ranked_sentences = sorted(
         rank_sentences(sentence_nodes), key=lambda n: n.score, reverse=True)
+
+
+    words = tokenize_words(article_data['text'])
+
+    keywords = sorted(
+            rank_words(words), key=lambda n: n.score, reverse=True)
+    print("keywords!!")
+    print(article.keywords)
+
 
     if url:
         _insert_summary(
@@ -193,8 +208,9 @@ def _summarize(text='', title='', url='', count=DEFAULT_SENTENCE_COUNT):
     return {
         'title': article_data['title'],
         'text': article_data['text'],
-        'sentences': [node.data for node in ranked_sentences][:count],
-        'keywords': [node.data for node in keywords]
+        'sentences': [node.data for node in ranked_sentences][:sentence_count],
+        'keywords': [node.data for node in keywords][:keyword_count]
+        #'keywords': [node.data for node in keywords]
     }
 
 

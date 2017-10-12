@@ -15,7 +15,8 @@ def tokenize_words(text, clean=True):
 
     if clean:
         unclean = _unclean_words()
-        return [t for t in tokens if t not in unclean]
+        clean = [t for t in tokens if t not in unclean]
+        return clean
 
     return tokens
 

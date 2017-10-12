@@ -1,13 +1,9 @@
 import math
+import collections
 
 from .graph import Graph
 from .helpers import tokenize_words,pos_tag_tokens
 from .node import Node
-
-D_FACTOR = 0.85
-WINDOW = 15
-SCORE_ITERATIONS = 3
-DEFAULT_NODE_SCORE = 1
 
 """
 TextRank Algo
@@ -22,16 +18,21 @@ weighted or unweighted.
 attached to each vertex for ranking/selection decisions
 """
 
+D_FACTOR = 0.85
+# WINDOW_SIZE Must be odd and include the target word
+WINDOW_SIZE = 9
+SCORE_ITERATIONS = 3
+DEFAULT_NODE_SCORE = 1
+
+
             
 # TODO 
-# - Make the target label centre of window
 # - Do the post processing
 # - Test against newspaper version
 
 
 def rank_words(words):
     # I hope nltk.word_tokenize keeps order
-    # Uses coocurrence to connect nodes/words
     # POS TAG DAT BISH!
     # NN = Noun JJ = Verb NNP = Pronoun
     tags = ['NN', 'JJ', 'NNP']
@@ -39,54 +40,56 @@ def rank_words(words):
     words = [t[0] for t in tagged if t[1] in tags]
 
     graph = Graph()
-    cooccurrence = _get_cooccurrence(words)
-    for word in cooccurrence:
-        graph.add_node(Node(word)) #Default score is 1
+    cooccurrence = _connect_nodes(graph, words)
 
-    _connect_nodes(graph, cooccurrence)
+    #print([n.data for n in graph.get_nodes()], end='')
 
     for node in graph.get_nodes():
         _score_node(graph, node)
 
     return list(graph.get_nodes())
     
-
-def _connect_nodes(graph, cooccurrence):
-    nodes = graph.get_nodes()
-    for target_node in nodes:
-        for ctx_node in nodes:
-            if target_node.data == ctx_node.data:
-                continue
-            for word in cooccurrence[target_node.data]:
-                if word == ctx_node.data:
-                    graph.add_edge(target_node, ctx_node)
-
-def _get_cooccurrence(words):
+def _connect_nodes(graph, words):
     """
-    :param words (list)
-    Returns dictionary with key,value pair as:
-    target_word(str), adjacent_words(set)
+    :param graph (Graph)
+    :param words (list of str)
+    Uses coocurrence in a window of WINDOW_SIZE to create nodes 
+    and create edges between nodes
+    target_node is a Node of the current word 
+    context_node.data is a word within WINDOW_SIZE of the target_node.data
     """
-    #FIXME Only does 10 to the right -->
-    # Make it take the centre word and slide window across
-    adjacent = {}
+    seen_nodes = []
+    data_index = 0
+    # So we can do some fancy optimisations later
+    buffer = collections.deque(maxlen=WINDOW_SIZE)
+
+    # First window
+    for i in range(WINDOW_SIZE):
+        buffer.append(words[i])
+        data_index = (data_index + 1) % len(words)
+    
     for i in range(len(words)):
-        for j in range(WINDOW):
-            # If at the end
-            if i+j >= len(words):
-                return adjacent
+        target_index = WINDOW_SIZE//2 + 1
+        target = buffer[target_index]
 
-            target = words[i]
-            ctx_word = words[i+j]
-
-            if target == ctx_word:
+        for j in range(WINDOW_SIZE):
+            if j == target_index:
                 continue
 
-            if target not in adjacent:
-                adjacent[target] = set()
+            target_node = Node(target)
+            if target_node not in seen_nodes:
+                seen_nodes.append(target_node)
+                
+            context_node = Node(buffer[j])
+            if context_node not in seen_nodes:
+                seen_nodes.append(context_node)
 
-            adjacent[target].add(ctx_word)
-    return adjacent
+            #FIXME undirected right...?
+            graph.add_edge(target_node, context_node) == True 
+
+        # Slide window one word over
+        buffer.append(words[data_index])
+        data_index = (data_index + 1) % len(words)
 
     
 def _score_node(graph, node, iterations=SCORE_ITERATIONS):

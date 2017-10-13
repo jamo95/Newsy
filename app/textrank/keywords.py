@@ -20,7 +20,7 @@ attached to each vertex for ranking/selection decisions
 
 D_FACTOR = 0.85
 # WINDOW_SIZE Must be odd and include the target word
-WINDOW_SIZE = 5
+WINDOW_SIZE = 3
 SCORE_ITERATIONS = 2
             
 # TODO 
@@ -60,7 +60,12 @@ def _connect_nodes(graph, words):
     buffer = collections.deque(maxlen=WINDOW_SIZE)
 
     # First window
+
+
     for i in range(WINDOW_SIZE):
+        # In case of super small article
+        if (len(words) == i):
+            break
         buffer.append(words[i])
         data_index = (data_index + 1) % len(words)
     

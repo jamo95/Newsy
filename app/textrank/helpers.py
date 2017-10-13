@@ -13,6 +13,8 @@ def tokenize_words(text, clean=True):
 
     tokens = nltk.word_tokenize(text)
 
+    tokens = [t.lower() for t in tokens]
+
     if clean:
         unclean = _unclean_words()
         clean = [t for t in tokens if t not in unclean]
@@ -41,6 +43,5 @@ def _unclean_words():
 
     unclean_words = nltk.corpus.stopwords.words('english')
     unclean_words += string.punctuation
-
 
     return unclean_words

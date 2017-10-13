@@ -54,6 +54,12 @@
       </div>
     {% endif %}
 
+    {% if article_analysis %}
+      <div id="summarised-article-content">
+        <p class="analysis">Article's Sentiment Analyisis: {{ article_analysis }}</p>
+      </div>
+    {% endif %}
+
     {% if article_keywords %}
       <div id="summarised-article-content">
           <h4>Keywords</h4>

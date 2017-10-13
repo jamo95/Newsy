@@ -12,7 +12,7 @@ from app.textrank.keywords import rank_words
 from app.textrank.node import Node
 from app.textrank.helpers import tokenize_sentences, tokenize_words, normalize_url
 from app.loaders import techcrunch, cricketau, wired, hackernoon, venturebeat, newsau
-
+from app import sentiment
 
 from app.dao.keyword import Keyword
 
@@ -125,6 +125,7 @@ def summarised():
         ctx['article_title'] = summary.get('title')
         ctx['article_sentences'] = summary.get('sentences')
         ctx['article_keywords'] = summary.get('keywords')
+        ctx['article_analysis'] = summary.get('s_analysis')
         ctx['article_url'] = form.url.data
 
     if request.method == 'POST':
@@ -167,41 +168,59 @@ def _summarize(text='', title='', url='',
 
         article = _get_article_from_url(url)
         article_data['text'] = article.text
-
+        """elif 'cricket' in url:
+            ca_article = cricketau.ArticleLoader.load(url)
+            article_data['title'] = ca_article['title']
+            article_data['text'] = ca_article['content']
+            print(ca_article['content'])
+            article_data['published_at'] = ca_article['date']
+#            senti_analysis_data = sentiment.SentimentAnalysis.analyise(ca_article['content'])
+#            if senti_analysis_data is not None:
+#                article_data['s_analysis'] = senti_analysis_data['label']"""
         if 'techcrunch' in url:
             tc_article = techcrunch.ArticleLoader.load(url)
             article_data['title'] = tc_article['title']
             article_data['text'] = tc_article['content']
             article_data['published_at'] = tc_article['timestamp']
-        elif 'cricket' in url:
-            ca_article = cricketau.ArticleLoader.load(url)
-            article_data['title'] = ca_article['title']
-            article_data['text'] = ca_article['content']
-            article_data['published_at'] = ca_article['date']
+            senti_analysis_data = sentiment.SentimentAnalysis.analyise(tc_article['content'])
+            if senti_analysis_data is not None:
+                article_data['s_analysis'] = senti_analysis_data['label']
         elif 'wired' in url:
             wired_article = wired.ArticleLoader.load(url)
             article_data['title'] = wired_article['title']
             article_data['text'] = wired_article['content']
             article_data['published_at'] = wired_article['date']
+            senti_analysis_data = sentiment.SentimentAnalysis.analyise(wired_article['content'])
+            if senti_analysis_data is not None:
+                article_data['s_analysis'] = senti_analysis_data['label']
         elif 'hackernoon' in url:
             hackernoon_article = hackernoon.ArticleLoader.load(url)
             article_data['title'] = hackernoon_article['title']
             article_data['text'] = hackernoon_article['content']
             article_data['published_at'] = hackernoon_article['date']
+            senti_analysis_data = sentiment.SentimentAnalysis.analyise(hackernoon_article['content'])
+            if senti_analysis_data is not None:
+                article_data['s_analysis'] = senti_analysis_data['label']
         elif 'venturebeat' in url:
             venturebeat_article = venturebeat.ArticleLoader.load(url)
             article_data['title'] = venturebeat_article['title']
             article_data['text'] = venturebeat_article['content']
             article_data['published_at'] = venturebeat_article['date']
+            senti_analysis_data = sentiment.SentimentAnalysis.analyise(venturebeat_article['content'])
+            if senti_analysis_data is not None:
+                article_data['s_analysis'] = senti_analysis_data['label']
         elif 'news.com.au' in url:
             newsau_article = newsau.ArticleLoader.load(url)
             article_data['title'] = newsau_article['title']
             article_data['text'] = newsau_article['content']
             article_data['published_at'] = newsau_article['date']
+            senti_analysis_data = sentiment.SentimentAnalysis.analyise(newsau_article['content'])
+            if senti_analysis_data is not None:
+                article_data['s_analysis'] = senti_analysis_data['label']
         else:
             article_data['title'] = article.title
 
-
+    #print(article_data['title'], article_data['text'])
     sentence_nodes = []
     sentences = tokenize_sentences(article_data['text'])
     for i, data in enumerate(sentences):
@@ -228,7 +247,8 @@ def _summarize(text='', title='', url='',
         'title': article_data['title'],
         'text': article_data['text'],
         'sentences': [node.data for node in ranked_sentences][:sentence_count],
-        'keywords': [node.data for node in keywords][:keyword_count]
+        'keywords': [node.data for node in keywords][:keyword_count],
+        's_analysis' : article_data['s_analysis']
     }
 
 

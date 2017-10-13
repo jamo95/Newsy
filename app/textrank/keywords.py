@@ -37,7 +37,7 @@ def rank_words(words):
     words = [t[0] for t in tagged if t[1] in tags]
 
     graph = Graph()
-    cooccurrence = _connect_nodes(graph, words)
+    _connect_nodes(graph, words)
 
     for node in graph.get_nodes():
         _score_node(graph, node)

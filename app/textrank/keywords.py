@@ -21,7 +21,7 @@ attached to each vertex for ranking/selection decisions
 D_FACTOR = 0.85
 # WINDOW_SIZE Must be odd and include the target word
 WINDOW_SIZE = 3
-SCORE_ITERATIONS = 3
+SCORE_ITERATIONS = 2
             
 # TODO 
 # - Do the post processing

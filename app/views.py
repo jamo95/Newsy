@@ -11,7 +11,8 @@ from app.textrank.sentences import rank as rank_sentences
 from app.textrank.keywords import rank_words
 from app.textrank.node import Node
 from app.textrank.helpers import tokenize_sentences, tokenize_words, normalize_url
-from app.loaders import techcrunch, cricketau, wired
+from app.loaders import techcrunch, cricketau, wired, hackernoon, venturebeat, newsau
+
 
 from app.dao.keyword import Keyword
 
@@ -170,16 +171,33 @@ def _summarize(text='', title='', url='',
         if 'techcrunch' in url:
             tc_article = techcrunch.ArticleLoader.load(url)
             article_data['title'] = tc_article['title']
+            article_data['text'] = tc_article['content']
             article_data['published_at'] = tc_article['timestamp']
         elif 'cricket' in url:
             ca_article = cricketau.ArticleLoader.load(url)
             article_data['title'] = ca_article['title']
             article_data['text'] = ca_article['content']
+            article_data['published_at'] = ca_article['date']
         elif 'wired' in url:
             wired_article = wired.ArticleLoader.load(url)
             article_data['title'] = wired_article['title']
             article_data['text'] = wired_article['content']
             article_data['published_at'] = wired_article['date']
+        elif 'hackernoon' in url:
+            hackernoon_article = hackernoon.ArticleLoader.load(url)
+            article_data['title'] = hackernoon_article['title']
+            article_data['text'] = hackernoon_article['content']
+            article_data['published_at'] = hackernoon_article['date']
+        elif 'venturebeat' in url:
+            venturebeat_article = venturebeat.ArticleLoader.load(url)
+            article_data['title'] = venturebeat_article['title']
+            article_data['text'] = venturebeat_article['content']
+            article_data['published_at'] = venturebeat_article['date']
+        elif 'news.com.au' in url:
+            newsau_article = newsau.ArticleLoader.load(url)
+            article_data['title'] = newsau_article['title']
+            article_data['text'] = newsau_article['content']
+            article_data['published_at'] = newsau_article['date']
         else:
             article_data['title'] = article.title
 
@@ -255,7 +273,7 @@ def _get_articles_category(category, offset=0, limit=20):
         dao.article.Article.keywords.any(Keyword.data.like(category))
     ).order_by(
         desc(dao.article.Article.published_at)
-    ).count() 
+    ).count()
 
     return categorized_articles, categorized_articles_count
 

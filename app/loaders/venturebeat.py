@@ -23,22 +23,27 @@ class ArticleLoader:
 
 
 def _get_title(html):
-    title = html.findAll('h1', {'class': 'article-title'})
-    return clean_html(str(title))
+    title = html.find('h1', {'class': 'article-title'})
+    title = clean_html(str(title))
+
+    return title
 
 
 def _get_content(html):
-    articleText = html.findAll('div', {'class': 'article-content'})
+    articleText = html.find('div', {'class': 'article-content'})
     articleText = str(articleText)
 
     articleSoup = BeautifulSoup(articleText, 'lxml')
     articleSoup = articleSoup.findAll('p')
-
+    #print(str(articleSoup))
     raw_content_str = map(str, articleSoup)
 
-    return clean_html(' '.join(raw_content_str))
+    finalReturn = clean_html(' '.join(raw_content_str))
+
+    return finalReturn
 
 
 def _get_date(html):
-    date = html.findAll('time', {'class': 'the-time'})
-    return clean_html(str(date))
+    date = html.find('time', {'class': 'the-time'})
+    date = clean_html(str(date))
+    return date

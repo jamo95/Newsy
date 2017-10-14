@@ -62,8 +62,12 @@
 
     {% if article_keywords %}
       <div id="summarised-article-content">
-          <h4>Keywords</h4>
-          <p>{{ ', '.join(article_keywords) }}</p>
+        <h4>Keywords</h4>
+        <p>{{ ', '.join(article_keywords) }}</p>
+        <i>Suggest keywords (space separated):</i>
+          <form>
+            <input type="text" name="keywords">
+          </form>
       </div>
     {% endif %}
     {% if article_sentences %}
@@ -83,7 +87,7 @@
 
 <script type="text/javascript">
   let inputType = window.location.hash === '#text' ? 'text' : 'url';
-
+  
   window.onload = function() {
     let url = getUrlParameter('url');
 

@@ -1,3 +1,7 @@
+function addKeywords(keywords) {
+  
+}
+
 function switchSummarizerInput() {
   let showingText = $('#text-input').is(':visible');
 

@@ -116,6 +116,7 @@ def summarised():
         'title': 'Summarizer',
         'form': form, 'form_error': '',
         'article_sentences': '', 'article_keywords': '', 'article_title': '',
+        'article_analysis': ''
     }
 
     url = request.args.get('url')
@@ -165,11 +166,16 @@ def _summarize(text='', title='', url='',
         # Check if article is cached
         article = _get_summary(normalize_url(url))
         if article:
+            if article.s_analysis is None:
+                senti_analysis_data = sentiment.SentimentAnalysis.analyise(article.text)
+                if senti_analysis_data is not None:
+                    article.s_analysis = senti_analysis_data['label']
             return {
                 'title': article.title,
                 'text': article.text,
                 'sentences': [s.data for s in article.sentences][:sentence_count],
                 'keywords': [w.data for w in article.keywords][:keyword_count],
+                's_analysis': article.s_analysis,
             }
 
         article = _get_article_from_url(url)
@@ -311,6 +317,6 @@ def _get_articles_category(category, offset=0, limit=20):
 
     return categorized_articles, categorized_articles_count
 
-def _insert_summary(title, url, text, sentences, keywords, s_analysis=None, published_at=None):
+def _insert_summary(title, url, text, sentences, keywords, s_analysis, published_at=None):
     dao.article.insert(
         db.session, text, title, url, keywords, sentences, s_analysis, published_at)

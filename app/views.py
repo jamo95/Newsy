@@ -1,7 +1,7 @@
 import math
 
 from newspaper import Article
-from flask import render_template, request, jsonify
+from flask import render_template, request, jsonify, redirect
 from sqlalchemy import desc
 
 from .forms import SummaryForm
@@ -11,13 +11,14 @@ from app.textrank.sentences import rank as rank_sentences
 from app.textrank.keywords import rank_words
 from app.textrank.node import Node
 from app.textrank.helpers import tokenize_sentences, tokenize_words, normalize_url
-from app.loaders import techcrunch, cricketau, wired, hackernoon, venturebeat, newsau
+from app.loaders import techcrunch, wired, hackernoon, venturebeat, newsau
 from app import sentiment
 
 from app.dao.keyword import Keyword
 
 DEFAULT_SENTENCE_COUNT = 4
 DEFAULT_KEYWORD_COUNT = 10
+
 
 @app.route('/')
 def index():
@@ -76,32 +77,37 @@ def sites(site=None, page=1):
 
     return render_template('sites.html', **ctx)
 
-@app.route('/feed', methods=['GET' , 'POST'])
+
+@app.route('/feed', methods=['GET', 'POST'])
 @app.route('/feed/<string:category>', methods=['GET'])
 @app.route('/feed/<string:category>/<int:page>', methods=['GET'])
-def feed(category=None,page=1):
+def feed(category=None, page=1):
     page_size = 20
-    ctx={'title': 'Categorized Feed','category':None,'page':page}
+    ctx = {'title': 'Categorized Feed', 'category': None, 'page': page}
 
     if not category:
         category = request.values.get('category')
         if category:
-            feed(category=category,page=1)
+            return redirect('/feed/{}'.format(category))
 
     if category:
-        ctx['category'] = category
-        feed_articles, feed_articles_count = _get_articles_category(category = category, offset=page * page_size, limit=page_size)
+        feed_articles, feed_articles_count = _get_articles_category(
+            category=category, offset=page * page_size, limit=page_size)
         ctx['max_page'] = math.ceil(feed_articles_count / page_size) - 1
-        articles = {}
+
+        articles = {}   # Key = Published date.
         for article in feed_articles:
             if not article.published_at:
                 continue
             if article.published_at not in articles:
                 articles[article.published_at] = []
             articles[article.published_at].append(article)
+
+        ctx['category'] = category
         ctx['articles'] = articles
 
     return render_template('feed.html', **ctx)
+
 
 @app.route('/summarised', methods=['GET', 'POST'])
 def summarised():
@@ -221,7 +227,6 @@ def _summarize(text='', title='', url='',
         else:
             article_data['title'] = article.title
 
-    #print(article_data['title'], article_data['text'])
     sentence_nodes = []
     sentences = tokenize_sentences(article_data['text'])
     for i, data in enumerate(sentences):
@@ -250,7 +255,7 @@ def _summarize(text='', title='', url='',
         'text': article_data['text'],
         'sentences': [node.data for node in ranked_sentences][:sentence_count],
         'keywords': [node.data for node in keywords][:keyword_count],
-        's_analysis' : article_data['s_analysis']
+        's_analysis': article_data['s_analysis']
     }
 
 
@@ -284,6 +289,7 @@ def _get_articles(url_prefix, offset=0, limit=20):
 
     return articles, articles_count
 
+
 def _get_articles_category(category, offset=0, limit=20):
     categorized_articles = db.session.query(dao.article.Article).filter(
         dao.article.Article.keywords.any(Keyword.data.like(category))
@@ -293,8 +299,6 @@ def _get_articles_category(category, offset=0, limit=20):
 
     categorized_articles_count = db.session.query(dao.article.Article).filter(
         dao.article.Article.keywords.any(Keyword.data.like(category))
-    ).order_by(
-        desc(dao.article.Article.published_at)
     ).count()
 
     return categorized_articles, categorized_articles_count

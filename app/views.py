@@ -226,6 +226,14 @@ def _summarize(text='', title='', url='',
                 article_data['s_analysis'] = senti_analysis_data['label']
         else:
             article_data['title'] = article.title
+            senti_analysis_data = sentiment.SentimentAnalysis.analyise(article.text)
+            if senti_analysis_data is not None:
+                article_data['s_analysis'] = senti_analysis_data['label']
+    else:
+        article_data['title'] = title
+        senti_analysis_data = sentiment.SentimentAnalysis.analyise(text)
+        if senti_analysis_data is not None:
+            article_data['s_analysis'] = senti_analysis_data['label']
 
     sentence_nodes = []
     sentences = tokenize_sentences(article_data['text'])

@@ -168,21 +168,22 @@ def _summarize(text='', title='', url='',
 
         article = _get_article_from_url(url)
         article_data['text'] = article.text
-        """elif 'cricket' in url:
-            ca_article = cricketau.ArticleLoader.load(url)
-            article_data['title'] = ca_article['title']
-            article_data['text'] = ca_article['content']
-            print(ca_article['content'])
-            article_data['published_at'] = ca_article['date']
-#            senti_analysis_data = sentiment.SentimentAnalysis.analyise(ca_article['content'])
-#            if senti_analysis_data is not None:
-#                article_data['s_analysis'] = senti_analysis_data['label']"""
+        # elif 'cricket' in url:
+        #     ca_article = cricketau.ArticleLoader.load(url)
+        #     article_data['title'] = ca_article['title']
+        #     article_data['text'] = ca_article['content']
+        #     print(ca_article['content'])
+        #     article_data['published_at'] = ca_article['date']
+        #    senti_analysis_data = sentiment.SentimentAnalysis.analyise(ca_article['content'])
+        #    if senti_analysis_data is not None:
+        #        article_data['s_analysis'] = senti_analysis_data['label']
         if 'techcrunch' in url:
             tc_article = techcrunch.ArticleLoader.load(url)
             article_data['title'] = tc_article['title']
             article_data['text'] = tc_article['content']
             article_data['published_at'] = tc_article['timestamp']
             senti_analysis_data = sentiment.SentimentAnalysis.analyise(tc_article['content'])
+            print(senti_analysis_data)
             if senti_analysis_data is not None:
                 article_data['s_analysis'] = senti_analysis_data['label']
         elif 'wired' in url:
@@ -240,7 +241,8 @@ def _summarize(text='', title='', url='',
             url=normalize_url(url),
             keywords=keywords,
             sentences=ranked_sentences,
-            published_at=article_data.get('published_at')
+            published_at=article_data.get('published_at'),
+            s_analysis=article_data['s_analysis']
         )
 
     return {
@@ -297,6 +299,6 @@ def _get_articles_category(category, offset=0, limit=20):
 
     return categorized_articles, categorized_articles_count
 
-def _insert_summary(title, url, text, sentences, keywords, published_at=None):
+def _insert_summary(title, url, text, sentences, keywords, s_analysis=None, published_at=None):
     dao.article.insert(
-        db.session, text, title, url, keywords, sentences, published_at)
+        db.session, text, title, url, keywords, sentences, s_analysis, published_at)

@@ -11,6 +11,7 @@ class SentimentAnalysis(object):
     def analyise(text):
         respone = requests.post(url, data={'text':text})
         content = json.loads(respone.content)
+        print(content)
         if 'neutral' in content['label']:
             probability = content['probability']
             #if neutral analysis it returns the next best guess either pos or neg

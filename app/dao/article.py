@@ -2,7 +2,7 @@ import datetime
 import hashlib
 import re
 
-from sqlalchemy import Column, Text, String, Date
+from sqlalchemy import Column, Text, String, Date, Integer
 from sqlalchemy.orm import relationship
 
 from . import Base
@@ -20,22 +20,24 @@ class Article(Base):
     url = Column(String(2083), nullable=True)
     published_at = Column(Date, nullable=True)
     created_at = Column(Date, default=datetime.datetime.now)
+    s_analysis = Column(String, nullable=True)
 
     keywords = relationship('Keyword')
     sentences = relationship('Sentence')
 
-    def __init__(self, article_hash, text, title, url, published_at=None):
+    def __init__(self, article_hash, text, title, url, s_analysis, published_at=None ):
         self.hash = article_hash
         self.text = text
         self.title = title
         self.url = url
         self.published_at = published_at
+        self.s_analysis = s_analysis
 
         self.keywords = []
         self.sentences = []
 
 
-def insert(session, text, title, url, keywords, sentences, published_at=None):
+def insert(session, text, title, url, keywords, sentences, s_analysis, published_at=None):
     article_hash = hash_article(text)
     article_exists = session.query(Article.hash).filter_by(
         hash=article_hash).scalar() is not None
@@ -43,7 +45,7 @@ def insert(session, text, title, url, keywords, sentences, published_at=None):
     if article_exists:
         return
 
-    article = Article(article_hash, text, title, url, published_at)
+    article = Article(article_hash, text, title, url, s_analysis, published_at)
     article.sentences = [
         Sentence(s.data, s.score, s.index) for s in sentences]
 

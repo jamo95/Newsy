@@ -36,6 +36,11 @@
         <p id="btn-submit"><input type="submit" value="View Categorized Feed"></p>
       </form>
     </p>
+
+    <h2>Most Popular Categories</h2>
+     {% for category in categories %}
+ 	<a id="category" href="/feed/{{ category }}">#{{ category }}</a>
+     {% endfor %}
     
   {% endif %}
 </div>

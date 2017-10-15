@@ -89,6 +89,23 @@ def feed(category=None, page=1):
         category = request.values.get('category')
         if category:
             return redirect('/feed/{}'.format(category))
+        #Put all keywords in a dictionary as key and number of times repeated as value
+        '''all_articles = _get_all_articles()
+        keywords_dict = {}	#keywords -> repetition count
+        for article in all_articles:
+            #repetition count
+            for keyword in article.keywords:
+                kw = keyword.data
+                if kw in keywords_dict:
+                    keywords_dict[kw] += 1
+                else:
+                    keywords_dict[kw] = 1
+        #get top 10 keywords
+        keywords = sorted(keywords_dict, key=keywords_dict.__getitem__, reverse=True)
+        ctx['categories'] = keywords'''
+
+        #I manually compile this list based on most popular keywords
+        ctx['categories'] = ['google','technology','ai','car','security','facebook','amazon','startup','racing','software']
 
     if category:
         feed_articles, feed_articles_count = _get_articles_category(
@@ -335,6 +352,10 @@ def _get_articles_category(category, offset=0, limit=20):
     ).count()
 
     return categorized_articles, categorized_articles_count
+
+def _get_all_articles():
+
+    return db.session.query(dao.article.Article).all()
 
 def _insert_summary(title, url, text, sentences, keywords, s_analysis, published_at=None):
     dao.article.insert(

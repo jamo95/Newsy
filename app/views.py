@@ -1,5 +1,5 @@
 import math
-
+import sys
 from newspaper import Article
 from flask import render_template, request, jsonify, redirect
 from sqlalchemy import desc
@@ -17,7 +17,7 @@ from app import sentiment
 from app.dao.keyword import Keyword
 
 DEFAULT_SENTENCE_COUNT = 4
-DEFAULT_KEYWORD_COUNT = 10
+DEFAULT_KEYWORD_COUNT = 20
 
 
 @app.route('/')
@@ -120,18 +120,25 @@ def summarised():
     }
 
     url = request.args.get('url')
+    suggestedKeywords=None
+    if request.values.get('keywords') is not None:
+        suggestedKeywords = request.values.get('keywords').split(" ")
+
     if form.validate_on_submit() and form.is_text() or url:
         if url:
             if not url.startswith('http'):
                 url = 'http://' + url
             form.url.data = url
-
         summary = _summarize(
-            form.text.data, form.title.data, form.url.data, form.count.data)
+            form.text.data, form.title.data, form.url.data, form.count.data, suggestedKeywords)
 
         ctx['article_title'] = summary.get('title')
         ctx['article_sentences'] = summary.get('sentences')
         ctx['article_keywords'] = summary.get('keywords')
+        # keywords = request.values.get('keywords').split(" ")
+        # if keywords is not None:
+        #     for word in keywords:
+        #         ctx['article_keywords'].append(word)
         ctx['article_analysis'] = summary.get('s_analysis')
         ctx['article_url'] = form.url.data
 
@@ -158,6 +165,7 @@ def _get_article_from_url(url):
 
 def _summarize(text='', title='', url='',
         sentence_count=DEFAULT_SENTENCE_COUNT,
+        suggestedKeywords=None,
         keyword_count=DEFAULT_KEYWORD_COUNT):
 
     article_data = {'title': title, 'text': text, 'url': url}
@@ -166,6 +174,13 @@ def _summarize(text='', title='', url='',
         # Check if article is cached
         article = _get_summary(normalize_url(url))
         if article:
+            if suggestedKeywords is not None:
+                for word in suggestedKeywords:
+                    newKeyword = Keyword(word, sys.float_info.max)
+                    article.keywords.insert(0,newKeyword)
+                db.session.add(article)
+                db.session.commit()
+
             if article.s_analysis is None:
                 senti_analysis_data = sentiment.SentimentAnalysis.analyise(article.text)
                 if senti_analysis_data is not None:
@@ -253,6 +268,10 @@ def _summarize(text='', title='', url='',
     keywords = sorted(
             rank_words(words), key=lambda n: n.score, reverse=True)
 
+    if suggestedKeywords is not None:
+        for word in suggestedKeywords:
+            newKeyword = Keyword(word, 0)
+            keywords.insert(0,newKeyword)
     if url:
         _insert_summary(
             title=article_data['title'],

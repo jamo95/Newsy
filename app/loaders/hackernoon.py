@@ -1,5 +1,6 @@
 import requests
 import re
+import calendar
 
 from bs4 import BeautifulSoup
 
@@ -42,5 +43,10 @@ def _get_content(html):
     return cleanText
 
 def _get_date(html):
-    date = html.find('time')
-    return clean_html(str(date))
+    attribute = html.find('time').attrs
+    temp = attribute['datetime']
+    date = re.findall(r"[0-9]{4}\-[0-9]{2}\-[0-9]{2}", temp)[0]
+    # month = calendar.month_name [list(calendar.month_abbr).index(temp[0])]
+    # date = temp[1].zfill(2) + " " + month
+    # return date
+    return date

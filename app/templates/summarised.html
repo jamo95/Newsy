@@ -156,8 +156,9 @@
   function highlight(text)
   {
       var summary_text = document.getElementById("summarised-article-content");
-      highlight_span = "<span class=\"highlight\"> "+text+" </span>";
-      summary_text.innerHTML = summary_text.innerHTML.replace(new RegExp('\\s+'+text+'\\s+',"ig"),"<span class=\"highlight\"> "+'\$&'+" </span>");
+      if (!summary_text.innerHTML.includes("class=\"highlight\"")) {
+        summary_text.innerHTML = summary_text.innerHTML.replace(new RegExp('\\s+'+text+'\\s+',"ig"),"<span class=\"highlight\"> "+'\$&'+" </span>");
+      }
   }
 </script>
 

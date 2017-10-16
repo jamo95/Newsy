@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% block content %}
-
 <div id="summarised" class="container">
   <h1>Newsy Summarizer</h1>
 
@@ -89,18 +88,22 @@
         positive review!</p><p id="summarised-negative-response" style="display:
         none;">Sorry to hear that. We have been notified and promise to make
         Newsy better for you.</p>
+        {% if good_review or bad_review %}
+          <br />
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> <!- image from https://cdnjs.com/libraries/font-awesome ->
+          <i id="positive-unvoted" class="fa fa-thumbs-o-up" style="font-size:36px;color:green"><a id="postive-unvoted" style="padding-right:25px;padding-left:25px">{{ good_review }} </a></i>
+          <i id="positive-voted" class="fa fa-thumbs-o-up" style="font-size:36px;color:green;display: none;"><a style="padding-right:25px;padding-left:25px">{{ good_review + 1 }}</a></i>
+          <i id="negative-unvoted" class="fa fa-thumbs-o-down" style="font-size:36px;color:red"><a style="padding-right:25px;padding-left:25px">{{ bad_review }}</a></i>
+          <i id="negative-voted" class="fa fa-thumbs-o-down" style="font-size:36px;color:red;display: none;"><a style="padding-right:25px;padding-left:25px">{{ bad_review + 1}}</a></i>
+        {% endif %}
       </div>
-      <br />
-      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-      <i class="fa fa-thumbs-o-up" style="font-size:36px;color:green"><a style="padding-right:25px;padding-left:25px">0</a></i>
-      <i class="fa fa-thumbs-o-down" style="font-size:36px;color:red"><a style="padding-right:25px;padding-left:25px">0</a></i>
+
     {% endif %}
   </div>
 </div>
 
 <script type="text/javascript">
   let inputType = window.location.hash === '#text' ? 'text' : 'url';
-
   window.onload = function() {
     let url = getUrlParameter('url');
 
@@ -119,9 +122,13 @@
     if (isPositive) {
       $('#summarised-negative-response').hide();
       $('#summarised-positive-response').show();
+      $('#positive-unvoted').hide();
+      $('#positive-voted').show();
     } else {
       $('#summarised-negative-response').show();
       $('#summarised-positive-response').hide();
+      $('#negative-unvoted').hide();
+      $('#negative-voted').show();
     }
 
     $.ajax({

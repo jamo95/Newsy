@@ -46,7 +46,6 @@ def review():
         review['url'],
         review['sentences']
     ))
-
     return jsonify({'success': True})
 
 
@@ -152,12 +151,11 @@ def summarised():
         ctx['article_title'] = summary.get('title')
         ctx['article_sentences'] = summary.get('sentences')
         ctx['article_keywords'] = summary.get('keywords')
-        # keywords = request.values.get('keywords').split(" ")
-        # if keywords is not None:
-        #     for word in keywords:
-        #         ctx['article_keywords'].append(word)
         ctx['article_analysis'] = summary.get('s_analysis')
         ctx['article_url'] = form.url.data
+        reviews = get_reviews(form.text.data, form.title.data, form.url.data, form.count.data)
+        ctx['good_review'] = reviews[0]
+        ctx['bad_review'] = reviews[1]
 
     if request.method == 'POST':
         if form.errors:
@@ -167,6 +165,24 @@ def summarised():
 
     return render_template('summarised.html', **ctx)
 
+def get_reviews(text, title, url, count):
+    reviews = [0]*2
+    total = db.session.query(dao.review.Review).all()
+    if url :
+        for review in total:
+            if review.url == url and review.count == count:
+                if review.status:
+                    reviews[0] += 1
+                else :
+                    reviews[1] += 1
+    else :
+        for review in total:
+            if review.title == title and review.text == text and review.count == count:
+                if review.status:
+                    reviews[0] += 1
+                else :
+                    reviews[1] += 1
+    return reviews
 
 def _get_article_from_url(url):
     article = Article(url)
@@ -193,7 +209,7 @@ def _summarize(text='', title='', url='',
         if article:
             if suggestedKeywords is not None:
                 for word in suggestedKeywords:
-                    newKeyword = Keyword(word, sys.float_info.max)
+                    newKeyword = Keyword(word, 1)
                     article.keywords.insert(0,newKeyword)
                 db.session.add(article)
                 db.session.commit()
@@ -287,7 +303,7 @@ def _summarize(text='', title='', url='',
 
     if suggestedKeywords is not None:
         for word in suggestedKeywords:
-            newKeyword = Keyword(word, 0)
+            newKeyword = Keyword(word, 1)
             keywords.insert(0,newKeyword)
     if url:
         _insert_summary(

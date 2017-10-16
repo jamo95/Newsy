@@ -1,5 +1,5 @@
 import math
-import sys
+import sys, re
 from newspaper import Article
 from flask import render_template, request, jsonify, redirect
 from sqlalchemy import desc
@@ -153,7 +153,11 @@ def summarised():
         ctx['article_keywords'] = summary.get('keywords')
         ctx['article_analysis'] = summary.get('s_analysis')
         ctx['article_url'] = form.url.data
-        reviews = get_reviews(form.text.data, form.title.data, form.url.data, form.count.data)
+        if url:
+            url = re.sub("http://", "", url)
+            reviews = get_reviews(form.text.data, form.title.data, url, form.count.data)
+        else:
+            reviews = get_reviews(form.text.data, form.title.data, form.url.data, form.count.data)
         ctx['good_review'] = reviews[0]
         ctx['bad_review'] = reviews[1]
 

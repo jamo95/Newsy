@@ -232,15 +232,6 @@ def _summarize(text='', title='', url='',
 
         article = _get_article_from_url(url)
         article_data['text'] = article.text
-        # elif 'cricket' in url:
-        #     ca_article = cricketau.ArticleLoader.load(url)
-        #     article_data['title'] = ca_article['title']
-        #     article_data['text'] = ca_article['content']
-        #     print(ca_article['content'])
-        #     article_data['published_at'] = ca_article['date']
-        #    senti_analysis_data = sentiment.SentimentAnalysis.analyise(ca_article['content'])
-        #    if senti_analysis_data is not None:
-        #        article_data['s_analysis'] = senti_analysis_data['label']
         if 'techcrunch' in url:
             tc_article = techcrunch.ArticleLoader.load(url)
             article_data['title'] = tc_article['title']
@@ -282,6 +273,15 @@ def _summarize(text='', title='', url='',
             senti_analysis_data = sentiment.SentimentAnalysis.analyise(newsau_article['content'])
             if senti_analysis_data is not None:
                 article_data['s_analysis'] = senti_analysis_data['label']
+        elif 'cricket' in url:
+            ca_article = cricketau.ArticleLoader.load(url)
+            article_data['title'] = ca_article['title']
+            article_data['text'] = ca_article['content']
+            print(ca_article['content'])
+            article_data['published_at'] = ca_article['date']
+            senti_analysis_data = sentiment.SentimentAnalysis.analyise(ca_article['content'])
+            if senti_analysis_data is not None:
+               article_data['s_analysis'] = senti_analysis_data['label']
         else:
             article_data['title'] = article.title
             senti_analysis_data = sentiment.SentimentAnalysis.analyise(article.text)

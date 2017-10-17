@@ -68,7 +68,8 @@
               <span>{{ keyword }}</a>,
           {% endfor %}
           </p>
-          <input type="button" onclick="highlightAll('{{" ".join(article_keywords) }}')" value="Highlight keywords">
+          <input id="article-highlight" type="button" onclick="articleHighlightAll('{{" ".join(article_keywords) }}')" value="Highlight keywords">
+          <input id="article-unhighlight" style="display: none" type="button" onclick="articleUnhighlightAll()" value="Unhighlight keywords">
           <br />
           <br />
           <i>Suggest keywords (space separated):</i>
@@ -86,7 +87,8 @@
               <span>{{ keyword }}</a>,
           {% endfor %}
           </p>
-          <input type="button" onclick="highlightAll('{{" ".join(article_keywords) }}')" value="Highlight keywords">
+          <input id="text-highlight" type="button" onclick="textHighlightAll('{{" ".join(article_keywords) }}')" value="Highlight keywords">
+          <input id="text-unhighlight" style="display: none" type="button" onclick="textUnhighlightAll()" value="Unhighlight keywords">
           <br />
           <br />
         </div>
@@ -161,13 +163,44 @@
     });
   }
 
-  function highlightAll(keywords)
+  function articleHighlightAll(keywords)
   {
       var summary_text = document.getElementById("summarised-article-content");
       var arr = Array.from(keywords.split(" "));
       for (idx in arr) {
         summary_text.innerHTML = summary_text.innerHTML.replace(new RegExp(arr[idx], "ig" ),"<span class=\"highlight\">"+ '\$&'+"</span>");
       }
+      $('#article-highlight').hide();
+      $('#article-unhighlight').show();
+  }
+
+  function articleUnhighlightAll()
+  {
+      var summary_text = document.getElementById("summarised-article-content");
+      summary_text.innerHTML = summary_text.innerHTML.replace(new RegExp("<span class=\"highlight\">", "ig" ),"");
+      summary_text.innerHTML = summary_text.innerHTML.replace(new RegExp("</span>", "ig" ),"");
+      $('#article-unhighlight').hide();
+      $('#article-highlight').show();
+  }
+
+  function textHighlightAll(keywords)
+  {
+      var summary_text = document.getElementById("summarised-article-content");
+      var arr = Array.from(keywords.split(" "));
+      for (idx in arr) {
+        summary_text.innerHTML = summary_text.innerHTML.replace(new RegExp(arr[idx], "ig" ),"<span class=\"highlight\">"+ '\$&'+"</span>");
+      }
+      $('#text-highlight').hide();
+      $('#text-unhighlight').show();
+  }
+
+  function textUnhighlightAll()
+  {
+      var summary_text = document.getElementById("summarised-article-content");
+      summary_text.innerHTML = summary_text.innerHTML.replace(new RegExp("<span class=\"highlight\">", "ig" ),"");
+      summary_text.innerHTML = summary_text.innerHTML.replace(new RegExp("</span>", "ig" ),"");
+      $('#text-unhighlight').hide();
+      $('#text-highlight').show();
   }
 
 </script>

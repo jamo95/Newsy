@@ -102,6 +102,7 @@ def dl_techcrunch(session, stemmer, year, month, day):
             keywords=keywords,
             sentences=summary_sentences,
             published_at=_format_timestamp(year, month, day),
+            s_analysis=None,
         )
         print('+ {}'.format(url))
     return True
@@ -165,6 +166,7 @@ def dl_venturebeat(session, stemmer, year, month, day):
             keywords=keywords,
             sentences=summary_sentences,
             published_at=_format_timestamp(year, month, day),
+            s_analysis=None,
         )
         print('+ {}'.format(url))
     return True
@@ -229,6 +231,7 @@ def dl_wired(session, stemmer, year, month, day):
             keywords=keywords,
             sentences=summary_sentences,
             published_at=_format_timestamp(year, month, day),
+            s_analysis=None,
         )
         print('+ {}'.format(url))
     return True
@@ -294,6 +297,7 @@ def dl_newscomau(session, stemmer, year, month, day):
             keywords=keywords,
             sentences=summary_sentences,
             published_at=_format_timestamp(year, month, day),
+            s_analysis=None,
         )
         print('+ {}'.format(url))
     return True

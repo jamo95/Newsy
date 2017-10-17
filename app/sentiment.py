@@ -9,8 +9,11 @@ class SentimentAnalysis(object):
     """REST call to NLP sentiment analysis"""
     @staticmethod
     def analyise(text):
-        respone = requests.post(url, data={'text':text})
-        content = json.loads(respone.content)
+        response = requests.post(url, data={'text':text})
+        json_content = response.content
+        if (type(json_content) == bytes):
+            json_content = json_content.decode('utf-8')
+        content = json.loads(json_content)
         if 'neutral' in content['label']:
             probability = content['probability']
             #if neutral analysis it returns the next best guess either pos or neg

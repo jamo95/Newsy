@@ -158,9 +158,9 @@ def summarised():
         neutral = sentiment.SentimentAnalysis.analyise(summary.get('sentences'))['probability']['neutral']
         negative = sentiment.SentimentAnalysis.analyise(summary.get('sentences'))['probability']['neg']
         sentiment_sum = positive + neutral + negative
-        ctx['positive_sentiment'] = positive/sentiment_sum
-        ctx['neutral_sentiment'] = neutral/sentiment_sum
-        ctx['negative_sentiment'] = (sentiment_sum - positive - neutral)/sentiment_sum
+        ctx['positive_sentiment'] = round(positive/sentiment_sum, 3)
+        ctx['neutral_sentiment'] = round(neutral/sentiment_sum, 3)
+        ctx['negative_sentiment'] = 1 - round(positive/sentiment_sum, 3) - round(neutral/sentiment_sum, 3)
         ctx['article_url'] = form.url.data
 
         if ctx['article_keywords']:

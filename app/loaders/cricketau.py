@@ -1,9 +1,9 @@
 import requests
 import re
-
+import datetime
 from bs4 import BeautifulSoup
 
-from app.loaders.helpers import clean_html
+from helpers import clean_html
 
 BASE_URL = 'http://www.cricket.com.au'
 
@@ -29,7 +29,11 @@ def _get_title(html):
 
 
 def _get_content(html):
-    articleText = html.findAll('div', {'class': 'article-text-update'})
+    articleText = html.find('div', {'class': 'article-text-update'})
+
+    if not articleText:
+        articleText = html.find('div',{'class': 'article-text text-merri'})
+
     articleText = str(articleText)
 
     articleSoup = BeautifulSoup(articleText, 'lxml')
@@ -53,5 +57,8 @@ def _get_date(html):
     # Maps and converts to raw string data.
     raw_content_str = map(str, tS)
     date = clean_html(' '.join(raw_content_str))
-
+    if not date:
+        date = html.find('div', {'class': 'publishDate'})
+        date = clean_html(' '.join(date))
+    date = datetime.datetime.strptime(date, "%d %B %Y").strftime("%d/%m/%Y")
     return date

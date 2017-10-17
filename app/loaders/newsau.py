@@ -1,6 +1,6 @@
 import requests
 import re
-
+import datetime
 from bs4 import BeautifulSoup
 
 from app.loaders.helpers import clean_html
@@ -44,4 +44,12 @@ def _get_date(html):
 
     date = re.sub(r'<span.*?>',' ', date)
     date = re.sub(r'</span>', '',date)
+
+    date = re.sub(r'\,','',str(date))
+    date = date.split(" ")
+    date = date[1:4]
+
+    date = ' '.join(date)
+
+    #date = datetime.datetime.strptime(date,"%B %d %Y").strftime("%d/%m/%Y")
     return date.strip()

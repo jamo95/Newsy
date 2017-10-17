@@ -164,7 +164,7 @@ def summarised():
         ctx['article_url'] = form.url.data
 
         if ctx['article_keywords']:
-            articles = {}   # Key = Published date
+            articles = {}
             ctx['max_page'] = 0
             count = 0
             for keyword in ctx['article_keywords']:
@@ -179,7 +179,7 @@ def summarised():
                     articles[article.published_at].append(article)
                     if count >= 20 : break
                 if count >= 20 : break
-            ctx['similar_articles'] = articles]
+            ctx['similar_articles'] = articles
         if url:
             url = re.sub("http://", "", url)
             reviews = get_reviews(form.text.data, form.title.data, url, form.count.data)

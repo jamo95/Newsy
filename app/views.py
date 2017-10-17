@@ -176,7 +176,8 @@ def summarised():
                     if article.published_at not in articles:
                         articles[article.published_at] = []
                     count += 1
-                    articles[article.published_at].append(article)
+                    if article.title != ctx['article_title']:
+                        articles[article.published_at].append(article)
                     if count >= 20 : break
                 if count >= 20 : break
             ctx['similar_articles'] = articles

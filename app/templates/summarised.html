@@ -46,18 +46,49 @@
     </div>
 
     {% if article_sentences %}
-      <div id="summarised-article-content">
-        {% for sentence in article_sentences %}
-          <p>{{ sentence }}</p>
-        {% endfor %}
+        <div id="summarised-article-content">
+          {% for sentence in article_sentences %}
+            <p>{{ sentence }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      {% if article_analysis %}
+      <br />
+        <div>
+          <div class="bar-container-legend" style="text-align: center; font-weight: bold;">Sentiment Analysis Distribution</div>
+          <div class="bar-chart">
+              <div class="bar-container">
+                  <div class="bar positive" style="width: {{ '{:.1%}'.format(positive_sentiment) }}"></div>
+                  <div class="bar neutral" style="width: {{ '{:.1%}'.format(neutral_sentiment) }}"></div>
+                  <div class="bar negative" style="width: {{ '{:.1%}'.format(negative_sentiment) }}"></div>
+              </div>
+          </div>
+          <br />
+          <div>
+          <div class="bar-chart-legend">
+            <div class="bar-container-legend">
+                <div class="key-section">
+                  <span style="color:#93FF33;margin-right: 5px">&#x2588;</span>
+                  <span style="margin-right: 10px">Positive</span>
+                  <span style="margin-right: 10px">{{ '{:.1%}'.format(positive_sentiment) }}</span>
+                </div>
+                <div class="key-section">
+                  <span style="color:#FFF933;margin-right: 10px">&#x2588;</span>
+                  <span style="margin-right: 10px">Neutral</span>
+                  <span >{{ '{:.1%}'.format(neutral_sentiment) }}</span>
+                </div>
+                <div class="key-section">
+                  <span style="color:#FF5833;margin-right: 10px">&#x2588;</span>
+                  <span style="margin-right: 10px">Negative</span>
+                  <span >{{ '{:.1%}'.format(negative_sentiment) }}</span>
+                </div>
+            </div>
+          </div>
+        </div>
       </div>
     {% endif %}
 
-    {% if article_analysis %}
-      <div id="summarised-article-content">
-        <p class="analysis">Article's Sentiment Analyisis: {{ article_analysis }}</p>
-      </div>
-    {% endif %}
 
     {% if article_url %}
       {% if article_keywords %}
@@ -214,6 +245,67 @@ background-color:yellow;
 .clickableSpan {
     cursor: pointer;
 }
+
+.bar-chart-title {
+    width: 450px;
+    height: 50px;
+}
+
+.bar-chart-legend {
+    overflow: hidden;
+    width: 450px;
+    height: 50px;
+    text-align: center;
+}
+
+.bar-container-legend {
+  margin-right: 10px;
+  width: 450px;
+  height: 50px;
+}
+
+.key-section {
+    height: 30px;
+    float:left;
+    width: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.positive {
+    background-color: #93FF33;
+}
+.neutral {
+    background-color: #FFF933;
+}
+.negative {
+    background-color: #FF5833
+}
+
+.bar-chart {
+	  overflow: hidden;
+    width: 450px;
+    height: 50px;
+}
+.bar-container {
+  margin-right: 10px;
+  width: 450px;
+  height: 50px;
+}
+.bar {
+    height: 50px;
+    float:left;
+}
+.positive {
+    background-color: #93FF33;
+}
+.neutral {
+    background-color: #FFF933;
+}
+.negative {
+    background-color: #FF5833
+}
+
 </style>
 
 {% endblock %}

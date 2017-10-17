@@ -152,6 +152,13 @@ def summarised():
         ctx['article_sentences'] = summary.get('sentences')
         ctx['article_keywords'] = summary.get('keywords')
         ctx['article_analysis'] = summary.get('s_analysis')
+        positive = sentiment.SentimentAnalysis.analyise(summary.get('sentences'))['probability']['pos']
+        neutral = sentiment.SentimentAnalysis.analyise(summary.get('sentences'))['probability']['neutral']
+        negative = sentiment.SentimentAnalysis.analyise(summary.get('sentences'))['probability']['neg']
+        sentiment_sum = positive + neutral + negative
+        ctx['positive_sentiment'] = positive/sentiment_sum
+        ctx['neutral_sentiment'] = neutral/sentiment_sum
+        ctx['negative_sentiment'] = (sentiment_sum - positive - neutral)/sentiment_sum
         ctx['article_url'] = form.url.data
         if url:
             url = re.sub("http://", "", url)

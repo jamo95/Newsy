@@ -65,7 +65,7 @@
           <h4>Keywords</h4>
           <p>
           {% for keyword in article_keywords%}
-              <span class="clickableSpan" onclick="highlight('{{ loop.index }}','{{ keyword }}')">{{ keyword }}</a>,
+              <span>{{ keyword }}</a>,
           {% endfor %}
           </p>
           <input type="button" onclick="highlightAll('{{" ".join(article_keywords) }}')" value="Highlight keywords">
@@ -83,7 +83,7 @@
           <h4>Keywords</h4>
           <p>
           {% for keyword in article_keywords %}
-              <span class="clickableSpan" onclick="highlight('{{ loop.index }}','{{ keyword }}')">{{ keyword }}</a>,
+              <span>{{ keyword }}</a>,
           {% endfor %}
           </p>
           <input type="button" onclick="highlightAll('{{" ".join(article_keywords) }}')" value="Highlight keywords">
@@ -161,20 +161,12 @@
     });
   }
 
-  function highlight(idx, text)
-  {
-      // var summary_text = document.getElementById("summarised-article-content");
-      // if (!summary_text.innerHTML.includes("class=\"highlight\"")) {
-      //   summary_text.innerHTML = summary_text.innerHTML.replace(new RegExp('\\s+'+text+'\\s+',"ig"),"<span class=\"highlight\"> "+ '\$&'+" </span>");
-      // }
-  }
-
   function highlightAll(keywords)
   {
       var summary_text = document.getElementById("summarised-article-content");
       var arr = Array.from(keywords.split(" "));
       for (idx in arr) {
-        summary_text.innerHTML = summary_text.innerHTML.replace(new RegExp(arr[idx],"ig"),"<span class=\"highlight\">"+ '\$&'+"</span>");
+        summary_text.innerHTML = summary_text.innerHTML.replace(new RegExp(arr[idx], "ig" ),"<span class=\"highlight\">"+ '\$&'+"</span>");
       }
   }
 

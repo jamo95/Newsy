@@ -68,7 +68,10 @@ def _connect_nodes(graph, words):
         data_index = (data_index + 1) % len(words)
 
     for i in range(len(words)):
-        target_index = WINDOW_SIZE // 2 + 1
+        if (len(words) < WINDOW_SIZE):
+            return buffer
+
+        target_index = WINDOW_SIZE // 2 
         target = buffer[target_index]
 
         for j in range(WINDOW_SIZE):

@@ -8,14 +8,14 @@
 
     <p id="text-input">
       Enter title:<br />
-      {{ form.title(id='summarizer-title-input', size=80) }}<br />
+      {{ form.title(id='summarizer-title-input', size=70) }}<br />
       Enter text:<br />
-      {{ form.text(id='summarizer-text-input', cols=90, rows=5) }}<br />
+      {{ form.text(id='summarizer-text-input', cols=70, rows=5) }}<br />
     </p>
 
     <p id="url-input">
       Enter link:<br />
-      {{ form.url(id='summarizer-url-input', size=80) }}<br />
+      {{ form.url(id='summarizer-url-input', size=70) }}<br />
     </p>
 
     <p id="n-sentences-input">
@@ -38,7 +38,7 @@
     <div id="summarised-article-title">
       {% if article_title %}
         {% if article_url %}
-          <h2><a href={{ article_url }}>{{ article_title }}</a></h2>
+          <h2><a href={{ article_url }} >{{ article_title }}</a></h2>
         {% else %}
           <h2>{{ article_title }}</h2>
         {% endif %}
@@ -55,8 +55,8 @@
 
       {% if article_analysis %}
       <br />
-        <div>
-          <div class="bar-container-legend" style="text-align: center; font-weight: bold;">Sentiment Analysis Distribution</div>
+        <div id="summarised-article-analysis">
+          <div class="bar-container-legend" style="text-align: center; font-weight: bold;"><>Sentiment Analysis Distribution</div>
           <div class="bar-chart">
               <div class="bar-container">
                   <div class="bar positive" style="width: {{ '{:.1%}'.format(positive_sentiment) }}"></div>
@@ -126,12 +126,14 @@
 
       {% endif %}
     {% endif %}
+
     {% if article_sentences %}
+      <br />
       <div id="summarised-review">
-        <h3 id="summarised-review-question">Was this a good summary?
+        <h4 id="summarised-review-question">Was this a good summary?
           <a onClick="summarisedReview(true)">Yes</a> or
           <a onClick="summarisedReview(false)">No</a>
-        </h3>
+        </h4>
         <p id="summarised-positive-response" style="display: none;">Thanks for the
         positive review!</p><p id="summarised-negative-response" style="display:
         none;">Sorry to hear that. We have been notified and promise to make
@@ -147,6 +149,30 @@
         {% endif %}
       </div>
 
+    {% endif %}
+    {% if similar_articles %}
+      <br />
+      <br />
+      <div id="summarised-similar-articles">
+        <h3>Similar article recommendations</h3>
+        <br />
+        {% for article_date in similar_articles.keys() | sort(reverse=True) %}
+          <h4>{{ article_date }}</h4>
+          <ul>
+              {% for article in similar_articles.get(article_date) %}
+                <li>
+                  <h3><a href="{{ url_for('summarised') + '?url=' + article.url }}">
+                      {{ article.title }}
+                  </a></h3>
+
+                  {% for sentence in article.sentences[:2] | sort(attribute='index') %}
+                    <p>{{ sentence['data'] }}</p>
+                  {% endfor %}
+                </li>
+              {% endfor %}
+          </ul>
+        {% endfor %}
+      </div>
     {% endif %}
   </div>
 </div>

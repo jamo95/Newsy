@@ -132,7 +132,9 @@ def summarised():
         'title': 'Summarizer',
         'form': form, 'form_error': '',
         'article_sentences': '', 'article_keywords': '', 'article_title': '',
-        'article_analysis': ''
+        'article_analysis': '', 'positive_sentiment': '',
+        'neutral_sentiment': '', 'negative_sentiment': '',
+        'similar_articles': ''
     }
 
     url = request.args.get('url')
@@ -160,6 +162,24 @@ def summarised():
         ctx['neutral_sentiment'] = neutral/sentiment_sum
         ctx['negative_sentiment'] = (sentiment_sum - positive - neutral)/sentiment_sum
         ctx['article_url'] = form.url.data
+
+        if ctx['article_keywords']:
+            articles = {}   # Key = Published date
+            ctx['max_page'] = 0
+            count = 0
+            for keyword in ctx['article_keywords']:
+                feed_articles, feed_articles_count = _get_articles_category(
+                    category=keyword, offset=20, limit=20)
+                for article in feed_articles:
+                    if not article.published_at:
+                        continue
+                    if article.published_at not in articles:
+                        articles[article.published_at] = []
+                    count += 1
+                    articles[article.published_at].append(article)
+                    if count >= 20 : break
+                if count >= 20 : break
+            ctx['similar_articles'] = articles]
         if url:
             url = re.sub("http://", "", url)
             reviews = get_reviews(form.text.data, form.title.data, url, form.count.data)

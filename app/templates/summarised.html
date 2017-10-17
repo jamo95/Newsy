@@ -64,10 +64,13 @@
         <div id="summarised-article-content">
           <h4>Keywords</h4>
           <p>
-          {% for keyword in article_keywords %}
-              <span class="clickableSpan" onclick="highlight('{{ keyword }}')">{{ keyword }}</a>,
+          {% for keyword in article_keywords%}
+              <span class="clickableSpan" onclick="highlight('{{ loop.index }}','{{ keyword }}')">{{ keyword }}</a>,
           {% endfor %}
           </p>
+          <input type="button" onclick="highlightAll('{{" ".join(article_keywords) }}')" value="Highlight keywords">
+          <br />
+          <br />
           <i>Suggest keywords (space separated):</i>
           <form action = "{{ url_for('summarised', url=article_url) }}" method="POST">
             <input type="text" name="keywords">
@@ -80,10 +83,14 @@
           <h4>Keywords</h4>
           <p>
           {% for keyword in article_keywords %}
-              <span class="clickableSpan" onclick="highlight('{{ keyword }}')">{{ keyword }}</a>,
+              <span class="clickableSpan" onclick="highlight('{{ loop.index }}','{{ keyword }}')">{{ keyword }}</a>,
           {% endfor %}
           </p>
+          <input type="button" onclick="highlightAll('{{" ".join(article_keywords) }}')" value="Highlight keywords">
+          <br />
+          <br />
         </div>
+
       {% endif %}
     {% endif %}
     {% if article_sentences %}
@@ -98,7 +105,8 @@
         Newsy better for you.</p>
         {% if good_review or bad_review %}
           <br />
-          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> <!- image from https://cdnjs.com/libraries/font-awesome ->
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+          <!-- image from https://cdnjs.com/libraries/font-awesome -->
           <i id="positive-unvoted" class="fa fa-thumbs-o-up" style="font-size:36px;color:green"><a id="postive-unvoted" style="padding-right:25px;padding-left:25px">{{ good_review }} </a></i>
           <i id="positive-voted" class="fa fa-thumbs-o-up" style="font-size:36px;color:green;display: none;"><a style="padding-right:25px;padding-left:25px">{{ good_review + 1 }}</a></i>
           <i id="negative-unvoted" class="fa fa-thumbs-o-down" style="font-size:36px;color:red"><a style="padding-right:25px;padding-left:25px">{{ bad_review }}</a></i>
@@ -153,13 +161,23 @@
     });
   }
 
-  function highlight(text)
+  function highlight(idx, text)
+  {
+      // var summary_text = document.getElementById("summarised-article-content");
+      // if (!summary_text.innerHTML.includes("class=\"highlight\"")) {
+      //   summary_text.innerHTML = summary_text.innerHTML.replace(new RegExp('\\s+'+text+'\\s+',"ig"),"<span class=\"highlight\"> "+ '\$&'+" </span>");
+      // }
+  }
+
+  function highlightAll(keywords)
   {
       var summary_text = document.getElementById("summarised-article-content");
-      if (!summary_text.innerHTML.includes("class=\"highlight\"")) {
-        summary_text.innerHTML = summary_text.innerHTML.replace(new RegExp('\\s+'+text+'\\s+',"ig"),"<span class=\"highlight\"> "+'\$&'+" </span>");
+      var arr = Array.from(keywords.split(" "));
+      for (idx in arr) {
+        summary_text.innerHTML = summary_text.innerHTML.replace(new RegExp(arr[idx],"ig"),"<span class=\"highlight\">"+ '\$&'+"</span>");
       }
   }
+
 </script>
 
 <style>

@@ -19,7 +19,7 @@ attached to each vertex for ranking/selection decisions
 
 D_FACTOR = 0.85
 WINDOW_SIZE = 3 #Must be odd (Includes label word)
-TITLE_MULTIPLIER = 1.4
+TITLE_MULTIPLIER = 1.0
 
 SCORE_ITERATIONS = 2
 

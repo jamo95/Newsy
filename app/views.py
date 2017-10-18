@@ -17,7 +17,7 @@ from app import sentiment
 from app.dao.keyword import Keyword
 
 DEFAULT_SENTENCE_COUNT = 4
-DEFAULT_KEYWORD_COUNT = 15
+DEFAULT_KEYWORD_COUNT = 20 
 
 
 @app.route('/')

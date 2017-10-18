@@ -1,7 +1,7 @@
 import collections
 
 from .graph import Graph
-from .helpers import pos_tag_tokens
+from .helpers import tokenize_words, pos_tag_tokens
 from .node import Node
 
 """
@@ -18,34 +18,35 @@ attached to each vertex for ranking/selection decisions
 """
 
 D_FACTOR = 0.85
-# WINDOW_SIZE Must be odd and include the target word
-WINDOW_SIZE = 3
+WINDOW_SIZE = 3 #Must be odd (Includes label word)
+TITLE_MULTIPLIER = 1.1
+
 SCORE_ITERATIONS = 2
 
-# TODO
-# - Do the post processing
-# - Test against newspaper version
 
+def rank_words(title, text):
+    # Preprocessing 
+    title_words = tokenize_words(title)
+    text_words = tokenize_words(text)
 
-def rank_words(words):
-    # POS TAG DAT BISH!
-    # Using NN and JJ as per paper
-    # NN = Noun JJ = Adjective NNP = Pronoun
+    tags = ['NN', 'JJ']     # NN = Noun JJ = Adjective NNP = Pronoun
+    tagged = pos_tag_tokens(text_words)
+    text_words = [t[0] for t in tagged if t[1] in tags]
 
-    tags = ['NN', 'JJ']
-    tagged = pos_tag_tokens(words)
-    words = [t[0] for t in tagged if t[1] in tags]
-
+    # Textrank Algorithm
     graph = Graph()
-    _connect_nodes(graph, words)
+    seen_words = []
+    _connect_nodes(graph, seen_words, title_words, multiplier=TITLE_MULTIPLIER)
+    _connect_nodes(graph, seen_words, text_words)
 
     for node in graph.get_nodes():
         _score_node(graph, node)
 
-    return list(graph.get_nodes())
+    #no = list(graph.get_nodes())
+    return sorted(graph.get_nodes(), key=lambda n: n.score, reverse=True)
 
 
-def _connect_nodes(graph, words):
+def _connect_nodes(graph, seen_words , words, multiplier=1.0):
     """
     :param graph (Graph)
     :param words (list of str)
@@ -54,37 +55,38 @@ def _connect_nodes(graph, words):
     target_node is a Node of the current word
     context_node.data is a word within WINDOW_SIZE of the target_node.data
     """
-    seen_nodes = []
+
+    # Less words than required
+    if (len(words) < WINDOW_SIZE):
+        return 
+
     data_index = 0
     # So we can do some fancy optimisations later
     buffer = collections.deque(maxlen=WINDOW_SIZE)
 
     # First window
     for i in range(WINDOW_SIZE):
-        # In case of super small article
-        if (len(words) == i):
-            break
         buffer.append(words[i])
         data_index = (data_index + 1) % len(words)
 
     for i in range(len(words)):
-        if (len(words) < WINDOW_SIZE):
-            return buffer
-
         target_index = WINDOW_SIZE // 2 
-        target = buffer[target_index]
+        target_word = buffer[target_index]
 
         for j in range(WINDOW_SIZE):
             if j == target_index:
                 continue
 
-            target_node = Node(target)
-            if target_node not in seen_nodes:
-                seen_nodes.append(target_node)
+            if target_word not in seen_words:
+                seen_words.append(target_word)
+                target_node = Node(target_word)
+                target_node.multiplier = multiplier
 
-            context_node = Node(buffer[j])
-            if context_node not in seen_nodes:
-                seen_nodes.append(context_node)
+            context_word = buffer[j]
+            if context_word not in seen_words:
+                seen_words.append(context_word)
+                context_node = Node(context_word)
+                context_node.multiplier = multiplier 
 
             graph.add_edge(target_node, context_node)
             graph.add_edge(context_node, target_node)
@@ -98,7 +100,7 @@ def _score_node(graph, node, iterations=SCORE_ITERATIONS):
     if iterations == 0:
         return 0
 
-    score = node.score
+    score = node.score * node.multiplier
     connected_nodes = graph.get_connected_from(node)
 
     if len(connected_nodes) == 0:

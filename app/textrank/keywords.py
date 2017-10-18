@@ -19,7 +19,7 @@ attached to each vertex for ranking/selection decisions
 
 D_FACTOR = 0.85
 WINDOW_SIZE = 3 #Must be odd (Includes label word)
-KEYWORD_MULTIPLIER = 1.4
+TITLE_MULTIPLIER = 1.4
 
 SCORE_ITERATIONS = 2
 
@@ -35,15 +35,19 @@ def rank_words(title, text):
 
     # Textrank Algorithm
     graph = Graph()
-    _connect_nodes(graph, title_words, text_words)
+    seen_words = []
+    _connect_nodes(graph, seen_words, title_words, multiplier=TITLE_MULTIPLIER)
+    print(seen_words)
+    _connect_nodes(graph, seen_words, text_words)
+    print(seen_words)
 
     for node in graph.get_nodes():
         _score_node(graph, node)
 
-    return list(graph.get_nodes())
+    return sorted(graph.get_nodes(), key=lambda n: n.score, reverse=True)
 
 
-def _connect_nodes(graph, title_words, words):
+def _connect_nodes(graph, seen_words , words, multiplier=1.0):
     """
     :param graph (Graph)
     :param words (list of str)
@@ -52,7 +56,6 @@ def _connect_nodes(graph, title_words, words):
     target_node is a Node of the current word
     context_node.data is a word within WINDOW_SIZE of the target_node.data
     """
-    seen_nodes = []
     data_index = 0
     # So we can do some fancy optimisations later
     buffer = collections.deque(maxlen=WINDOW_SIZE)
@@ -70,23 +73,22 @@ def _connect_nodes(graph, title_words, words):
             return buffer
 
         target_index = WINDOW_SIZE // 2 
-        target = buffer[target_index]
+        target_word = buffer[target_index]
 
         for j in range(WINDOW_SIZE):
             if j == target_index:
                 continue
 
-            target_node = Node(target)
-            if target_node not in seen_nodes:
-                if target_node in title_words:
-                    target_node.multiplier = KEYWORD_MULTIPLIER
-                seen_nodes.append(target_node)
+            if target_word not in seen_words:
+                seen_words.append(target_word)
+                target_node = Node(target_word)
+                target_node.multiplier = multiplier
 
-            context_node = Node(buffer[j])
-            if context_node not in seen_nodes:
-                if context_node in title_words:
-                    context_node.multiplier = KEYWORD_MULTIPLIER
-                seen_nodes.append(context_node)
+            context_word = buffer[j]
+            if context_word not in seen_words:
+                seen_words.append(context_word)
+                context_node = Node(context_word)
+                context_node.multiplier = multiplier 
 
             graph.add_edge(target_node, context_node)
             graph.add_edge(context_node, target_node)

@@ -19,7 +19,7 @@ attached to each vertex for ranking/selection decisions
 
 D_FACTOR = 0.85
 WINDOW_SIZE = 3 #Must be odd (Includes label word)
-TITLE_MULTIPLIER = 1.0
+TITLE_MULTIPLIER = 1.1
 
 SCORE_ITERATIONS = 2
 
@@ -44,6 +44,7 @@ def rank_words(title, text):
     for node in graph.get_nodes():
         _score_node(graph, node)
 
+    #no = list(graph.get_nodes())
     return sorted(graph.get_nodes(), key=lambda n: n.score, reverse=True)
 
 
@@ -56,22 +57,21 @@ def _connect_nodes(graph, seen_words , words, multiplier=1.0):
     target_node is a Node of the current word
     context_node.data is a word within WINDOW_SIZE of the target_node.data
     """
+
+    # Less words than required
+    if (len(words) < WINDOW_SIZE):
+        return 
+
     data_index = 0
     # So we can do some fancy optimisations later
     buffer = collections.deque(maxlen=WINDOW_SIZE)
 
     # First window
     for i in range(WINDOW_SIZE):
-        # In case of super small article
-        if (len(words) == i):
-            break
         buffer.append(words[i])
         data_index = (data_index + 1) % len(words)
 
     for i in range(len(words)):
-        if (len(words) < WINDOW_SIZE):
-            return buffer
-
         target_index = WINDOW_SIZE // 2 
         target_word = buffer[target_index]
 

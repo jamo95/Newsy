@@ -323,6 +323,7 @@ def _summarize(text='', title='', url='',
     ranked_sentences = sorted(
         rank_sentences(sentence_nodes), key=lambda n: n.score, reverse=True)
 
+    print(article_data['text'])
     keywords = rank_words(article_data['title'], article_data['text'])
     #keywords = sorted(
     #    rank_words(article_data['title'], article_data['text']), 

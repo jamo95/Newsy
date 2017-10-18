@@ -229,7 +229,6 @@ def _summarize(text='', title='', url='',
 
     if url:
         # Check if article is cached
-        '''
         article = _get_summary(normalize_url(url))
         if article:
             if suggestedKeywords is not None:
@@ -251,7 +250,6 @@ def _summarize(text='', title='', url='',
                 's_analysis': article.s_analysis,
             }
 
-        '''
         article = _get_article_from_url(url)
         article_data['text'] = article.text
         if 'techcrunch' in url:
@@ -323,12 +321,7 @@ def _summarize(text='', title='', url='',
     ranked_sentences = sorted(
         rank_sentences(sentence_nodes), key=lambda n: n.score, reverse=True)
 
-    print(article_data['text'])
     keywords = rank_words(article_data['title'], article_data['text'])
-    #keywords = sorted(
-    #    rank_words(article_data['title'], article_data['text']), 
-    #    key=lambda n: n.score, 
-    #    reverse=True)
 
     if suggestedKeywords is not None:
         for word in suggestedKeywords:

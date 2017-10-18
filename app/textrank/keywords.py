@@ -37,9 +37,7 @@ def rank_words(title, text):
     graph = Graph()
     seen_words = []
     _connect_nodes(graph, seen_words, title_words, multiplier=TITLE_MULTIPLIER)
-    print(seen_words)
     _connect_nodes(graph, seen_words, text_words)
-    print(seen_words)
 
     for node in graph.get_nodes():
         _score_node(graph, node)

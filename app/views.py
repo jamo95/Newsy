@@ -228,8 +228,8 @@ def _summarize(text='', title='', url='',
     article_data = {'title': title, 'text': text, 'url': url}
 
     if url:
-        '''
         # Check if article is cached
+        '''
         article = _get_summary(normalize_url(url))
         if article:
             if suggestedKeywords is not None:
@@ -325,7 +325,9 @@ def _summarize(text='', title='', url='',
 
     words = tokenize_words(article_data['text'])
     keywords = sorted(
-            rank_words(words), key=lambda n: n.score, reverse=True)
+        rank_words(article_data['title'], article_data['text']), 
+        key=lambda n: n.score, 
+        reverse=True)
 
     if suggestedKeywords is not None:
         for word in suggestedKeywords:

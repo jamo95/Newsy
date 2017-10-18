@@ -17,7 +17,7 @@ from app import sentiment
 from app.dao.keyword import Keyword
 
 DEFAULT_SENTENCE_COUNT = 4
-DEFAULT_KEYWORD_COUNT = 20
+DEFAULT_KEYWORD_COUNT = 15
 
 
 @app.route('/')
@@ -323,11 +323,11 @@ def _summarize(text='', title='', url='',
     ranked_sentences = sorted(
         rank_sentences(sentence_nodes), key=lambda n: n.score, reverse=True)
 
-    words = tokenize_words(article_data['text'])
-    keywords = sorted(
-        rank_words(article_data['title'], article_data['text']), 
-        key=lambda n: n.score, 
-        reverse=True)
+    keywords = rank_words(article_data['title'], article_data['text'])
+    #keywords = sorted(
+    #    rank_words(article_data['title'], article_data['text']), 
+    #    key=lambda n: n.score, 
+    #    reverse=True)
 
     if suggestedKeywords is not None:
         for word in suggestedKeywords:

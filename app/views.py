@@ -228,6 +228,7 @@ def _summarize(text='', title='', url='',
     article_data = {'title': title, 'text': text, 'url': url}
 
     if url:
+        '''
         # Check if article is cached
         article = _get_summary(normalize_url(url))
         if article:
@@ -312,6 +313,7 @@ def _summarize(text='', title='', url='',
         senti_analysis_data = sentiment.SentimentAnalysis.analyise(text)
         if senti_analysis_data is not None:
             article_data['s_analysis'] = senti_analysis_data['label']
+    '''
 
     sentence_nodes = []
     sentences = tokenize_sentences(article_data['text'])

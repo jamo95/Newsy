@@ -165,21 +165,13 @@ def summarised():
 
         if ctx['article_keywords']:
             articles = {}
-            ctx['max_page'] = 0
-            count = 0
-            for keyword in ctx['article_keywords']:
-                feed_articles, feed_articles_count = _get_articles_category(
-                    category=keyword, offset=20, limit=20)
-                for article in feed_articles:
-                    if not article.published_at:
-                        continue
-                    if article.published_at not in articles:
-                        articles[article.published_at] = []
-                    count += 1
-                    if article.title != ctx['article_title']:
-                        articles[article.published_at].append(article)
-                    if count >= 20 : break
-                if count >= 20 : break
+            feed_articles = _get_articles_by_categorylist(keywordlist=ctx['article_keywords'][:10], offset=20, limit=20)
+            for article in feed_articles:
+                if not article.published_at and article.title != ctx['article_title']:
+                    continue
+                if article.published_at not in articles:
+                    articles[article.published_at] = []
+                articles[article.published_at].append(article)
             ctx['similar_articles'] = articles
         if url:
             url = re.sub("http://", "", url)
@@ -400,6 +392,35 @@ def _get_articles_category(category, offset=0, limit=20):
     ).count()
 
     return categorized_articles, categorized_articles_count
+
+def _get_articles_by_categorylist(keywordlist, offset=0, limit=20):
+    all_articles = []
+    matching_articles_count = {}
+    for keyword in keywordlist:
+        matching_articles = db.session.query(dao.article.Article).filter(
+            dao.article.Article.keywords.any(Keyword.data.like(keyword))
+        ).order_by(
+            desc(dao.article.Article.published_at)
+        ).offset(offset).limit(limit).all()
+        all_articles += matching_articles
+        for articles in matching_articles:
+            if articles.title not in matching_articles_count:
+                matching_articles_count[articles.title] = 0
+            else :
+                matching_articles_count[articles.title] += 1
+
+    top_articles_titles_tuples = sorted(matching_articles_count.items(), key=lambda x: x[1], reverse=True)
+    top_articles_titles = []
+    for x in top_articles_titles_tuples:
+        top_articles_titles.append(x[0])
+    top_articles = []
+    for title in top_articles_titles:
+        for article in all_articles:
+            if article.title == title and article not in top_articles:
+                top_articles.append(article)
+            if len(top_articles) >= 10: break
+        if len(top_articles) >= 10: break
+    return top_articles
 
 def _get_all_articles():
 

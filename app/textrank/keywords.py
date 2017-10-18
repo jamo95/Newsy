@@ -49,14 +49,13 @@ def rank_words(title, text):
 def _connect_nodes(graph, seen_words , words, multiplier=1.0):
     """
     :param graph (Graph)
-    :param words (list of str)
+    :param seen_words, words (list of words)
+    :param multiplier - To boost scores of title or other special word sets
     Uses coocurrence in a window of WINDOW_SIZE to create nodes
-    and create edges between nodes
-    target_node is a Node of the current word
-    context_node.data is a word within WINDOW_SIZE of the target_node.data
+    target_node and context_node and create edges between these nodes
     """
 
-    # Less words than required
+    # Exit if less words than required
     if (len(words) < WINDOW_SIZE):
         return 
 

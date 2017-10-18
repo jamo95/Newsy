@@ -251,6 +251,7 @@ def _summarize(text='', title='', url='',
                 's_analysis': article.s_analysis,
             }
 
+        '''
         article = _get_article_from_url(url)
         article_data['text'] = article.text
         if 'techcrunch' in url:
@@ -308,7 +309,6 @@ def _summarize(text='', title='', url='',
             senti_analysis_data = sentiment.SentimentAnalysis.analyise(article.text)
             if senti_analysis_data is not None:
                 article_data['s_analysis'] = senti_analysis_data['label']
-        '''
     else:
         article_data['title'] = title
         senti_analysis_data = sentiment.SentimentAnalysis.analyise(text)

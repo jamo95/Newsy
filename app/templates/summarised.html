@@ -154,9 +154,8 @@
       <div id="summarised-similar-articles">
         <h3>Similar article recommendations</h3>
         <br />
-        {% for article_date in similar_articles.keys() | sort(reverse=True) %}
-          <h4>{{ article_date }}</h4>
-          <ul>
+        <ul>
+          {% for article_date in similar_articles.keys() | sort(reverse=True) %}
               {% for article in similar_articles.get(article_date) %}
                 <li>
                   <h3><a href="{{ url_for('summarised') + '?url=' + article.url }}">
@@ -168,8 +167,8 @@
                   {% endfor %}
                 </li>
               {% endfor %}
-          </ul>
-        {% endfor %}
+          {% endfor %}
+        </ul>
       </div>
     {% endif %}
   </div>

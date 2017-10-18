@@ -29,10 +29,6 @@ def rank_words(title, text):
     title_words = tokenize_words(title)
     text_words = tokenize_words(text)
 
-    tags = ['NN', 'JJ']     # NN = Noun JJ = Adjective NNP = Pronoun
-    tagged = pos_tag_tokens(text_words)
-    text_words = [t[0] for t in tagged if t[1] in tags]
-
     # Textrank Algorithm
     graph = Graph()
     seen_words = []

@@ -12,7 +12,7 @@ def tokenize_words(text, clean=True):
     '''Tokenizes the given text into a list of words.'''
 
     tokens = nltk.word_tokenize(text)
-    # Comment out below if you dont want to lowercase everything
+
     tokens = [t.lower() for t in tokens]
 
     if clean:

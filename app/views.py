@@ -22,7 +22,19 @@ DEFAULT_KEYWORD_COUNT = 20
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    ctx = {}
+    recent_articles = _get_recent_articles(offset = 0, limit = 10)
+    articles = {}   # Key = Published date.
+    for article in recent_articles:
+        if not article.published_at:
+            continue
+        if article.published_at not in articles:
+            articles[article.published_at] = []
+        articles[article.published_at].append(article)
+    
+    ctx['articles'] = articles
+
+    return render_template('index.html', **ctx)
 
 
 @app.route('/review', methods=['POST'])
@@ -376,6 +388,13 @@ def _get_articles(url_prefix, offset=0, limit=20):
         dao.article.Article.url.like('{}%'.format(url_prefix))).count()
 
     return articles, articles_count
+
+def _get_recent_articles(offset=0, limit=10):
+    return db.session.query(dao.article.Article).filter(
+        dao.article.Article.published_at != None
+    ).order_by(
+        desc(dao.article.Article.published_at)
+    ).offset(offset).limit(limit).all()
 
 
 def _get_articles_category(category, offset=0, limit=20):

@@ -1,9 +1,33 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %} 
+{% block content %}
 
-<div class="jumbotron">
-  <div id="index" class="container">
+<div id="index" class="container">
+  <div id="slogan">
     <h1>Don't have time?</h1>
     <h1>You have Newsy!</h1>
+    <form action="{{ url_for('summarised')}}" method="post">
+      <input type="url" name="url" placeholder="Enter the URL of an article to summarize" id="index-url-box"></input>
+    </form>
+  </div>
+
+  <div id="recent_feed">
+    <h2>Recent News</h2>  
+    {% for article_date in articles.keys() | sort(reverse=True) %}
+      <h4>{{ article_date }}</h4>
+      <ul>
+          {% for article in articles.get(article_date) %}
+            <li>
+              <h3><a href="{{ url_for('summarised') + '?url=' + article.url }}">
+                  {{ article.title }}
+              </a></h3>
+
+              {% for sentence in article.sentences[:2] | sort(attribute='index') %}
+                <p>{{ sentence['data'] }}</p>
+              {% endfor %}
+            </li>
+          {% endfor %}
+      </ul>
+    {% endfor %}
   </div>
 </div>
 

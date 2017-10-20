@@ -34,6 +34,7 @@ $ python
 >>> nltk.download('punkt')
 >>> nltk.download('stopwords')
 >>> nltk.download('averaged_perceptron_tagger')
+>>> nltk.download('wordnet')
 ```
 
 Note that we may be removing `newspaper3k` as a dependency when we write our own summarisation algorithm. But for now we may as well install it.

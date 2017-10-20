@@ -19,6 +19,9 @@ class Graph:
         '''Add edge to the graph. If node_i or node_f doesn't exist then it
         will add them to the graph.'''
 
+        if (node_i == node_f):
+            return
+
         self.add_node(node_i)
         self.add_node(node_f)
 

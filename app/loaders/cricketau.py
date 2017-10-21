@@ -3,7 +3,7 @@ import re
 import datetime
 from bs4 import BeautifulSoup
 
-from helpers import clean_html
+from app.loaders.helpers import clean_html
 
 BASE_URL = 'http://www.cricket.com.au'
 

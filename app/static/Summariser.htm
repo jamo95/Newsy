@@ -1,0 +1,254 @@
+
+<!-- saved from url=(0022)http://localhost:5000/ -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Summariser</title>
+
+    <link rel="stylesheet" type="text/css" href="./Summariser_files/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="./Summariser_files/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="./Summariser_files/styles.css">
+    <link href="./Summariser_files/css" rel="stylesheet">
+  </head>
+  <body background="./Summariser_files/urban.png" style="background-repeat: no-repeat; background-position: center; background-attachment: fixed; background-size: 100% auto;">
+    <script src="./Summariser_files/jquery.min.js"></script>
+    <script src="./Summariser_files/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="./Summariser_files/scripts.min.js"></script>
+
+    <div id="header">
+  <nav class="navbar navbar-inverse">
+    <div class="container">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="http://localhost:5000/">Newsy</a>
+      </div>
+
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <ul class="nav navbar-nav navbar-left">
+          <li><a href="http://localhost:5000/summarised">Summarizer</a></li>
+          <li><a href="http://localhost:5000/feed">Categorized Feed</a></li>
+          <li><a href="http://localhost:5000/sites">Sites</a></li>
+        </ul>
+        <form action="http://localhost:5000/summarised" method="post" class="navbar-form navbar-right">
+            <div class="form-group">
+                <input id="header-url-box" type="url" name="url" class="form-control" placeholder="Enter URL">
+                <button type="submit" class="btn btn-default">Summarize!</button>
+            </div>
+        </form>
+      </div>
+    </div>
+  </nav>
+</div>
+    
+
+
+  <div id="index" class="container">
+    <div id="slogan">
+      <h1>Don't have time?</h1>
+      <h1>You have Newsy!</h1>
+      <br>
+      <br>
+      <form action="http://localhost:5000/summarised" method="post">
+        <input type="url" name="url" placeholder="Enter the URL of an article to summarize" id="index-url-box">
+      </form>
+    </div>
+
+    <div id="recent_feed" style="float: right">
+      <h4 style="text-align: center;">Recent Updates</h4><span>
+      <h3></h3>
+      <h3></h3>
+      <div id="article-list">
+      
+          
+              <div id="article-box" style="padding-right: 15px;">
+                  <p><b><a href="http://localhost:5000/summarised?url=news.com.au/technology/science/space/we-may-have-found-our-home-on-the-moon-in-a-lava-tube/news-story/9d67e6804b933ea9fd7be8d0c1e07071" style="font-size: 12px;">We may have found our home on the Moon - in a lava tube</a></b></p>
+                  <p><span style="float: left; font-size: 12px;"><i>2017-10-21</i></span>
+                     <span style="float: right; font-size: 12px; margin-right: 5px;"><a href="http://news.com.au/technology/science/space/we-may-have-found-our-home-on-the-moon-in-a-lava-tube/news-story/9d67e6804b933ea9fd7be8d0c1e07071" target="_blank"><i class="fa fa-external-link">Original article</i></a></span>
+                  </p>
+              </div>
+          
+              <div id="article-box" style="padding-right: 15px;">
+                  <p><b><a href="http://localhost:5000/summarised?url=news.com.au/finance/work/leaders/aussie-journo-stunned-at-being-put-through-to-new-zealand-pms-office/news-story/6561d3aa4a07c4582958ffda8323d11d" style="font-size: 12px;">Aussie journo stunned at being put through to New Zealand PM’s office</a></b></p>
+                  <p><span style="float: left; font-size: 12px;"><i>2017-10-21</i></span>
+                     <span style="float: right; font-size: 12px; margin-right: 5px;"><a href="http://news.com.au/finance/work/leaders/aussie-journo-stunned-at-being-put-through-to-new-zealand-pms-office/news-story/6561d3aa4a07c4582958ffda8323d11d" target="_blank"><i class="fa fa-external-link">Original article</i></a></span>
+                  </p>
+              </div>
+          
+              <div id="article-box" style="padding-right: 15px;">
+                  <p><b><a href="http://localhost:5000/summarised?url=news.com.au/entertainment/tv/current-affairs/barry-du-bois-emotional-cancer-battle-this-is-just-another-fight-for-me/news-story/df894740b54237de3ac2121e3c6346d0#itm=newscomau%7Centertainment%7Cv2-story-trending-title-shown-2%7C2%7Chttp%3A%2F%2Fnews.com.au%2Fentertainment%2Ftv%2Fcurrent-affairs%2Fbarry-du-bois-emotional-cancer-battle-this-is-just-another-fight-for-me%2Fnews-story%2Fdf894740b54237de3ac2121e3c6346d0%7Cstory%7CWhat%20does%20Lisa%20Wilkinson%E2%80%99s%20big%20move%20mean%20for%20The%20Project%3F&amp;itmt=1508566175138#itm=newscomau%7Centertainment%7Cv2-story-trending-title-shown-2%7C2%7Chttp%3A%2F%2Fnews.com.au%2Fentertainment%2Ftv%2Fcurrent-affairs%2Fbarry-du-bois-emotional-cancer-battle-this-is-just-another-fight-for-me%2Fnews-story%2Fdf894740b54237de3ac2121e3c6346d0%23itm%3Dnewscomau%257Centertainment%257Cv2-story-trending-title-shown-2%257C2%257Chttp%253A%252F%252Fnews.com.au%252Fentertainment%252Ftv%252Fcurrent-affairs%252Fbarry-du-bois-emotional-cancer-battle-this-is-just-another-fight-for-me%252Fnews-story%252Fdf894740b54237de3ac2121e3c6346d0%257Cstory%257CWhat%2520does%2520Lisa%2520Wilkinson%25E2%2580%2599s%2520big%2520move%2520mean%2520for%2520The%2520Project%253F%26itmt%3D1508566175138%7Cstory%7CWhat%20does%20Lisa%20Wilkinson%E2%80%99s%20big%20move%20mean%20for%20The%20Project%3F&amp;itmt=1508566175214" style="font-size: 12px;">Barry Du Bois emotional cancer battle: ‘This is just another fight for me’</a></b></p>
+                  <p><span style="float: left; font-size: 12px;"><i>2017-10-21</i></span>
+                     <span style="float: right; font-size: 12px; margin-right: 5px;"><a href="http://news.com.au/entertainment/tv/current-affairs/barry-du-bois-emotional-cancer-battle-this-is-just-another-fight-for-me/news-story/df894740b54237de3ac2121e3c6346d0#itm=newscomau%7Centertainment%7Cv2-story-trending-title-shown-2%7C2%7Chttp%3A%2F%2Fnews.com.au%2Fentertainment%2Ftv%2Fcurrent-affairs%2Fbarry-du-bois-emotional-cancer-battle-this-is-just-another-fight-for-me%2Fnews-story%2Fdf894740b54237de3ac2121e3c6346d0%7Cstory%7CWhat%20does%20Lisa%20Wilkinson%E2%80%99s%20big%20move%20mean%20for%20The%20Project%3F&amp;itmt=1508566175138#itm=newscomau%7Centertainment%7Cv2-story-trending-title-shown-2%7C2%7Chttp%3A%2F%2Fnews.com.au%2Fentertainment%2Ftv%2Fcurrent-affairs%2Fbarry-du-bois-emotional-cancer-battle-this-is-just-another-fight-for-me%2Fnews-story%2Fdf894740b54237de3ac2121e3c6346d0%23itm%3Dnewscomau%257Centertainment%257Cv2-story-trending-title-shown-2%257C2%257Chttp%253A%252F%252Fnews.com.au%252Fentertainment%252Ftv%252Fcurrent-affairs%252Fbarry-du-bois-emotional-cancer-battle-this-is-just-another-fight-for-me%252Fnews-story%252Fdf894740b54237de3ac2121e3c6346d0%257Cstory%257CWhat%2520does%2520Lisa%2520Wilkinson%25E2%2580%2599s%2520big%2520move%2520mean%2520for%2520The%2520Project%253F%26itmt%3D1508566175138%7Cstory%7CWhat%20does%20Lisa%20Wilkinson%E2%80%99s%20big%20move%20mean%20for%20The%20Project%3F&amp;itmt=1508566175214" target="_blank"><i class="fa fa-external-link">Original article</i></a></span>
+                  </p>
+              </div>
+          
+      
+          
+              <div id="article-box" style="padding-right: 15px;">
+                  <p><b><a href="http://localhost:5000/summarised?url=hackernoon.com/how-to-mine-ethereum-in-5-min-3f3bc80d0c4b" style="font-size: 12px;">None</a></b></p>
+                  <p><span style="float: left; font-size: 12px;"><i>2017-10-20</i></span>
+                     <span style="float: right; font-size: 12px; margin-right: 5px;"><a href="http://hackernoon.com/how-to-mine-ethereum-in-5-min-3f3bc80d0c4b" target="_blank"><i class="fa fa-external-link">Original article</i></a></span>
+                  </p>
+              </div>
+          
+              <div id="article-box" style="padding-right: 15px;">
+                  <p><b><a href="http://localhost:5000/summarised?url=hackernoon.com/14-free-courses-for-techies-to-succeed-in-business-d7dd592c39b2" style="font-size: 12px;">14 Free Courses for Techies to Succeed in&nbsp;Business</a></b></p>
+                  <p><span style="float: left; font-size: 12px;"><i>2017-10-20</i></span>
+                     <span style="float: right; font-size: 12px; margin-right: 5px;"><a href="http://hackernoon.com/14-free-courses-for-techies-to-succeed-in-business-d7dd592c39b2" target="_blank"><i class="fa fa-external-link">Original article</i></a></span>
+                  </p>
+              </div>
+          
+              <div id="article-box" style="padding-right: 15px;">
+                  <p><b><a href="http://localhost:5000/summarised?url=wired.com/story/cryptojacking-cryptocurrency-mining-browser" style="font-size: 12px;">Your Browser Could Be Mining Cryptocurrency For a Stranger</a></b></p>
+                  <p><span style="float: left; font-size: 12px;"><i>2017-10-20</i></span>
+                     <span style="float: right; font-size: 12px; margin-right: 5px;"><a href="http://wired.com/story/cryptojacking-cryptocurrency-mining-browser" target="_blank"><i class="fa fa-external-link">Original article</i></a></span>
+                  </p>
+              </div>
+          
+      
+          
+              <div id="article-box" style="padding-right: 15px;">
+                  <p><b><a href="http://localhost:5000/summarised?url=news.com.au/entertainment/tv/current-affairs/what-does-lisa-wilkinsons-big-move-mean-for-the-project/news-story/8dbb5faa0cc27b5e5e34a558fd021a6f" style="font-size: 12px;">What does Lisa Wilkinson’s big move mean for The Project?</a></b></p>
+                  <p><span style="float: left; font-size: 12px;"><i>2017-10-17</i></span>
+                     <span style="float: right; font-size: 12px; margin-right: 5px;"><a href="http://news.com.au/entertainment/tv/current-affairs/what-does-lisa-wilkinsons-big-move-mean-for-the-project/news-story/8dbb5faa0cc27b5e5e34a558fd021a6f" target="_blank"><i class="fa fa-external-link">Original article</i></a></span>
+                  </p>
+              </div>
+          
+              <div id="article-box" style="padding-right: 15px;">
+                  <p><b><a href="http://localhost:5000/summarised?url=news.com.au/entertainment/tv/current-affairs/what-does-lisa-wilkinsons-big-move-mean-for-the-project/news-story/8dbb5faa0cc27b5e5e34a558fd021a6f" style="font-size: 12px;">What does Lisa Wilkinson’s big move mean for The Project?</a></b></p>
+                  <p><span style="float: left; font-size: 12px;"><i>2017-10-17</i></span>
+                     <span style="float: right; font-size: 12px; margin-right: 5px;"><a href="http://news.com.au/entertainment/tv/current-affairs/what-does-lisa-wilkinsons-big-move-mean-for-the-project/news-story/8dbb5faa0cc27b5e5e34a558fd021a6f" target="_blank"><i class="fa fa-external-link">Original article</i></a></span>
+                  </p>
+              </div>
+          
+              <div id="article-box" style="padding-right: 15px;">
+                  <p><b><a href="http://localhost:5000/summarised?url=news.com.au/lifestyle/real-life/news-life/people-smuggling-in-africa-enterprise-of-kidnapping-torture-and-extortion/news-story/9720bf523c345a043642de5179b05d24#null" style="font-size: 12px;">People smuggling in Africa: ‘Enterprise of kidnapping, torture and extortion’</a></b></p>
+                  <p><span style="float: left; font-size: 12px;"><i>2017-10-17</i></span>
+                     <span style="float: right; font-size: 12px; margin-right: 5px;"><a href="http://news.com.au/lifestyle/real-life/news-life/people-smuggling-in-africa-enterprise-of-kidnapping-torture-and-extortion/news-story/9720bf523c345a043642de5179b05d24#null" target="_blank"><i class="fa fa-external-link">Original article</i></a></span>
+                  </p>
+              </div>
+          
+      
+          
+              <div id="article-box" style="padding-right: 15px;">
+                  <p><b><a href="http://localhost:5000/summarised?url=news.com.au/entertainment/celebrity-life/woody-allen-backtracks-on-his-harvey-weinstein-comments-saying-hes-a-sad-sick-man/news-story/fbf3a1cbaacd365d8043e113c9aa5bbd" style="font-size: 12px;">Woody Allen backtracks on his Harvey Weinstein comments, saying he’s a ‘sad, sick man’</a></b></p>
+                  <p><span style="float: left; font-size: 12px;"><i>2017-10-16</i></span>
+                     <span style="float: right; font-size: 12px; margin-right: 5px;"><a href="http://news.com.au/entertainment/celebrity-life/woody-allen-backtracks-on-his-harvey-weinstein-comments-saying-hes-a-sad-sick-man/news-story/fbf3a1cbaacd365d8043e113c9aa5bbd" target="_blank"><i class="fa fa-external-link">Original article</i></a></span>
+                  </p>
+              </div>
+          
+              <div id="article-box" style="padding-right: 15px;">
+                  <p><b><a href="http://localhost:5000/summarised?url=news.com.au/national/queensland/news/queensland-weather-flash-flooding-alerts/news-story/94e03b44e9d3a761fd707f681b0230e1" style="font-size: 12px;">Gympie, Queensland floods: Man swept away by water found dead in his car</a></b></p>
+                  <p><span style="float: left; font-size: 12px;"><i>2017-10-16</i></span>
+                     <span style="float: right; font-size: 12px; margin-right: 5px;"><a href="http://news.com.au/national/queensland/news/queensland-weather-flash-flooding-alerts/news-story/94e03b44e9d3a761fd707f681b0230e1" target="_blank"><i class="fa fa-external-link">Original article</i></a></span>
+                  </p>
+              </div>
+          
+              <div id="article-box" style="padding-right: 15px;">
+                  <p><b><a href="http://localhost:5000/summarised?url=news.com.au/national/politics/malcolm-turnbull-to-unveil-energy-plan-that-custs-power-bills-emissions/news-story/80b92b0e90019f498ec8e30f7ab0c99b" style="font-size: 12px;">Malcolm Turnbull to unveil energy plan</a></b></p>
+                  <p><span style="float: left; font-size: 12px;"><i>2017-10-16</i></span>
+                     <span style="float: right; font-size: 12px; margin-right: 5px;"><a href="http://news.com.au/national/politics/malcolm-turnbull-to-unveil-energy-plan-that-custs-power-bills-emissions/news-story/80b92b0e90019f498ec8e30f7ab0c99b" target="_blank"><i class="fa fa-external-link">Original article</i></a></span>
+                  </p>
+              </div>
+          
+              <div id="article-box" style="padding-right: 15px;">
+                  <p><b><a href="http://localhost:5000/summarised?url=news.com.au/world/breaking-news/jakarta-governor-sworn-in/news-story/6ba27887cf11db2ddb968f799d0a0654" style="font-size: 12px;">Jakarta governor sworn in</a></b></p>
+                  <p><span style="float: left; font-size: 12px;"><i>2017-10-16</i></span>
+                     <span style="float: right; font-size: 12px; margin-right: 5px;"><a href="http://news.com.au/world/breaking-news/jakarta-governor-sworn-in/news-story/6ba27887cf11db2ddb968f799d0a0654" target="_blank"><i class="fa fa-external-link">Original article</i></a></span>
+                  </p>
+              </div>
+          
+              <div id="article-box" style="padding-right: 15px;">
+                  <p><b><a href="http://localhost:5000/summarised?url=news.com.au/entertainment/awards/australian-childrens-tv-shows-little-lunch-and-boxwars/news-story/8a6d56ddb394048f29b8f76210a9b622" style="font-size: 12px;">Litte Lunch nominated for an Emmy award, Boxwars wins International Pitch at MIPJunior</a></b></p>
+                  <p><span style="float: left; font-size: 12px;"><i>2017-10-16</i></span>
+                     <span style="float: right; font-size: 12px; margin-right: 5px;"><a href="http://news.com.au/entertainment/awards/australian-childrens-tv-shows-little-lunch-and-boxwars/news-story/8a6d56ddb394048f29b8f76210a9b622" target="_blank"><i class="fa fa-external-link">Original article</i></a></span>
+                  </p>
+              </div>
+          
+              <div id="article-box" style="padding-right: 15px;">
+                  <p><b><a href="http://localhost:5000/summarised?url=news.com.au/world/breaking-news/actor-roy-dotrice-dies-aged-94/news-story/89d2707ad4110bdf651bb27f9ac95011" style="font-size: 12px;">Actor Roy Dotrice dies aged 94</a></b></p>
+                  <p><span style="float: left; font-size: 12px;"><i>2017-10-16</i></span>
+                     <span style="float: right; font-size: 12px; margin-right: 5px;"><a href="http://news.com.au/world/breaking-news/actor-roy-dotrice-dies-aged-94/news-story/89d2707ad4110bdf651bb27f9ac95011" target="_blank"><i class="fa fa-external-link">Original article</i></a></span>
+                  </p>
+              </div>
+          
+              <div id="article-box" style="padding-right: 15px;">
+                  <p><b><a href="http://localhost:5000/summarised?url=news.com.au/world/breaking-news/portugal-fires-kill-27/news-story/013ae4c5667b494ee96dde4106fdf478" style="font-size: 12px;">Portugal fires kill 27</a></b></p>
+                  <p><span style="float: left; font-size: 12px;"><i>2017-10-16</i></span>
+                     <span style="float: right; font-size: 12px; margin-right: 5px;"><a href="http://news.com.au/world/breaking-news/portugal-fires-kill-27/news-story/013ae4c5667b494ee96dde4106fdf478" target="_blank"><i class="fa fa-external-link">Original article</i></a></span>
+                  </p>
+              </div>
+          
+              <div id="article-box" style="padding-right: 15px;">
+                  <p><b><a href="http://localhost:5000/summarised?url=news.com.au/national/rush-hour/rush-hour-wild-weather-lashes-queensland/news-story/123c1b5698b8b99e70da88b4b3462ab4" style="font-size: 12px;">RUSH HOUR: Wild weather batters Queensland</a></b></p>
+                  <p><span style="float: left; font-size: 12px;"><i>2017-10-16</i></span>
+                     <span style="float: right; font-size: 12px; margin-right: 5px;"><a href="http://news.com.au/national/rush-hour/rush-hour-wild-weather-lashes-queensland/news-story/123c1b5698b8b99e70da88b4b3462ab4" target="_blank"><i class="fa fa-external-link">Original article</i></a></span>
+                  </p>
+              </div>
+          
+              <div id="article-box" style="padding-right: 15px;">
+                  <p><b><a href="http://localhost:5000/summarised?url=news.com.au/technology/innovation/motoring/on-the-road/firefighters-battle-blaze-of-motorhomes-on-gold-coast/news-story/c9cd704a137ab9471a4ab0dbb85b4649" style="font-size: 12px;">Arundel, Gold Coast fire: Suspicious blaze destroys more than 10 motorhomes</a></b></p>
+                  <p><span style="float: left; font-size: 12px;"><i>2017-10-16</i></span>
+                     <span style="float: right; font-size: 12px; margin-right: 5px;"><a href="http://news.com.au/technology/innovation/motoring/on-the-road/firefighters-battle-blaze-of-motorhomes-on-gold-coast/news-story/c9cd704a137ab9471a4ab0dbb85b4649" target="_blank"><i class="fa fa-external-link">Original article</i></a></span>
+                  </p>
+              </div>
+          
+              <div id="article-box" style="padding-right: 15px;">
+                  <p><b><a href="http://localhost:5000/summarised?url=news.com.au/national/australia-wins-seat-on-powerful-united-nations-human-rights-council/news-story/0aea5412c403cf9fd4afa3ec39547c81" style="font-size: 12px;">Australia wins seat on UN Human Rights Council</a></b></p>
+                  <p><span style="float: left; font-size: 12px;"><i>2017-10-16</i></span>
+                     <span style="float: right; font-size: 12px; margin-right: 5px;"><a href="http://news.com.au/national/australia-wins-seat-on-powerful-united-nations-human-rights-council/news-story/0aea5412c403cf9fd4afa3ec39547c81" target="_blank"><i class="fa fa-external-link">Original article</i></a></span>
+                  </p>
+              </div>
+          
+              <div id="article-box" style="padding-right: 15px;">
+                  <p><b><a href="http://localhost:5000/summarised?url=news.com.au/national/queensland/crime/police-issue-description-of-man-who-lifted-girl-from-bed-in-loganlea-home-and-then-assaulted-her/news-story/a1b29d70e222feae4aa4f337efb8d673" style="font-size: 12px;">Loganlea assault: QLD Police release description of suspect</a></b></p>
+                  <p><span style="float: left; font-size: 12px;"><i>2017-10-16</i></span>
+                     <span style="float: right; font-size: 12px; margin-right: 5px;"><a href="http://news.com.au/national/queensland/crime/police-issue-description-of-man-who-lifted-girl-from-bed-in-loganlea-home-and-then-assaulted-her/news-story/a1b29d70e222feae4aa4f337efb8d673" target="_blank"><i class="fa fa-external-link">Original article</i></a></span>
+                  </p>
+              </div>
+          
+      
+      </div>
+    </span></div>
+  </div>
+  <div class="container text-center">
+    <h2 class="col-md-12"></h2>
+    <h2 class="col-md-12">Popular Supported Websites</h2>
+    <h2 class="col-md-12"></h2>
+    <a href="https://techcrunch.com/" target="_blank" class="col-md-3"><img src="./Summariser_files/tc_logo.png" style="display: inline-block;overflow: hidden;width: 80%;"></a>
+    <a href="http://www.news.com.au/" target="_blank" class="col-md-3"><img src="./Summariser_files/newsau_logo.png" style="display: inline-block;overflow: hidden;width: 80%;"></a>
+    <a href="https://www.wired.com/" target="_blank" class="col-md-3"><img src="./Summariser_files/wired_logo.png" style="display: inline-block;overflow: hidden;width: 80%;"></a>
+    <a href="http://www.cricket.com.au/" target="_blank" class="col-md-3"><img src="./Summariser_files/crick_logo.png" style="display: inline-block;overflow: hidden;width: 80%;"></a>
+    <h2 class="col-md-12"></h2>
+  </div>
+
+
+
+    <div id="footer" class="container-fluid">
+  <div class="container text-center">
+    <p id="footer-made-with" class="col-md-12">Made with <span id="footer-icon">☕</span> in Comp4920 by</p>
+    <p class="col-md-12">Jamison Tsai | Josh Leeb-du Toit | Le Thanh Son | Pratulya Kashyap | Richard Lies</p>
+
+  </div>
+
+  <script type="text/javascript">
+    let footerIconIndex = 0;
+    let footerIcons = [
+      '&#x2764',   // heart
+      '&#x2615;',  // coffee
+      '&#x1f32f;', // burrito
+      '&#x1f4aa;', // muscles
+      '&#x1f354;', // burger
+      '&#x1f36a;', // cookie
+      '&#x1f377;', // wine
+      '&#x1f37a;', // beer
+      '&#x1f363;'  // nigiri
+    ];
+
+    function updateFooterIcon() {
+      $('#footer-icon').html(
+        footerIcons[footerIconIndex++ % footerIcons.length]);
+    }
+
+    updateFooterIcon();
+    window.setInterval(updateFooterIcon, 1000);
+  </script>
+</div>
+  
+</body></html>

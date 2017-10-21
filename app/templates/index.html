@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
-<body background="{{ url_for('static', filename='urban.png') }}" style="background-repeat: no-repeat; background-attachment: fixed;">
+<body background="{{ url_for('static', filename='urban.png') }}" style="background-repeat: no-repeat; background-position: center; background-attachment: fixed; background-size: 100% auto;">
     <div id="index" class="container">
   <div id="slogan" class="col-xs-12 col-sm-9 col-md-9">
     <h1>Don't have time?</h1>
@@ -13,7 +13,7 @@
     </form>
   </div>
 
-  <div id="recent_feed" class="col-xs-12 col-sm-3 col-md-3">   
+  <div id="recent_feed" class="col-xs-12 col-sm-3 col-md-3">
     <h2>Recent News</h2>
     <div id="article-list">
     {% for article_date in articles.keys() | sort(reverse=True) %}
@@ -29,6 +29,16 @@
     {% endfor %}
     </div>
   </div>
+  <div class="container text-center">
+    <h1 class="col-md-12"></h1>
+    <h2 class="col-md-12">Popular Supported Websites</h2>
+    <h1 class="col-md-12"></h1>
+    <a href="https://techcrunch.com/" target="_blank" class="col-md-3"><img src="static/tc_logo.png" style="display: inline-block;overflow: hidden;width: 100%;"></a>
+    <a href="http://www.news.com.au/" target="_blank" class="col-md-3"><img src="static/newsau_logo.png" style="display: inline-block;overflow: hidden;width: 100%;"></a>
+    <a href="https://www.wired.com/" target="_blank" class="col-md-3" ><img src="static/wired_logo.png" style="display: inline-block;overflow: hidden;width: 100%;"></a>
+    <a href="http://www.cricket.com.au/" target="_blank" class="col-md-3"><img src="static/crick_logo.png" style="display: inline-block;overflow: hidden;width: 100%;"></a>
+  </div>
 </div>
 </body>
+
 {% endblock %}

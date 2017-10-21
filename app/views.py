@@ -11,13 +11,13 @@ from app.textrank.sentences import rank as rank_sentences
 from app.textrank.keywords import rank_words
 from app.textrank.node import Node
 from app.textrank.helpers import tokenize_sentences, tokenize_words, normalize_url
-from app.loaders import techcrunch, wired, hackernoon, venturebeat, newsau
+from app.loaders import techcrunch, wired, hackernoon, venturebeat, newsau ,cricketau
 from app import sentiment
 
 from app.dao.keyword import Keyword
 
 DEFAULT_SENTENCE_COUNT = 4
-DEFAULT_KEYWORD_COUNT = 20 
+DEFAULT_KEYWORD_COUNT = 20
 
 
 @app.route('/')
@@ -31,7 +31,7 @@ def index():
         if article.published_at not in articles:
             articles[article.published_at] = []
         articles[article.published_at].append(article)
-    
+
     ctx['articles'] = articles
 
     return render_template('index.html', **ctx)

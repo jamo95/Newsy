@@ -2,11 +2,13 @@
     padding-top: 20px;
     padding-bottom: 80px;
 
+
     &-title-input { margin-bottom: 1em; }
 
     &-title { margin-bottom: 0px; }
 
     &-article {
+      margin-bottom: 50px;
         &-title { font-style: italic; }
 
         &-content {

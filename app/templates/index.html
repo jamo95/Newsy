@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block content %}
 
-<body background="{{ url_for('static', filename='urban.png') }}" style="background-repeat: no-repeat; background-attachment: fixed;">
+<body background="{{ url_for('static', filename='urban.png') }}" style="background-repeat: no-repeat; background-position: center; background-attachment: fixed; background-size: 100% auto;">
     <div id="index" class="container">
   <div id="slogan" class="col-xs-12 col-sm-9 col-md-9">
     <h1>Don't have time?</h1>
@@ -13,7 +13,7 @@
     </form>
   </div>
 
-  <div id="recent_feed" class="col-xs-12 col-sm-3 col-md-3">   
+  <div id="recent_feed" class="col-xs-12 col-sm-3 col-md-3">
     <h2>Recent News</h2>
     <div id="article-list">
     {% for article_date in articles.keys() | sort(reverse=True) %}

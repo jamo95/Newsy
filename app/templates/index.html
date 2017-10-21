@@ -3,35 +3,32 @@
 
 <body background="{{ url_for('static', filename='urban.png') }}" style="background-repeat: no-repeat; background-attachment: fixed;">
     <div id="index" class="container">
-      <div id="slogan">
-        <h1>Don't have time?</h1>
-        <h1>You have Newsy!</h1>
-        <br />
-        <br />
-        <form action="{{ url_for('summarised')}}" method="post">
-          <input type="url" name="url" placeholder="Enter the URL of an article to summarize" id="index-url-box"></input>
-        </form>
-      </div>
+  <div id="slogan" class="col-xs-12 col-sm-9 col-md-9">
+    <h1>Don't have time?</h1>
+    <h1>You have Newsy!</h1>
+    <br />
+    <br />
+    <form action="{{ url_for('summarised')}}" method="post">
+      <input type="url" name="url" placeholder="Enter the URL of an article to summarize" id="index-url-box"></input>
+    </form>
+  </div>
 
-      <div id="recent_feed">
-        <h2>Recent News</h2>
-        {% for article_date in articles.keys() | sort(reverse=True) %}
-          <h4>{{ article_date }}</h4>
-          <ul>
-              {% for article in articles.get(article_date) %}
-                <li>
-                  <h3><a href="{{ url_for('summarised') + '?url=' + article.url }}">
-                      {{ article.title }}
-                  </a></h3>
-
-                  {% for sentence in article.sentences[:2] | sort(attribute='index') %}
-                    <p>{{ sentence['data'] }}</p>
-                  {% endfor %}
-                </li>
-              {% endfor %}
-          </ul>
+  <div id="recent_feed" class="col-xs-12 col-sm-3 col-md-3">   
+    <h2>Recent News</h2>
+    <div id="article-list">
+    {% for article_date in articles.keys() | sort(reverse=True) %}
+        {% for article in articles.get(article_date) %}
+            <div id="article-box">
+                <p><b><a href="{{ url_for('summarised') + '?url=' + article.url }}">
+                {{ article.title }}</a></b></p>
+                <p><span style="float: left; font-size: 12px;"><i>{{ article_date }}</i></span>
+                   <span style="float: right; font-size: 12px; margin-right: 5px;"><a href="http://{{ article.url }}" target="_blank"><i class="fa fa-external-link">Original article</i></a></span>
+                </p>
+            </div>
         {% endfor %}
-      </div>
+    {% endfor %}
     </div>
+  </div>
+</div>
 </body>
 {% endblock %}

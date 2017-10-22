@@ -1,7 +1,8 @@
 import requests
 import json
 
-
+# sentiment analysis algorithm is based on an api from http://text-processing.com/
+# it takes in text and return an object with a probability distribution between positive neutral and negative sentiment
 url = "http://text-processing.com/api/sentiment/"
 
 

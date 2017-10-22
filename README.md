@@ -113,3 +113,5 @@ Finally, the main functionality, such as collecting and processing data, and int
 The backend functions will be called from the frontend functions. These functions which contain business and database logic should be split up into `*.py` files in a logical way. Then they can just be imported and called from the frontend functions.
 
 When modifying backend functions only, the Flask server will automatically recognise any changes and restart the server for you.
+
+Note: our sentiment analysis is based on an api from http://text-processing.com that takes in text and returns a probability distribution between positive, neutral and negative.

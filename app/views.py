@@ -65,7 +65,7 @@ def review():
 @app.route('/sites/<string:site>', methods=['GET'])
 @app.route('/sites/<string:site>/<int:page>', methods=['GET'])
 def sites(site=None, page=1):
-    page_size = 20
+    page_size = 12 
     ctx = {
         'title': 'Sites', 'site': None, 'sites': _get_urls(), 'page': page
     }
@@ -93,7 +93,7 @@ def sites(site=None, page=1):
 @app.route('/feed/<string:category>', methods=['GET'])
 @app.route('/feed/<string:category>/<int:page>', methods=['GET'])
 def feed(category=None, page=1):
-    page_size = 20
+    page_size = 12
     ctx = {'title': 'Categorized Feed', 'category': None, 'page': page}
 
     if not category:
@@ -227,7 +227,6 @@ def _get_article_from_url(url):
     # Otherwise user is returned the exception page
     article.download()
     article.parse()
-    article.nlp()
 
     return article
 

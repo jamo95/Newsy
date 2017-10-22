@@ -20,7 +20,7 @@
       <h3>Results for "{{ category }}"</h3>
       <br />
       {% for article_date in articles.keys() | sort(reverse=True) %}
-      <table class="table table-hover">
+      <table class="table table-bordered table-hover">
           <tbody>
               <thead class="thead-default"> <h4>{{ article_date }}</h4></thead>
                 {% for article in articles.get(article_date) %}
@@ -51,12 +51,14 @@
       </ul>
 
     {% else %}
-      <h3 style="margin-top: 40px;">Most Popular Categories</h3>
-       <p id="keyword-list">
+    <table class="table">
+      <h3>Popular Categories</h3>
+      <tbody><tr>
        {% for category in categories %}
-   	<a id="category" href="{{ url_for('feed', category=category) }}">#{{ category }}</a>
+       <td><a id="category" href="{{ url_for('feed', category=category) }}">#{{ category }}</a></td>
        {% endfor %}
-       </p>
+      </tr></tbody>
+    </table>
     {% endif %}
   </div>
 </body>

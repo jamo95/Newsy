@@ -3,13 +3,14 @@
   <body background="{{ url_for('static', filename='news.png') }}" style="background-repeat: no-repeat; background-position: center; background-attachment: fixed; background-size: 100% auto;">
   <div id="top" class="container">
       <h1 style="text-align: center;">Categorized Feed Search</h1>
+      <br />
   </div>
 
-  <div id="search" class="container col-lg-3 input-group">
+  <div id="search" class="container input-group" style="text-align: center; width: 40%">
     <form action = "{{ url_for('feed') }}" method = "post">
-      <span class="input-group-btn">
-      <input type="text" name="category" class="form-control">
-          <button type="submit" class="btn btn-default" value="View Categorized Feed">
+      <span class="input-group-btn container">
+      <input type="text" name="category" class="form-control" style="width: 83%;">
+          <button type="submit" class="btn btn-default" value="View Categorized Feed" style="width: 17%;">
               Search
           </button>
       </span>

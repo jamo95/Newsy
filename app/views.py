@@ -65,7 +65,7 @@ def review():
 @app.route('/sites/<string:site>', methods=['GET'])
 @app.route('/sites/<string:site>/<int:page>', methods=['GET'])
 def sites(site=None, page=1):
-    page_size = 12 
+    page_size = 12
     ctx = {
         'title': 'Sites', 'site': None, 'sites': _get_urls(), 'page': page
     }
@@ -160,11 +160,15 @@ def summarised():
                 url = 'http://' + url
             form.url.data = url
         summary = _summarize(
-            form.text.data, form.title.data, form.url.data, form.count.data, suggestedKeywords, form.k_count.data) 
+            form.text.data, form.title.data, form.url.data, form.count.data, suggestedKeywords, form.k_count.data)
 
         ctx['article_title'] = summary.get('title')
         ctx['article_sentences'] = summary.get('sentences')
         ctx['article_keywords'] = summary.get('keywords')
+        if suggestedKeywords:
+            for word in suggestedKeywords:
+                if word not in ctx['article_keywords']:
+                    ctx['article_keywords'].insert(0,word)
         ctx['article_analysis'] = summary.get('s_analysis')
         positive = sentiment.SentimentAnalysis.analyise(summary.get('sentences'))['probability']['pos']
         neutral = sentiment.SentimentAnalysis.analyise(summary.get('sentences'))['probability']['neutral']

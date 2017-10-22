@@ -30,11 +30,11 @@
 
       <ul class="pager">
       {% if page >= 2 %}
-        <p><a href="{{ url_for('sites', site=site, page=page-1) }}">Previous</a></p>
+        <li><a href="{{ url_for('sites', site=site, page=page-1) }}">Previous</a></li>
       {% endif %}
 
       {% if page < max_page %}
-        <p><a href="{{ url_for('sites', site=site, page=page+1) }}">Next</a></p>
+        <li><a href="{{ url_for('sites', site=site, page=page+1) }}">Next</a></li>
       {% endif %}
       </ul>
 

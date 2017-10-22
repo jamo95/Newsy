@@ -31,12 +31,19 @@
       {% endif %}
     {% else %}
       <h1>Sites</h1>
+      <div class="container" style="margin-bottom: 70px;">
+        <div class="row" style="margin-top: 30px;">
+          <span class="col-md-4"><a href="/sites/news.com.au"><img src="static/newsau_logo.png" width="204" height="65"></a></span>
+          <span class="col-md-4"><a href="/sites/techcrunch.com"><img src="static/tc_logo.png" width="204" height="55"></a></span>
+          <span class="col-md-4"><a href="/sites/wired.com"><img src="static/wired_logo.png" width="204" height="55"></a></span>
+        </div>
 
-      <ul>
-        {% for site in sites %}
-          <li><a href="/sites/{{ site }}">{{ site }}</a></li>
-        {% endfor %}
-      </ul>
+        <div class="row" style="margin-top: 30px;">
+          <span class="col-md-4"><a href="/sites/cricket.com.au"><img src="static/crick_logo.png" width="204" height="71"></a></span>
+          <span class="col-md-4"><a href="/sites/venturebeat.com"><img src="static/venture_logo.png" width="204" height="75"></a></span>
+          <span class="col-md-4"><a href="/sites/hackernoon.com"><img src="static/hacker_logo.png" width="204" height="75"></a></span>
+         </div>
+      </div>  
     {% endif %}
   </div>
 </body>

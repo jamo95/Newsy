@@ -1,7 +1,9 @@
 {% extends "base.html" %}
 {% block content %}
+<body background="{{ url_for('static', filename='rocket.png') }}" style="background-repeat: no-repeat; background-position: center; background-attachment: fixed; background-size: 100% auto;">
+  <div id="sites" class="container">
     {% if site %}
-    <div id="top" class="container">  
+    <div id="top" class="container">
       <h1>{{ site }}</h1>
     </div>
       <br />

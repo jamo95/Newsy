@@ -42,7 +42,7 @@
         <div id="summarised-article-title" style="margin-right:20px">
           {% if article_title %}
             {% if article_url %}
-              <h2><a href={{ article_url }} >{{ article_title }}</a></h2>
+              <h2><a href={{ article_url }} target="_blank">{{ article_title }}</a></h2>
             {% else %}
               <h2>{{ article_title }}</h2>
             {% endif %}
@@ -103,7 +103,7 @@
           {% endfor %}
           </p>
           <input id="article-highlight" class="btn btn-default" type="button" onclick="articleHighlightAll('{{" ".join(article_keywords) }}')" value="Highlight keywords">
-          <input id="article-unhighlight" style="display: none" type="button" onclick="articleUnhighlightAll()" value="Unhighlight keywords">
+          <input id="article-unhighlight" class="btn btn-default" style="display: none" type="button" onclick="articleUnhighlightAll()" value="Unhighlight keywords">
           <br />
           <br />
           <i>Suggest keywords (space separated):</i>

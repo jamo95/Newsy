@@ -1,27 +1,34 @@
 {% extends "base.html" %}
 {% block content %}
-<body background="{{ url_for('static', filename='rocket.png') }}" style="background-repeat: no-repeat; background-position: center; background-attachment: fixed; background-size: 100% auto;">
-  <div id="sites" class="container">
     {% if site %}
+    <div id="top" class="container">  
       <h1>{{ site }}</h1>
+    </div>
       <br />
+      <div id="feed" class="container">
       {% for article_date in articles.keys() | sort(reverse=True) %}
-        <h4>{{ article_date }}</h4>
-        <ul>
-            {% for article in articles.get(article_date) %}
-              <li>
-                <h3><a href="{{ url_for('summarised') + '?url=' + article.url }}">
-                    {{ article.title }}
-                </a></h3>
+        <table class="table table-hover">
+          <tbody>
+              <thead class="thead-default"> <h4>{{ article_date }}</h4></thead>
+                {% for article in articles.get(article_date) %}
+                <tr>
+                    <td>
+                        <h3><a href="{{ url_for('summarised') + '?url=' + article.url }}">
+                            {{ article.title }}
+                        </a></h3>
 
-                {% for sentence in article.sentences[:2] | sort(attribute='index') %}
-                  <p>{{ sentence['data'] }}</p>
-                {% endfor %}
-              </li>
+                        {% for sentence in article.sentences[:2] | sort(attribute='index') %}
+                          <p>{{ sentence['data'] }}</p>
+                        {% endfor %}
+                    </td>
+                </tr>
             {% endfor %}
-        </ul>
+          </tbody>
+        </table>
       {% endfor %}
+      </div>
 
+      <ul class="pager">
       {% if page >= 2 %}
         <p><a href="{{ url_for('sites', site=site, page=page-1) }}">Previous</a></p>
       {% endif %}
@@ -29,6 +36,8 @@
       {% if page < max_page %}
         <p><a href="{{ url_for('sites', site=site, page=page+1) }}">Next</a></p>
       {% endif %}
+      </ul>
+
     {% else %}
       <h1 style="text-align:center">Sites</h1>
       <br />

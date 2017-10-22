@@ -165,10 +165,6 @@ def summarised():
         ctx['article_title'] = summary.get('title')
         ctx['article_sentences'] = summary.get('sentences')
         ctx['article_keywords'] = summary.get('keywords')
-        if suggestedKeywords:
-            for word in suggestedKeywords:
-                if word not in ctx['article_keywords']:
-                    ctx['article_keywords'].insert(0,word)
         ctx['article_analysis'] = summary.get('s_analysis')
         positive = sentiment.SentimentAnalysis.analyise(summary.get('sentences'))['probability']['pos']
         neutral = sentiment.SentimentAnalysis.analyise(summary.get('sentences'))['probability']['neutral']
@@ -196,7 +192,6 @@ def summarised():
             reviews = get_reviews(form.text.data, form.title.data, form.url.data, form.count.data)
         ctx['good_review'] = reviews[0]
         ctx['bad_review'] = reviews[1]
-
     if request.method == 'POST':
         if form.errors:
             ctx['form_error'] = list(form.errors.values())[0][0]
@@ -249,7 +244,8 @@ def _summarize(text='', title='', url='',
             if suggestedKeywords is not None:
                 for word in suggestedKeywords:
                     newKeyword = Keyword(word, 1)
-                    article.keywords.insert(0,newKeyword)
+                    if newKeyword not in article.keywords:
+                        article.keywords.insert(0,newKeyword)
                 db.session.add(article)
                 db.session.commit()
 
@@ -341,6 +337,8 @@ def _summarize(text='', title='', url='',
     if suggestedKeywords is not None:
         for word in suggestedKeywords:
             newKeyword = Keyword(word, 1)
+            if newKeyword not in article.keywords:
+                article.keywords.insert(0,newKeyword)
             keywords.insert(0,newKeyword)
     if url:
         _insert_summary(

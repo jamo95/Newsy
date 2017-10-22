@@ -60,5 +60,5 @@ def _get_date(html):
     if not date:
         date = html.find('div', {'class': 'publishDate'})
         date = clean_html(' '.join(date))
-    date = datetime.datetime.strptime(date, "%d %B %Y").strftime("%d/%m/%Y")
+    date = datetime.datetime.strptime(date, "%d %B %Y").strftime("%Y-%m-%d")
     return date

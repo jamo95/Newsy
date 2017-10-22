@@ -2,7 +2,7 @@
 {% block content %}
 <body background="{{ url_for('static', filename='sky.png') }}" style="background-repeat: no-repeat; background-position: center; background-attachment: fixed; background-size: 100% auto;">
 <div id="summarised" class="container">
-  <h1 >Newsy Summarizer</h1>
+  <h1 style="margin-left:20px">Newsy Summarizer</h1>
 
   <form action="" method="post" name="summarizer" style="margin-left:20px">
     {{ form.hidden_tag() }}
@@ -33,7 +33,7 @@
       onClick="switchSummarizerInput()">Enter text instead</a></p>
   </form>
   <br />
-  <div id= "summarised-article" style="margin-bottom: 100px; border-top: thin solid DeepSkyBlue ;">
+  <div id= "summarised-article" style="margin-bottom: 100px; border-top: thin solid DeepSkyBlue;">
     <div class="col-md-6" style="border-right: thin solid DeepSkyBlue ;">
         <div id="summarised-article-title" style="margin-right:20px">
           {% if article_title %}
@@ -53,7 +53,7 @@
           </div>
         {% endif %}
       </div>
-    <div class="col-md-6" style="margin-bottom: 100px;">
+    <div class="col-md-6" style="margin-bottom: 30px;">
       {% if article_analysis %}
       <br />
         <div id="summarised-article-analysis" style="margin-left: 40px;">
@@ -152,7 +152,7 @@
 
   <br />
   <br />
-  <div id="summarised-similar-articles" style="margin-top: 30px">
+  <div id="summarised-similar-articles" style="margin-top: 30px; width: 100%" class="col-md-12">
     <h3 style="text-align:center">Similar article recommendations</h3>
     <br />
     <ul>

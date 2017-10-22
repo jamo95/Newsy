@@ -391,6 +391,7 @@ def _get_articles(url_prefix, offset=0, limit=20):
 
 def _get_recent_articles(offset=0, limit=10):
     return db.session.query(dao.article.Article).filter(
+        dao.article.Article.title != None,
         dao.article.Article.published_at != None
     ).order_by(
         desc(dao.article.Article.published_at)

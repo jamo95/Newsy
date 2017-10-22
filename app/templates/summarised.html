@@ -1,6 +1,5 @@
 {% extends "base.html" %}
 {% block content %}
-<body background="{{ url_for('static', filename='sky.png') }}" style="background-repeat: no-repeat; background-position: center; background-attachment: fixed; background-size: 100% auto;">
 <div id="summarised" class="container">
   <h1 style="margin-left:20px">Newsy Summarizer</h1>
 
@@ -151,23 +150,27 @@
   <br />
   <br />
   <div id="summarised-similar-articles" style="margin-top: 30px; width: 100%" class="col-md-12">
-    <h3 style="text-align:center">Similar article recommendations</h3>
+    <h3 style="text-align:center">Related Articles</h3>
     <br />
-    <ul>
+    <table class="table table-hover">
+        <tbody>
       {% for article_date in similar_articles.keys() | sort(reverse=True) %}
           {% for article in similar_articles.get(article_date) %}
-            <li>
-              <h3><a href="{{ url_for('summarised') + '?url=' + article.url }}">
-                  {{ article.title }}
-              </a></h3>
+          <tr>
+              <td>
+                  <h3><a href="{{ url_for('summarised') + '?url=' + article.url }}">
+                      {{ article.title }}
+                  </a></h3>
 
-              {% for sentence in article.sentences[:2] | sort(attribute='index') %}
-                <p>{{ sentence['data'] }}</p>
-              {% endfor %}
-            </li>
+                  {% for sentence in article.sentences[:2] | sort(attribute='index') %}
+                    <p>{{ sentence['data'] }}</p>
+                  {% endfor %}
+              </td>
+          </tr>
           {% endfor %}
       {% endfor %}
-    </ul>
+      </tbody>
+    </table>
   </div>
 {% endif %}
 

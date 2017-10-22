@@ -26,8 +26,8 @@
       {% for article_date in articles.keys() | sort(reverse=True) %}
           {% for article in articles.get(article_date) %}{% if article.title != "None" %}
               <div id="article-box" style="padding-right: 15px;">
-                  <p><b><a href="{{ url_for('summarised') + '?url=' + article.url }}" style="font-size: 12px;">{{ article.title }}</a></b></p>
-                  <p><span style="float: left; font-size: 12px;"><i>{{ article_date }}</i></span>
+                  <p style="text-align: left;"><b><a href="{{ url_for('summarised') + '?url=' + article.url }}" style="font-size: 12px;">{{ article.title }}</a></b></p>
+                  <p>
                      <span style="float: right; font-size: 12px; margin-right: 5px;"><a href="http://{{ article.url }}" target="_blank"><i class="fa fa-external-link"> Original article</i></a></span>
                   </p>
               </div>

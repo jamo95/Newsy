@@ -1,26 +1,32 @@
 {% extends "base.html" %}
 {% block content %}
+<body background="{{ url_for('static', filename='sky.png') }}" style="background-repeat: no-repeat; background-position: center; background-attachment: fixed; background-size: 100% auto;">
 <div id="summarised" class="container">
-  <h1 style="margin-left:20px">Newsy Summarizer</h1>
+  <h1 style="text-align: center">Newsy Summarizer</h1>
 
   <form action="" method="post" name="summarizer" style="margin-left:20px">
     {{ form.hidden_tag() }}
 
     <p id="text-input">
       Enter title:<br />
-      {{ form.title(id='summarizer-title-input', size=70) }}<br />
+      {{ form.title(id='summarizer-title-input', type='text', class='form-control', size=70) }}<br />
       Enter text:<br />
       {{ form.text(id='summarizer-text-input', cols=70, rows=5) }}<br />
     </p>
 
     <p id="url-input">
       Enter link:<br />
-      {{ form.url(id='summarizer-url-input', size=70) }}<br />
+      {{ form.url(id='summarizer-url-input', type='text', class='form-control', size=70) }}<br />
     </p>
 
     <p id="n-sentences-input">
       Enter number of sentences:<br />
-      {{ form.count(id='summarizer-n-sentences-input') }}<br />
+      {{ form.count(id='summarizer-n-sentences-input', class='form-control') }}<br />
+    </p>
+
+    <p id="n-keywords-input">
+      Enter number of keywords:<br />
+      {{ form.k_count(id='summarizer-n-sentences-input', class='form-control') }}<br />
     </p>
 
     {% if form_error %}

@@ -160,7 +160,7 @@ def summarised():
                 url = 'http://' + url
             form.url.data = url
         summary = _summarize(
-            form.text.data, form.title.data, form.url.data, form.count.data, suggestedKeywords)
+            form.text.data, form.title.data, form.url.data, form.count.data, suggestedKeywords, form.k_count.data) 
 
         ctx['article_title'] = summary.get('title')
         ctx['article_sentences'] = summary.get('sentences')

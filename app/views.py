@@ -23,7 +23,7 @@ DEFAULT_KEYWORD_COUNT = 20
 @app.route('/')
 def index():
     ctx = {}
-    recent_articles = _get_recent_articles(offset = 0, limit = 10)
+    recent_articles = _get_recent_articles(offset = 0, limit = 20)
     articles = {}   # Key = Published date.
     for article in recent_articles:
         if not article.published_at:

@@ -1,39 +1,41 @@
 #index {
     padding-top: 15px;
-    padding-bottom: 90px;
-    width: 100%;
+    width: 102%;
 
     #slogan{
+        position: relative;
         text-align: center;
         margin-top: 80px;
-   
+        width: 50%;
+        margin-left: 25%;
+        float: left;
+
         #index-url-box{
             height: 50px;
-            width: 55%;
             box-sizing: border-box;
+            width: 100%;
             padding: 5px;
         }
     }
 
     #recent_feed{
-        text-align: left;
+        text-align: right;
         position: relative;
         top: 0;
         bottom: 0;
         right: 0;
-        width: 25%;
+        width: 20%;
         height: 60%;
     }
 
     #article-list{
-        overflow-y: scroll;
-        margin-bottom: 15px;
         height: 90%;
+        overflow: hidden;
+        overflow-y: scroll;
     }
 
     #article-box{
         padding-bottom: 35px;
-        border-style: solid;
         margin-bottom: 1px;
     }
 }

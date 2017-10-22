@@ -2,43 +2,45 @@
 {% block content %}
 
 <body background="{{ url_for('static', filename='urban.png') }}" style="background-repeat: no-repeat; background-position: center; background-attachment: fixed; background-size: 100% auto;">
-    <div id="index" class="container">
-  <div id="slogan" class="col-xs-12 col-sm-9 col-md-9">
-    <h1>Don't have time?</h1>
-    <h1>You have Newsy!</h1>
-    <br />
-    <br />
-    <form action="{{ url_for('summarised')}}" method="post">
-      <input type="url" name="url" placeholder="Enter the URL of an article to summarize" id="index-url-box"></input>
-    </form>
-  </div>
+  <div id="index" class="container">
+    <div id="slogan">
+      <h1>Don't have time?</h1>
+      <h1>You have Newsy!</h1>
+      <br />
+      <br />
+      <form action="{{ url_for('summarised')}}" method="post">
+        <input type="url" name="url" placeholder="Enter the URL of an article to summarize" id="index-url-box"></input>
+      </form>
+    </div>
 
-  <div id="recent_feed" class="col-xs-12 col-sm-3 col-md-3">
-    <h2>Recent News</h2>
-    <div id="article-list">
-    {% for article_date in articles.keys() | sort(reverse=True) %}
-        {% for article in articles.get(article_date) %}
-            <div id="article-box">
-                <p><b><a href="{{ url_for('summarised') + '?url=' + article.url }}">
-                {{ article.title }}</a></b></p>
-                <p><span style="float: left; font-size: 12px;"><i>{{ article_date }}</i></span>
-                   <span style="float: right; font-size: 12px; margin-right: 5px;"><a href="http://{{ article.url }}" target="_blank"><i class="fa fa-external-link">Original article</i></a></span>
-                </p>
-            </div>
-        {% endfor %}
-    {% endfor %}
+    <div id="recent_feed" style="float: right; margin-right:10px;">
+      <h4 style="text-align: center;">Recent Updates</h4><span>
+      <h3></h3>
+      <h3></h3>
+      <div id="article-list">
+      {% for article_date in articles.keys() | sort(reverse=True) %}
+          {% for article in articles.get(article_date) %}
+              <div id="article-box" style="padding-right: 15px;">
+                  <p><b><a href="{{ url_for('summarised') + '?url=' + article.url }}" style="font-size: 12px;">{{ article.title }}</a></b></p>
+                  <p><span style="float: left; font-size: 12px;"><i>{{ article_date }}</i></span>
+                     <span style="float: right; font-size: 12px; margin-right: 5px;"><a href="http://{{ article.url }}" target="_blank"><i class="fa fa-external-link">Original article</i></a></span>
+                  </p>
+              </div>
+          {% endfor %}
+      {% endfor %}
+      </div>
     </div>
   </div>
   <div class="container text-center">
-    <h1 class="col-md-12"></h1>
+    <h2 class="col-md-12"></h2>
     <h2 class="col-md-12">Popular Supported Websites</h2>
-    <h1 class="col-md-12"></h1>
-    <a href="https://techcrunch.com/" target="_blank" class="col-md-3"><img src="static/tc_logo.png" style="display: inline-block;overflow: hidden;width: 100%;"></a>
-    <a href="http://www.news.com.au/" target="_blank" class="col-md-3"><img src="static/newsau_logo.png" style="display: inline-block;overflow: hidden;width: 100%;"></a>
-    <a href="https://www.wired.com/" target="_blank" class="col-md-3" ><img src="static/wired_logo.png" style="display: inline-block;overflow: hidden;width: 100%;"></a>
-    <a href="http://www.cricket.com.au/" target="_blank" class="col-md-3"><img src="static/crick_logo.png" style="display: inline-block;overflow: hidden;width: 100%;"></a>
+    <h2 class="col-md-12"></h2>
+    <a href="https://techcrunch.com/" target="_blank" class="col-md-3"><img src="static/tc_logo.png" style="display: inline-block;overflow: hidden;width: 80%;"></a>
+    <a href="http://www.news.com.au/" target="_blank" class="col-md-3"><img src="static/newsau_logo.png" style="display: inline-block;overflow: hidden;width: 80%;"></a>
+    <a href="https://www.wired.com/" target="_blank" class="col-md-3" ><img src="static/wired_logo.png" style="display: inline-block;overflow: hidden;width: 80%;"></a>
+    <a href="http://www.cricket.com.au/" target="_blank" class="col-md-3"><img src="static/crick_logo.png" style="display: inline-block;overflow: hidden;width: 80%;"></a>
+    <h2 class="col-md-12"></h2>
   </div>
-</div>
 </body>
 
 {% endblock %}

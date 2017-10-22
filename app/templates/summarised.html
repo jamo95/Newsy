@@ -2,9 +2,9 @@
 {% block content %}
 <body background="{{ url_for('static', filename='sky.png') }}" style="background-repeat: no-repeat; background-position: center; background-attachment: fixed; background-size: 100% auto;">
 <div id="summarised" class="container">
-  <h1>Newsy Summarizer</h1>
+  <h1 style="margin-left:20px">Newsy Summarizer</h1>
 
-  <form action="" method="post" name="summarizer">
+  <form action="" method="post" name="summarizer" style="margin-left:20px">
     {{ form.hidden_tag() }}
 
     <p id="text-input">
@@ -32,31 +32,31 @@
     <p><a id="switch-input-link"
       onClick="switchSummarizerInput()">Enter text instead</a></p>
   </form>
-
-  <hr />
-
-  <div id= "summarised-article">
-    <div id="summarised-article-title">
-      {% if article_title %}
-        {% if article_url %}
-          <h2><a href={{ article_url }} >{{ article_title }}</a></h2>
-        {% else %}
-          <h2>{{ article_title }}</h2>
-        {% endif %}
-      {% endif %}
-    </div>
-
-    {% if article_sentences %}
-        <div id="summarised-article-content">
-          {% for sentence in article_sentences %}
-            <p>{{ sentence }}</p>
-          {% endfor %}
+  <br />
+  <div id= "summarised-article" style="margin-bottom: 100px; border-top: thin solid DeepSkyBlue ;">
+    <div class="col-md-6" style="border-right: thin solid DeepSkyBlue ;">
+        <div id="summarised-article-title" style="margin-right:20px">
+          {% if article_title %}
+            {% if article_url %}
+              <h2><a href={{ article_url }} >{{ article_title }}</a></h2>
+            {% else %}
+              <h2>{{ article_title }}</h2>
+            {% endif %}
+          {% endif %}
         </div>
-      {% endif %}
 
+        {% if article_sentences %}
+          <div id="summarised-article-content">
+            {% for sentence in article_sentences %}
+              <p style="margin-right:20px">{{ sentence }}</p>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    <div class="col-md-6" style="margin-bottom: 100px;">
       {% if article_analysis %}
       <br />
-        <div id="summarised-article-analysis">
+        <div id="summarised-article-analysis" style="margin-left: 40px;">
           <div class="bar-container-legend" style="text-align: center; font-weight: bold;">Sentiment Analysis Distribution</div>
           <div class="bar-chart">
               <div class="bar-container">
@@ -71,17 +71,17 @@
             <div class="bar-container-legend">
                 <div class="key-section">
                   <span style="color:#93FF33;margin-right: 5px">&#x2588;</span>
-                  <span style="margin-right: 10px">Positive</span>
-                  <span style="margin-right: 10px">{{ '{:.1%}'.format(positive_sentiment) }}</span>
+                  <span style="margin-right: 5px">Positive</span>
+                  <span style="margin-right: 5px">{{ '{:.1%}'.format(positive_sentiment) }}</span>
                 </div>
                 <div class="key-section">
-                  <span style="color:#FFF933;margin-right: 10px">&#x2588;</span>
-                  <span style="margin-right: 10px">Neutral</span>
+                  <span style="color:#FFF933;margin-right: 5px">&#x2588;</span>
+                  <span style="margin-right: 5px">Neutral</span>
                   <span >{{ '{:.1%}'.format(neutral_sentiment) }}</span>
                 </div>
                 <div class="key-section">
-                  <span style="color:#FF5833;margin-right: 10px">&#x2588;</span>
-                  <span style="margin-right: 10px">Negative</span>
+                  <span style="color:#FF5833;margin-right: 5px">&#x2588;</span>
+                  <span style="margin-right: 5px">Negative</span>
                   <span >{{ '{:.1%}'.format(negative_sentiment) }}</span>
                 </div>
             </div>
@@ -89,11 +89,9 @@
         </div>
       </div>
     {% endif %}
-
-
     {% if article_url %}
       {% if article_keywords %}
-        <div id="summarised-article-content">
+        <div id="summarised-article-content" style="margin-left: 20px;">
           <h4>Keywords</h4>
           <p>
           {% for keyword in article_keywords%}
@@ -129,8 +127,7 @@
     {% endif %}
 
     {% if article_sentences %}
-      <br />
-      <div id="summarised-review">
+      <div id="summarised-review" style="margin-left: 20px;">
         <h4 id="summarised-review-question">Was this a good summary?
           <a onClick="summarisedReview(true)">Yes</a> or
           <a onClick="summarisedReview(false)">No</a>
@@ -139,7 +136,6 @@
         positive review!</p><p id="summarised-negative-response" style="display:
         none;">Sorry to hear that. We have been notified and promise to make
         Newsy better for you.</p>
-        <br />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <!-- image from https://cdnjs.com/libraries/font-awesome -->
         <i id="positive-unvoted" class="fa fa-thumbs-o-up" style="font-size:36px;color:green"><a id="postive-unvoted" style="padding-right:25px;padding-left:25px">{{ good_review }} </a></i>
@@ -149,30 +145,34 @@
       </div>
 
     {% endif %}
-    {% if similar_articles %}
-      <br />
-      <br />
-      <div id="summarised-similar-articles">
-        <h3>Similar article recommendations</h3>
-        <br />
-        <ul>
-          {% for article_date in similar_articles.keys() | sort(reverse=True) %}
-              {% for article in similar_articles.get(article_date) %}
-                <li>
-                  <h3><a href="{{ url_for('summarised') + '?url=' + article.url }}">
-                      {{ article.title }}
-                  </a></h3>
-
-                  {% for sentence in article.sentences[:2] | sort(attribute='index') %}
-                    <p>{{ sentence['data'] }}</p>
-                  {% endfor %}
-                </li>
-              {% endfor %}
-          {% endfor %}
-        </ul>
-      </div>
-    {% endif %}
   </div>
+</div>
+
+{% if similar_articles %}
+
+  <br />
+  <br />
+  <div id="summarised-similar-articles" style="margin-top: 30px">
+    <h3 style="text-align:center">Similar article recommendations</h3>
+    <br />
+    <ul>
+      {% for article_date in similar_articles.keys() | sort(reverse=True) %}
+          {% for article in similar_articles.get(article_date) %}
+            <li>
+              <h3><a href="{{ url_for('summarised') + '?url=' + article.url }}">
+                  {{ article.title }}
+              </a></h3>
+
+              {% for sentence in article.sentences[:2] | sort(attribute='index') %}
+                <p>{{ sentence['data'] }}</p>
+              {% endfor %}
+            </li>
+          {% endfor %}
+      {% endfor %}
+    </ul>
+  </div>
+{% endif %}
+
 </div>
 
 <script type="text/javascript">
@@ -283,7 +283,7 @@ background-color:yellow;
 }
 
 .bar-container-legend {
-  margin-right: 10px;
+  margin-right: 5px;
   width: 450px;
   height: 50px;
 }
@@ -291,7 +291,7 @@ background-color:yellow;
 .key-section {
     height: 30px;
     float:left;
-    width: 150px;
+    width: 145px;
     display: flex;
     align-items: center;
     justify-content: center;

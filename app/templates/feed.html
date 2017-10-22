@@ -20,7 +20,7 @@
       <h3>Results for "{{ category }}"</h3>
       <br />
       {% for article_date in articles.keys() | sort(reverse=True) %}
-      <table class="table table-bordered table-hover">
+      <table class="table table-hover">
           <tbody>
               <thead class="thead-default"> <h4>{{ article_date }}</h4></thead>
                 {% for article in articles.get(article_date) %}

@@ -52,12 +52,14 @@
       </ul>
 
     {% else %}
-      <h3 style="margin-top: 40px;">Most Popular Categories</h3>
-       <p id="keyword-list">
+    <table class="table">
+      <h3>Popular Categories</h3>
+      <tbody><tr>
        {% for category in categories %}
-   	<a id="category" href="{{ url_for('feed', category=category) }}">#{{ category }}</a>
+       <td><a id="category" href="{{ url_for('feed', category=category) }}">#{{ category }}</a></td>
        {% endfor %}
-       </p>
+      </tr></tbody>
+    </table>
     {% endif %}
   </div>
 </body>

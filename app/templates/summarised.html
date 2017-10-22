@@ -32,7 +32,7 @@
       <span style="color: red;">{{ form_error }}</span>
     {% endif %}
 
-    <p id="btn-submit"><input type="submit" value="Summarize"></p>
+    <p id="btn-submit"><input type="submit" class="btn btn-default btn-success" value="Summarize"></p>
     <p><a id="switch-input-link"
       onClick="switchSummarizerInput()">Enter text instead</a></p>
   </form>
@@ -102,13 +102,13 @@
               <span>{{ keyword }}</a>,
           {% endfor %}
           </p>
-          <input id="article-highlight" type="button" onclick="articleHighlightAll('{{" ".join(article_keywords) }}')" value="Highlight keywords">
+          <input id="article-highlight" class="btn btn-default" type="button" onclick="articleHighlightAll('{{" ".join(article_keywords) }}')" value="Highlight keywords">
           <input id="article-unhighlight" style="display: none" type="button" onclick="articleUnhighlightAll()" value="Unhighlight keywords">
           <br />
           <br />
           <i>Suggest keywords (space separated):</i>
           <form action = "{{ url_for('summarised', url=article_url) }}" method="POST">
-            <input type="text" name="keywords">
+            <input type="text" class="form-control"  name="keywords">
           </form>
         </div>
       {% endif %}

@@ -11,6 +11,8 @@ class SummaryForm(FlaskForm):
         [URL(message="Enter a valid URL")])
     count = IntegerField('count', widget=Input('number'), validators=[
         Required(), NumberRange(min=0)], default=4)
+    k_count = IntegerField('count', widget=Input('number'), validators=[
+        Required(), NumberRange(min=0)], default=20)
 
     def is_text(self):
         return self.text.data or self.url.data

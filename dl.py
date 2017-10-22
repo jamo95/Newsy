@@ -21,6 +21,7 @@ from sqlalchemy.orm import sessionmaker
 from app import dao
 from app.textrank.node import Node
 from app.textrank.helpers import tokenize_sentences, normalize_url
+from app.loaders import techcrunch, venturebeat, newsau, hackernoon
 
 config = {
     'db': {
@@ -71,6 +72,8 @@ def dl_techcrunch(session, stemmer, year, month, day):
             print('~ {}'.format(normalize_url(url)))
             continue
 
+        tc_article = techcrunch.ArticleLoader.load(url)
+
         # Download the article content.
         try:
             article = _download_article(url)
@@ -89,6 +92,10 @@ def dl_techcrunch(session, stemmer, year, month, day):
         summary_sentences = []
         keywords = [Node(w) for w in article.keywords]
 
+        for tag in tc_article.get('tags', []):
+            if tag not in article.keywords:
+                keywords.append(Node(tag))
+
         for sentence in article.summary.split('\n'):
             index = text_sentences.index(_hash_text(sentence))
             summary_sentences.append(Node(sentence, index=index))
@@ -96,9 +103,9 @@ def dl_techcrunch(session, stemmer, year, month, day):
         # Insert article and summary into DB.
         dao.article.insert(
             session=session,
-            text=article.text,
+            text=tc_article.get('content', article.text),
             url=normalize_url(url),
-            title=article.title,
+            title=tc_article.get('title', article.title),
             keywords=keywords,
             sentences=summary_sentences,
             published_at=_format_timestamp(year, month, day),
@@ -144,6 +151,8 @@ def dl_venturebeat(session, stemmer, year, month, day):
         except newspaper.article.ArticleException:
             print('- {}'.format(normalize_url(url)))
 
+        vb_article = venturebeat.ArticleLoader.load(url)
+
         # Normalise and hash all the sentences to make finding the index more
         # accurate.
         text_sentences = [
@@ -160,9 +169,9 @@ def dl_venturebeat(session, stemmer, year, month, day):
         # Insert article and summary into DB.
         dao.article.insert(
             session=session,
-            text=article.text,
+            text=vb_article.get('content', article.text),
             url=normalize_url(url),
-            title=article.title,
+            title=vb_article.get('title', article.title),
             keywords=keywords,
             sentences=summary_sentences,
             published_at=_format_timestamp(year, month, day),
@@ -213,6 +222,8 @@ def dl_hackernoon(session, stemmer, year, month, day):
         except newspaper.article.ArticleException:
             print('- {}'.format(normalize_url(url)))
 
+        hn_article = hackernoon.ArticleLoader.load(url)
+
         # Normalise and hash all the sentences to make finding the index more
         # accurate.
         text_sentences = [
@@ -229,9 +240,9 @@ def dl_hackernoon(session, stemmer, year, month, day):
         # Insert article and summary into DB.
         dao.article.insert(
             session=session,
-            text=article.text,
+            text=hn_article.get('content', article.text),
             url=normalize_url(url),
-            title=article.title,
+            title=hn_article.get('title', article.title),
             keywords=keywords,
             sentences=summary_sentences,
             published_at=_format_timestamp(year, month, day),
@@ -344,6 +355,8 @@ def dl_newscomau(session, stemmer, year, month, day):
         except newspaper.article.ArticleException:
             print('- {}'.format(normalize_url(url)))
 
+        nw_article = newsau.ArticleLoader.load(url)
+
         # Normalise and hash all the sentences to make finding the index more
         # accurate.
         text_sentences = [
@@ -360,9 +373,9 @@ def dl_newscomau(session, stemmer, year, month, day):
         # Insert article and summary into DB.
         dao.article.insert(
             session=session,
-            text=article.text,
+            text=nw_article.get('content', article.text),
             url=normalize_url(url),
-            title=article.title,
+            title=nw_article.get('title', article.title),
             keywords=keywords,
             sentences=summary_sentences,
             published_at=_format_timestamp(year, month, day),

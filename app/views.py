@@ -417,7 +417,8 @@ def _get_articles_by_categorylist(current_title, keywordlist, offset=0, limit=20
     for keyword in keywordlist:
         matching_articles = db.session.query(dao.article.Article).filter(
             dao.article.Article.keywords.any(Keyword.data.like(keyword)),
-            dao.article.Article.title != current_title
+            dao.article.Article.title != current_title,
+            dao.article.Article.title != "None"
         ).order_by(
             desc(dao.article.Article.published_at)
         ).offset(offset).limit(limit).all()

@@ -14,9 +14,9 @@
       {{ form.text(id='summarizer-text-input', cols=70, rows=5) }}<br />
     </p>
 
+    <br />
     <p id="url-input">
-      Enter link:<br />
-      {{ form.url(id='summarizer-url-input', type='url', class='form-control', placeholder='Enter the URL of an article to summarize', size=70) }}<br />
+      {{ form.url(id='summarizer-url-input', type='url', class='form-control input-lg', placeholder='Enter the URL of an article to summarize', size=70) }}<br />
     </p>
     <div class="col-lg-3 input-group">
       Enter number of sentences:<br />
@@ -34,7 +34,7 @@
 
     <p id="btn-submit"><input type="submit" class="btn btn-default btn-success" value="Summarize"></p>
     <p><a id="switch-input-link"
-      onClick="switchSummarizerInput()">Enter text instead</a></p>
+      onClick="switchSummarizerInput()">Or Enter text instead</a></p>
   </form>
   <br />
   <div id= "summarised-article" style="margin-bottom: 100px; border-top: thin solid DeepSkyBlue;">

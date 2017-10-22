@@ -30,20 +30,20 @@
         <p><a href="{{ url_for('sites', site=site, page=page+1) }}">Next</a></p>
       {% endif %}
     {% else %}
-      <h1>Sites</h1>
-      <div class="container" style="margin-bottom: 70px;">
+      <h1 style="text-align:center">Sites</h1>
+      <br />
         <div class="row" style="margin-top: 30px;">
-          <span class="col-md-4"><a href="/sites/news.com.au"><img src="static/newsau_logo.png" width="204" height="65"></a></span>
-          <span class="col-md-4"><a href="/sites/techcrunch.com"><img src="static/tc_logo.png" width="204" height="55"></a></span>
-          <span class="col-md-4"><a href="/sites/wired.com"><img src="static/wired_logo.png" width="204" height="55"></a></span>
+          <span class="col-md-4" style="align-items: center;justify-content: center;padding-left:90px;padding-right:90px;"><a href="/sites/news.com.au"><img src="static/newsau_logo.png" width="204"></a></span>
+          <span class="col-md-4" style="align-items: center;justify-content: center;padding-left:90px;padding-right:90px;"><a href="/sites/techcrunch.com"><img src="static/tc_logo.png" width="204"></a></span>
+          <span class="col-md-4" style="align-items: center;justify-content: center;padding-left:90px;padding-right:90px;"><a href="/sites/wired.com"><img src="static/wired_logo.png" width="204"></a></span>
         </div>
 
-        <div class="row" style="margin-top: 30px;">
-          <span class="col-md-4"><a href="/sites/cricket.com.au"><img src="static/crick_logo.png" width="204" height="71"></a></span>
-          <span class="col-md-4"><a href="/sites/venturebeat.com"><img src="static/venture_logo.png" width="204" height="75"></a></span>
-          <span class="col-md-4"><a href="/sites/hackernoon.com"><img src="static/hacker_logo.png" width="204" height="75"></a></span>
+        <div class="row" style="margin-top: 30px;margin-bottom: 50px;">
+          <span class="col-md-4" style="align-items: center;justify-content: center;padding-left:90px;padding-right:90px;"><a href="/sites/cricket.com.au"><img src="static/crick_logo.png" width="204"></a></span>
+          <span class="col-md-4" style="align-items: center;justify-content: center;padding-left:90px;padding-right:90px;"><a href="/sites/venturebeat.com"><img src="static/venturebeat_logo.png" width="204"></a></span>
+          <span class="col-md-4" style="align-items: center;justify-content: center;padding-left:90px;padding-right:90px;"><a href="/sites/hackernoon.com"><img src="static/hacker_logo.png" width="204"></a></span>
          </div>
-      </div>  
+      </div>
     {% endif %}
   </div>
 </body>

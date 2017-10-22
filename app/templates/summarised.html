@@ -16,18 +16,17 @@
 
     <p id="url-input">
       Enter link:<br />
-      {{ form.url(id='summarizer-url-input', type='text', class='form-control', size=70) }}<br />
+      {{ form.url(id='summarizer-url-input', type='text', class='form-control', placeholder='Enter the URL of an article to summarize', size=70) }}<br />
     </p>
-
-    <p id="n-sentences-input">
+    <div class="col-lg-3 input-group">
       Enter number of sentences:<br />
       {{ form.count(id='summarizer-n-sentences-input', class='form-control') }}<br />
-    </p>
+    </div>
 
-    <p id="n-keywords-input">
+    <div class="col-lg-3 input-group">
       Enter number of keywords:<br />
       {{ form.k_count(id='summarizer-n-sentences-input', class='form-control') }}<br />
-    </p>
+    </div>
 
     {% if form_error %}
       <span style="color: red;">{{ form_error }}</span>

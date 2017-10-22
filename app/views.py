@@ -177,7 +177,7 @@ def summarised():
 
         if ctx['article_keywords']:
             articles = {}
-            feed_articles = _get_articles_by_categorylist(keywordlist=ctx['article_keywords'][:10], offset=20, limit=20)
+            feed_articles = _get_articles_by_categorylist(ctx['article_title'], keywordlist=ctx['article_keywords'][:10], offset=20, limit=20)
             for article in feed_articles:
                 if not article.published_at and article.title != ctx['article_title']:
                     continue
@@ -411,7 +411,7 @@ def _get_articles_category(category, offset=0, limit=20):
 
     return categorized_articles, categorized_articles_count
 
-def _get_articles_by_categorylist(keywordlist, offset=0, limit=20):
+def _get_articles_by_categorylist(current_title, keywordlist, offset=0, limit=20):
     all_articles = []
     matching_articles_count = {}
     for keyword in keywordlist:
@@ -434,7 +434,7 @@ def _get_articles_by_categorylist(keywordlist, offset=0, limit=20):
     top_articles = []
     for title in top_articles_titles:
         for article in all_articles:
-            if article.title == title and article not in top_articles:
+            if article.title == title and article.title != current_title and article not in top_articles:
                 top_articles.append(article)
             if len(top_articles) >= 10: break
         if len(top_articles) >= 10: break
